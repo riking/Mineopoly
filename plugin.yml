@@ -1,0 +1,16 @@
+name: Mineopoly
+main: taco.mineopoly.Mineopoly
+version: 1.3.16
+description: Monopoly port for Bukkit servers
+author: KILL3RTACO
+depend: [TacoAPI, WorldEdit]
+commands:
+  mineopoly:
+    description: Mineopoly player commands
+    aliases: [mineopoly, m]
+  property:
+    description: Mineopoly property commands
+    aliases: [prop, p]
+  jail:
+    description: Mineopoly jail commands
+    aliases: [j, mineopolyjail, mjail]
