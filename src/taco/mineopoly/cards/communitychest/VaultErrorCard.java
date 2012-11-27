@@ -5,7 +5,7 @@ import taco.mineopoly.MineopolyPlayer;
 public class VaultErrorCard extends CommunityChestCard {
 
 	public VaultErrorCard() {
-		this.description = "Vault error in your favor. Collect &2200";
+		super("Vault error in your favor. Collect &2200");
 	}
 
 	@Override

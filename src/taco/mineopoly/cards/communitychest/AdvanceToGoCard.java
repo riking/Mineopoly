@@ -6,7 +6,7 @@ import taco.mineopoly.MineopolyPlayer;
 public class AdvanceToGoCard extends CommunityChestCard {
 
 	public AdvanceToGoCard() {
-		this.description = "Advance to GO (Collect &2200&b)";
+		super("Advance to GO &3(&bCollect &2200&3)");
 	}
 
 	@Override

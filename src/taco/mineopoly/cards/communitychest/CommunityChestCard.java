@@ -1,21 +1,13 @@
 package taco.mineopoly.cards.communitychest;
 
-import taco.mineopoly.Mineopoly;
-import taco.mineopoly.MineopolyPlayer;
+import taco.mineopoly.cards.MineopolyCard;
 
-public abstract class CommunityChestCard {
+public abstract class CommunityChestCard extends MineopolyCard {
 
 	protected String description;
 	
-	public String getDescription(){
-		return this.description;
+	public CommunityChestCard(String description){
+		super(description, "&eCommunity Chest");
 	}
-	
-	public void readDescription(MineopolyPlayer player){
-		Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + player.getName() + " &3drew a &eCommunity Chest &3card, it says:");
-		Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + description);
-	}
-	
-	public abstract void action(MineopolyPlayer player);
 	
 }

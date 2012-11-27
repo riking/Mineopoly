@@ -6,7 +6,7 @@ import taco.mineopoly.MineopolyPlayer;
 public class CollectFromEachPlayerCard extends CommunityChestCard {
 
 	public CollectFromEachPlayerCard() {
-		this.description = "Collect &250 &bfrom each player";
+		super("Collect &250 &bfrom each player");
 	}
 
 	@Override

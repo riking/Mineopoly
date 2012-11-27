@@ -5,7 +5,7 @@ import taco.mineopoly.MineopolyPlayer;
 public class ChanceJailCard extends ChanceCard {
 
 	public ChanceJailCard() {
-		this.description = "Get out of Jail Free card. You may use this card to get out of jail";
+		super("Get out of Jail Free card. You may use this card to get out of jail");
 	}
 
 	@Override

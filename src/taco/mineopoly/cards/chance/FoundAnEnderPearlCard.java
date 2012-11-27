@@ -6,7 +6,7 @@ import taco.mineopoly.MineopolyPlayer;
 public class FoundAnEnderPearlCard extends ChanceCard {
 
 	public FoundAnEnderPearlCard() {
-		this.description = "You found an Ender Pearl! Go forward two spaces";
+		super("You found an Ender Pearl! Go forward two spaces");
 	}
 
 	@Override
