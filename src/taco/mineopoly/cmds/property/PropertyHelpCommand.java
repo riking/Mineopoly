@@ -26,4 +26,8 @@ public class PropertyHelpCommand extends TacoHelpCommand {
 		return new String[]{"help", "?"};
 	}
 
+	public static void main(String[] args){
+		System.out.println(Integer.toString(343213202, 32));
+	}
+	
 }

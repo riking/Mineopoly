@@ -34,7 +34,7 @@ public class MineopolyGame {
 				board.addPlayer(player);
 				channel.addPlayer(player);
 				Mineopoly.plugin.getQueue().removePlayer(index);
-				player.setCurrentSection(board.getSection(0));
+				player.setCurrentSection(board.getSection(0), false);
 			}else{
 				break;
 			}

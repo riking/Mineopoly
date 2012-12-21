@@ -3,6 +3,7 @@ package taco.mineopoly.cards.communitychest;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
 
+
 public class AdvanceToGoCard extends CommunityChestCard {
 
 	public AdvanceToGoCard() {

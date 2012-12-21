@@ -8,41 +8,28 @@ import taco.mineopoly.MineopolyPlayer;
 
 public abstract class MineopolyCardSet implements Iterable<MineopolyCard> {
 
-	protected ArrayList<MineopolyCard> allCards, availableCards;
+	protected ArrayList<MineopolyCard> cards;
 	
 	public MineopolyCardSet(){
-		allCards = new ArrayList<MineopolyCard>();
-		availableCards = new ArrayList<MineopolyCard>();
+		cards = new ArrayList<MineopolyCard>();
 	}
 	
 	protected abstract void initCards();
 	
 	protected void addCard(MineopolyCard card){
-		allCards.add(card);
-		availableCards.add(card);
+		cards.add(card);
 	}
 	
 	public void drawCard(MineopolyPlayer player){
-		int cardToTake = new Random().nextInt(availableCards.size());
-		MineopolyCard card = availableCards.get(cardToTake);
+		int cardToTake = new Random().nextInt(cards.size());
+		MineopolyCard card = cards.get(cardToTake);
 		card.readDescription(player);
 		card.action(player);
-		availableCards.remove(cardToTake);
-		if(availableCards.size() <= 0)
-			resetCards();
-	}
-	
-	public void resetCards(){
-		availableCards = allCards;
-	}
-	
-	public int getAvailableCardCount(){
-		return availableCards.size();
 	}
 	
 	@Override
 	public Iterator<MineopolyCard> iterator() {
-		return allCards.iterator();
+		return cards.iterator();
 	}
 
 }

@@ -6,7 +6,8 @@ public class CommunityChestCardSet extends MineopolyCardSet{
 
 	@Override
 	protected void initCards() {
-		addCard(new AdvanceToGoCard());
+		super.addCard(new AdvanceToGoCard());
+		super.addCard(new VaultErrorCard());
 	}
 
 }

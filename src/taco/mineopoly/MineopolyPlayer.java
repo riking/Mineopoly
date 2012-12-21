@@ -219,15 +219,15 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 				Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + "&3was jailed because they rolled doubles 3 times in a row", this);
 				sendMessage("&3You were jailed because you rolled doubles 3 times in a row");
 			}else{
-				move(sum);
+				moveForward(sum);
 			}
 		}else{
 			doubleRolls = 0;
-			move(sum);
+			moveForward(sum);
 		}
 	}
 	
-	private void move(int forward){
+	private void moveForward(int forward){
 		MineopolySection next = Mineopoly.plugin.getGame().getBoard().getSection(forward);
 		Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3rolled a &b" + roll1 + "&3 and a &b" + roll2, this);
 		Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3 landed on " + next.getColorfulName(), this);
@@ -252,12 +252,11 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		return this.canRoll;
 	}
 	
-	/**
-	 * Sets the {@link MineopolySection} that this player is on. If the section that they are
-	 * on implements {@link Ownable}, then they player will pay the rent required, if it is owned.
-	 * @param section
-	 */
 	public void setCurrentSection(MineopolySection section){
+		setCurrentSection(section, true);
+	}
+	
+	public void setCurrentSection(MineopolySection section, boolean goMoney){
 		int lastId = 0;
 		if(this.sectionOn != null)
 			lastId = this.sectionOn.getId();
@@ -274,6 +273,8 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 				needsGoMoney = true;
 			}
 		}
+		
+		if(!goMoney) needsGoMoney = false;
 		
 		if(needsGoMoney){
 			addMoney(200);
@@ -302,6 +303,14 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
 			this.payRent();
 		}
+	}
+	
+	public void move(int amount){
+		boolean goMoney = true;
+		if(amount < 0) goMoney = false;
+		int lastId = getCurrentSection().getId();
+		MineopolySection next = Mineopoly.plugin.getGame().getBoard().getSection(lastId + amount);
+		setCurrentSection(next, goMoney);
 	}
 	
 	public int getOwnedPropertiesWithColor(MineopolyColor color){

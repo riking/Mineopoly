@@ -50,9 +50,9 @@ public class MineopolyListener implements TacoListener {
 					if(section instanceof JailSquare){
 						JailSquare js = (JailSquare) section;
 						if(mp.isJailed()){
-							if((nLocation.getX() >= js.getJailCellLocation().getX() + 5 || nLocation.getX() <= js.getJailCellLocation().getX() - 5) ||
+							if((nLocation.getX() >= js.getJailCellLocation().getX() + 6 || nLocation.getX() <= js.getJailCellLocation().getX() - 5) ||
 									(nLocation.getY() >= js.getJailCellLocation().getY() + 4 || nLocation.getY() <= js.getJailCellLocation().getY() - 1) ||
-									(nLocation.getZ() >= js.getJailCellLocation().getZ() + 5 || nLocation.getZ() <= js.getJailCellLocation().getZ() - 5)){
+									(nLocation.getZ() >= js.getJailCellLocation().getZ() + 5.5 || nLocation.getZ() <= js.getJailCellLocation().getZ() - 6)){
 								player.teleport(js.getJailCellLocation());
 								mp.sendMessage("&cYou are &1jailed&c, do not try to escape. You can use a &6Get out of Jail Free &ccard if you need to." +
 										" (&6/jail card&c)");

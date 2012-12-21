@@ -6,7 +6,8 @@ public class ChanceCardSet extends MineopolyCardSet{
 
 	@Override
 	protected void initCards() {
-		addCard(new FoundAnEnderPearlCard());
+		super.addCard(new FoundAnEnderPearlCard());
+		super.addCard(new ThrewEnderPearlWrongWayCard());
 	}
 
 }
