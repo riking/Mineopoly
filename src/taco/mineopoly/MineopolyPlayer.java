@@ -99,7 +99,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	}
 	
 	public boolean canAddHouse(Property section){
-		return section.getHouses < 4 && !section.hasHotel();
+		return hasMonopoly(section.getColor()) && section.getHouses() < 4 && !section.hasHotel();
 	}
 	
 	public void getInfo(Player p){
@@ -291,7 +291,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 			ss.provokeAction(this);
 		}else if(section instanceof Ownable){
 			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
-			if(this.payRent)
+			if(this.payRent && !((Ownable) section).isMortgaged())
 				this.payRent();
 			this.payRent = true;
 		}

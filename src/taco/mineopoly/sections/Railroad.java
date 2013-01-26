@@ -16,6 +16,7 @@ public class Railroad extends MineopolySection implements Ownable, CardinalSecti
 	protected int side, price = 200;
 	protected boolean owned = false;
 	protected MineopolyPlayer owner;
+	private boolean mortgaged;
 
 	
 	public Railroad(String name, int side) {
@@ -85,6 +86,16 @@ public class Railroad extends MineopolySection implements Ownable, CardinalSecti
 	@Override
 	public int getSide() {
 		return side;
+	}
+
+	@Override
+	public boolean isMortgaged() {
+		return mortgaged;
+	}
+
+	@Override
+	public void setMortgaged(boolean mortgage) {
+		mortgaged = mortgage;
 	}
 
 

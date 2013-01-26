@@ -11,6 +11,10 @@ public interface Ownable {
 
 	public boolean isOwned();
 	
+	public boolean isMortgaged();
+	
+	public void setMortgaged(boolean mortgage);
+	
 	public MineopolyPlayer getOwner();
 	
 	public void setOwner(MineopolyPlayer player);

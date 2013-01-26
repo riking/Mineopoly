@@ -18,6 +18,7 @@ public class Utility extends MineopolySection implements Ownable, CardinalSectio
 	private MineopolyPlayer owner;
 	private boolean owned = false;
 	private int side, price = 150;
+	private boolean mortgaged;
 	
 	public Utility(int id, String name, char color, int side) {
 		super(id, Mineopoly.config.getCompanyName(name), color);
@@ -85,4 +86,14 @@ public class Utility extends MineopolySection implements Ownable, CardinalSectio
 		return side;
 	}
 
+
+	@Override
+	public boolean isMortgaged() {
+		return mortgaged;
+	}
+
+	@Override
+	public void setMortgaged(boolean mortgage) {
+		mortgaged = mortgage;
+	}
 }
