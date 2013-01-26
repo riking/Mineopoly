@@ -8,6 +8,8 @@ import taco.mineopoly.messages.CannotPerformActionMessage;
 import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.mineopoly.messages.InvalidTurnMessage;
 import taco.mineopoly.messages.NotPlayingGameMessage;
+import taco.mineopoly.messages.SectionNotFoundMessage;
+import taco.mineopoly.sections.MineopolySection;
 import taco.mineopoly.sections.Property;
 import taco.tacoapi.api.command.TacoCommand;
 
@@ -27,13 +29,33 @@ public class PropertyAddHouseCommand extends TacoCommand {
 								Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
 								mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
 							}else{
-								
+								mp.sendMessage(new CannotPerformActionMessage("add a house to that right now"));
 							}
 						}else{
-							player.sendMessage(new CannotPerformActionMessage("add a house to that") + "");
+							mp.sendMessage(new CannotPerformActionMessage("add a house to that"));
 						}
 					}else{ //get specified property and add house to it if not null (id or name, name being the config name)
-						
+						MineopolySection section;
+						if(Mineopoly.getChatUtils().isNum(args[0]))
+							section = Mineopoly.plugin.getGame().getBoard().getSection(Integer.parseInt(args[0]));
+						else
+							section = Mineopoly.plugin.getGame().getBoard().getSection(args[0]);
+						if(section == null){
+							mp.sendMessage(new SectionNotFoundMessage());
+						}else{
+							if(section instanceof Property){
+								if(mp.canAddHouse((Property) section)){
+									Property prop = (Property) section;
+									prop.addHouse();
+									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
+									mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
+								}else{
+									mp.sendMessage(new CannotPerformActionMessage("add a house to that right now"));
+								}
+							}else{
+								mp.sendMessage(new CannotPerformActionMessage("add a house to that"));
+							}
+						}
 					}
 				}else{
 					player.sendMessage(new InvalidTurnMessage() + "");
