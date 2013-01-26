@@ -99,64 +99,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	}
 	
 	public boolean canAddHouse(Property section){
-		if(section.getColor() == MineopolyColor.BLUE || section.getColor() == MineopolyColor.PURPLE){
-			Property p1 = (Property) Mineopoly.plugin.getGame().getBoard().getSection(section.getColor().getIds()[0]);
-			Property p2 = (Property) Mineopoly.plugin.getGame().getBoard().getSection(section.getColor().getIds()[1]);
-			boolean first = false;
-			boolean second = false;
-			if(p1.getHouses() > p2.getHouses())
-				second = true;
-			else if(p1.getHouses() < p2.getHouses())
-				first = true;
-			else{
-				first = true;
-				second = true;
-			}
-			if(section.getId() == p1.getId())
-				return first;
-			else
-				return second;
-		}else{
-			Property p1 = (Property) Mineopoly.plugin.getGame().getBoard().getSection(section.getColor().getIds()[0]);
-			Property p2 = (Property) Mineopoly.plugin.getGame().getBoard().getSection(section.getColor().getIds()[1]);
-			Property p3 = (Property) Mineopoly.plugin.getGame().getBoard().getSection(section.getColor().getIds()[2]);
-			boolean first = false;
-			boolean second = false;
-			boolean third = false;
-			if(p1.getHouses() > p2.getHouses()){
-				second = true;
-				if(p2.getHouses() > p3.getHouses()){
-					second = false;
-					third = true;
-				}else if(p3.getHouses() == p2.getHouses()){
-					third = true;
-				}
-			}else if(p1.getHouses() < p2.getHouses()){
-				first = true;
-				if(p2.getHouses() > p3.getHouses()){
-					first = false;
-					third = true;
-				}else if(p1.getHouses() == p3.getHouses()){
-					third = true;
-				}
-			}else if(p1.getHouses() == p2.getHouses()){
-				first = true;
-				second = true;
-				if(p2.getHouses() > p3.getHouses()){
-					first = false;
-					second = false;
-					third = true;
-				}else if(p2.getHouses() == p3.getHouses()){
-					third = true;
-				}
-			}
-			if(section.getId() == p1.getId())
-				return first;
-			else if(section.getId() == p2.getId())
-				return second;
-			else
-				return third;
-		}
+		return section.getHouses < 4 && !section.hasHotel();
 	}
 	
 	public void getInfo(Player p){
