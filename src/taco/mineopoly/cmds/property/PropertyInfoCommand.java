@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
-import taco.mineopoly.Permission;
+import taco.mineopoly.Permissions;
 import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.mineopoly.messages.NotPlayingGameMessage;
 import taco.mineopoly.sections.MineopolySection;
@@ -25,7 +25,7 @@ public class PropertyInfoCommand extends TacoCommand {
 	@Override
 	public boolean onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
-			if(player.hasPermission(Permission.VIEW_PROPERTY_STATS + "") || Mineopoly.plugin.getGame().hasPlayer(player)){
+			if(player.hasPermission(Permissions.VIEW_PROPERTY_STATS + "") || Mineopoly.plugin.getGame().hasPlayer(player)){
 				if(args.length == 0){
 					if(Mineopoly.plugin.getGame().hasPlayer(player)){
 						MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
@@ -52,7 +52,7 @@ public class PropertyInfoCommand extends TacoCommand {
 					}
 					section.getInfo(player);
 				}
-			}else if(!player.hasPermission(Permission.VIEW_PROPERTY_STATS + "")){
+			}else if(!player.hasPermission(Permissions.VIEW_PROPERTY_STATS + "")){
 				return false;
 			}else{
 				player.sendMessage(new NotPlayingGameMessage() + "");

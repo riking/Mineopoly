@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import taco.tacoapi.api.command.TacoCommand;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyChannelListener;
-import taco.mineopoly.Permission;
+import taco.mineopoly.Permissions;
 import taco.mineopoly.messages.GameNotInProgressMessage;
 
 public class MineopolyJoinChannelCommand extends TacoCommand {
@@ -20,7 +20,7 @@ public class MineopolyJoinChannelCommand extends TacoCommand {
 				player.sendMessage(Mineopoly.getChatUtils().formatMessage("&cYou are already in the channel"));
 				return true;
 			}else{
-				if(player.hasPermission(Permission.CHANNEL_CHAT.toString())){
+				if(player.hasPermission(Permissions.CHANNEL_CHAT.toString())){
 					Mineopoly.plugin.getGame().getChannel().addPlayer(new MineopolyChannelListener(player));
 					return true;
 				}else{

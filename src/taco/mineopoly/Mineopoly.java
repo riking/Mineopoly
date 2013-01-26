@@ -14,7 +14,7 @@ import taco.mineopoly.listener.MineopolyListener;
 
 public class Mineopoly extends TacoPlugin{
 
-	public static Config config;
+	public static MineopolyConfig config;
 	private MineopolyGame game;
 	public static Mineopoly plugin;
 	public static Server server;
@@ -26,7 +26,7 @@ public class Mineopoly extends TacoPlugin{
 	
 	public void onEnable(){
 		File file = new File(getDataFolder() + "/config.yml");
-		config = new Config(file);
+		config = new MineopolyConfig(file);
 		plugin = this;
 		server = getServer();
 		queue = new MineopolyQueue();

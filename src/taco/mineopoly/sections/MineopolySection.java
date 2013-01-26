@@ -11,7 +11,7 @@ import taco.mineopoly.sections.squares.*;
  * @author Taco
  *
  */
-public abstract class MineopolySection {
+public abstract class MineopolySection implements Comparable<MineopolySection> {
 
 	private int id;
 	protected String name;
@@ -95,4 +95,8 @@ public abstract class MineopolySection {
 		}
 	}
 	
+	@Override
+	public int compareTo(MineopolySection section){
+		return id - section.getId();
+	}
 }

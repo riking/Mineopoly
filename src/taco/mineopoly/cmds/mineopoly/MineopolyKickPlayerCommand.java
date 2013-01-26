@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
-import taco.mineopoly.Permission;
+import taco.mineopoly.Permissions;
 import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.tacoapi.api.command.TacoCommand;
 import taco.tacoapi.api.messages.InvalidPermissionsMessage;
@@ -47,7 +47,7 @@ public class MineopolyKickPlayerCommand extends TacoCommand {
 
 	@Override
 	public boolean onPlayerCommand(Player player, String[] args) {
-		if(player.hasPermission(Permission.KICK_PLAYER_FROM_GAME + "")){
+		if(player.hasPermission(Permissions.KICK_PLAYER_FROM_GAME + "")){
 			if(Mineopoly.plugin.getGame().isRunning()){
 				if(args.length == 0){
 					player.sendMessage(new TooFewArgumentsMessage("/mineopoly kick <players>") + "");

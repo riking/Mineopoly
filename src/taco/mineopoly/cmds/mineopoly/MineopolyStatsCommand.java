@@ -7,7 +7,7 @@ import taco.tacoapi.api.command.TacoCommand;
 import taco.tacoapi.api.messages.PlayerNotOnlineMessage;
 import taco.tacoapi.api.messages.TooManyArgumentsMessage;
 import taco.mineopoly.Mineopoly;
-import taco.mineopoly.Permission;
+import taco.mineopoly.Permissions;
 import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.mineopoly.messages.NotPlayingGameMessage;
 
@@ -35,13 +35,13 @@ public class MineopolyStatsCommand extends TacoCommand{
 			}
 		}else if(args.length == 1){
 			if(Mineopoly.plugin.getGame().isRunning()){
-				Player p = Mineopoly.plugin.getServer().getPlayer(args[1]);
+				Player p = Mineopoly.plugin.getServer().getPlayer(args[0]);
 				if(p != null){
 					if(Mineopoly.plugin.getGame().hasPlayer(player)){
 						Mineopoly.plugin.getGame().getBoard().getPlayer(p).getInfo(player);
 						return true;
 					}else{
-						if(player.hasPermission(Permission.VIEW_PLAYER_STATS.toString())){
+						if(player.hasPermission(Permissions.VIEW_PLAYER_STATS.toString())){
 							Mineopoly.plugin.getGame().getBoard().getPlayer(p).getInfo(player);
 							return true;
 						}else{
@@ -74,7 +74,7 @@ public class MineopolyStatsCommand extends TacoCommand{
 
 	@Override
 	protected String[] getAliases() {
-		return new String[]{"stats", "s", "info", "information"};
+		return new String[]{"stats", "s"};
 	}
 
 }

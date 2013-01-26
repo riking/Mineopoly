@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.bukkit.entity.Player;
 
+import taco.mineopoly.sections.MineopolySection;
 import taco.mineopoly.sections.Ownable;
 
 public class MineopolyGame {
@@ -89,8 +90,10 @@ public class MineopolyGame {
 	}
 	
 	public void kick(MineopolyPlayer player, String reason){
-		for(Ownable section : player.ownedSections()){
-			section.reset();
+		for(MineopolySection section : player.ownedSections()){
+			if(section instanceof Ownable){
+				((Ownable) section).reset();
+			}
 		}
 		
 		if(player.hasMoney(1))

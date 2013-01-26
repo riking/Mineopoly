@@ -4,13 +4,13 @@ import org.bukkit.entity.Player;
 
 import taco.tacoapi.api.command.TacoCommand;
 import taco.mineopoly.Mineopoly;
-import taco.mineopoly.Permission;
+import taco.mineopoly.Permissions;
 
 public class MineopolyJoinCommand extends TacoCommand {
 
 	@Override
 	public boolean onPlayerCommand(Player player, String[] args) {
-		if(player.hasPermission(Permission.JOIN_GAME.toString())){
+		if(player.hasPermission(Permissions.JOIN_GAME.toString())){
 			if(Mineopoly.plugin.getQueue().playerIsInQueue(player)){
 				player.sendMessage(Mineopoly.getChatUtils().formatMessage("&cYou are already queued to join the next Mineopoly game"));
 				return true;

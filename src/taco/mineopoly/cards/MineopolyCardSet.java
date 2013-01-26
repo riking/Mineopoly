@@ -11,10 +11,13 @@ public abstract class MineopolyCardSet implements Iterable<MineopolyCard> {
 	protected ArrayList<MineopolyCard> cards;
 	
 	public MineopolyCardSet(){
-		cards = new ArrayList<MineopolyCard>();
+		initCards();
+		addJailCard();
 	}
 	
 	protected abstract void initCards();
+
+	protected abstract void addJailCard();
 	
 	protected void addCard(MineopolyCard card){
 		cards.add(card);
@@ -25,11 +28,14 @@ public abstract class MineopolyCardSet implements Iterable<MineopolyCard> {
 		MineopolyCard card = cards.get(cardToTake);
 		card.readDescription(player);
 		card.action(player);
+		cards.remove(card);
+		if(cards.size() <= 0) initCards();
 	}
 	
 	@Override
 	public Iterator<MineopolyCard> iterator() {
 		return cards.iterator();
 	}
+	
 
 }

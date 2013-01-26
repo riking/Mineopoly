@@ -29,7 +29,11 @@ public class MineopolyEndTurnCommand extends TacoCommand {
 				MineopolyPlayer p = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 				if(p.hasTurn()){
 					if(p.hasRolled()){
-						p.setTurn(false, false);
+						if(p.getMoney() < 0){
+							p.sendMessage("&cYou are in debt (negative money) you must gain money before ending your turn. Or you can quit with &3/m quit");
+						}else{
+							p.setTurn(false, false);
+						}
 					}else{
 						p.sendMessage(new MustRollFirstMessage("ending you turn"));
 					}

@@ -1,6 +1,7 @@
 package taco.mineopoly;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	private boolean hasRolled = false;
 	private boolean hasTurn = false;
 	private boolean needsGoMoney = false;
+	private boolean payRent = true;
 	private int money = 1500;
 	private int roll1;
 	private int roll2;
@@ -30,7 +32,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	private boolean chanceJailCard;
 	private boolean ccJailCard;
 	private MineopolySection sectionOn;
-	private ArrayList<Ownable> ownedSections = new ArrayList<Ownable>();
+	private ArrayList<MineopolySection> ownedSections = new ArrayList<MineopolySection>();
 	private ArrayList<MineopolyColor> monopolies = new ArrayList<MineopolyColor>();
 
 	public MineopolyPlayer(Player player) {
@@ -227,6 +229,26 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		}
 	}
 	
+	public int getHotels(){
+		int hotels = 0;
+		for(MineopolySection s : ownedSections()){
+			if(s instanceof Property){
+				if(((Property) s).hasHotel()) hotels ++;
+			}
+		}
+		return hotels;
+	}
+	
+	public int getHouses(){
+		int houses = 0;
+		for(MineopolySection s : ownedSections()){
+			if(s instanceof Property){
+				houses += ((Property) s).getHouses();
+			}
+		}
+		return houses;
+	}
+	
 	private void moveForward(int forward){
 		MineopolySection next = Mineopoly.plugin.getGame().getBoard().getSection(forward);
 		Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3rolled a &b" + roll1 + "&3 and a &b" + roll2, this);
@@ -234,6 +256,26 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		sendMessage("&3You rolled a &b" + roll1 + "&3 and a &b" + roll2);
 		sendMessage("&3You landed on " + next.getColorfulName());
 		setCurrentSection(next);
+	}
+	
+	public void moveToNearestRailroad(){
+		int id = getCurrentSection().getId();
+		if(id > 35 || id < 5)
+			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(5));
+		else if(id > 5 && id < 15)
+			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(15));
+		else if(id > 15 && id < 25)
+			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(25));
+		else if(id > 25 && id < 35)
+			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(35));
+	}
+	
+	public void moveToNearestUtility(){
+		int id = getCurrentSection().getId();
+		if(id < 12 || id > 28)
+			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(12));
+		else
+			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(24));
 	}
 	
 	public void setJailRolls(int rolls){
@@ -254,6 +296,11 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	
 	public void setCurrentSection(MineopolySection section){
 		setCurrentSection(section, true);
+	}
+	
+	public void moveWithoutRent(MineopolySection section){
+		payRent = false;
+		setCurrentSection(section);
 	}
 	
 	public void setCurrentSection(MineopolySection section, boolean goMoney){
@@ -301,7 +348,9 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 			ss.provokeAction(this);
 		}else if(section instanceof Ownable){
 			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
-			this.payRent();
+			if(this.payRent)
+				this.payRent();
+			this.payRent = true;
 		}
 	}
 	
@@ -315,9 +364,9 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	
 	public int getOwnedPropertiesWithColor(MineopolyColor color){
 		int amount = 0;
-		for(Ownable o : ownedSections()){
-			if(o instanceof Property){
-				Property p = (Property) o;
+		for(MineopolySection s : ownedSections()){
+			if(s instanceof Property){
+				Property p = (Property) s;
 				if(p.getColor() == color)
 					amount++;
 			}
@@ -351,6 +400,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		}
 		return utils;
 	}
+	
 	
 	public void setJailed(boolean jailed){
 		this.jailRolls = 0;
@@ -395,8 +445,8 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		return ownedSections.contains(section);
 	}
 	
-	public void addSection(Ownable section){
-		this.ownedSections.add(section);
+	public void addSection(MineopolySection section){
+		ownedSections.add(section);
 		if(section instanceof Property){
 			Property p = (Property) section;
 			if(p.getColor() == MineopolyColor.BLUE || p.getColor() == MineopolyColor.PURPLE){
@@ -409,7 +459,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		}
 	}
 	
-	public ArrayList<Ownable> ownedSections(){
+	public ArrayList<MineopolySection> ownedSections(){
 		return ownedSections;
 	}
 	
@@ -422,6 +472,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	}
 	
 	public ArrayList<MineopolyColor> getMonopolies(){
+		Collections.sort(monopolies);
 		return monopolies;
 	}
 	

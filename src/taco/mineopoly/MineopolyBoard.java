@@ -6,8 +6,6 @@ import java.util.Iterator;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.sk89q.worldedit.Vector;
-
 import taco.mineopoly.cards.chance.ChanceCardSet;
 import taco.mineopoly.cards.communitychest.CommunityChestCardSet;
 import taco.mineopoly.sections.ChanceSection;
@@ -35,8 +33,6 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		if(Mineopoly.config.getBoolean("mineopoly.schematic.needs_paste")){
 			WorldEditObject we = new WorldEditObject(TacoAPI.getWorldEditPlugin());
 			Mineopoly.plugin.broadcast("&ePasting MineopolyBoard. There may be some lag...");
-			Vector v = we.toVector(origin);
-			Mineopoly.plugin.broadcast(v.getBlockX() + ",  + " + v.getBlockY() + ",  + " + v.getBlockZ());
 			we.pasteSchematic(origin.getWorld().getName(), Mineopoly.plugin.getDataFolder() + "/mineopoly.schematic", origin);
 			Mineopoly.plugin.broadcast("&ePaste Complete");
 			Mineopoly.config.setBoolean("mineopoly.schematic.needs_paste", false);
@@ -48,7 +44,6 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 	}
 	
 	private void initSections() {
-		// order of the addition of the space does not matter
 		// property(name, mColor, side, buyPrice, rent[]{site, 1h, 2h, 3h, 4h, hotel})
 		sections.add(new GoSquare());
 		sections.add(new Property(1, "mediterranean_ave", MineopolyColor.PURPLE, 0, 60, new int[]{2, 10, 30, 90, 160, 250}));
@@ -78,7 +73,7 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		sections.add(new Railroad("b_o", 2));
 		sections.add(new Property(26, "atlantic_ave", MineopolyColor.YELLOW, 2, 260, new int[]{22, 110, 330, 800, 975, 1150}));
 		sections.add(new Property(27, "ventor_ave", MineopolyColor.YELLOW, 2, 260, new int[]{22, 110, 330, 800, 975, 1150}));
-		sections.add(new Utility(28, "water", 'e', 2));
+		sections.add(new Utility(28, "water", '1', 2));
 		sections.add(new Property(29, "marvin_gardens", MineopolyColor.YELLOW, 2, 280, new int[]{22, 120, 360, 850, 1025, 1200}));
 		sections.add(new GoToJailSquare());
 		sections.add(new Property(31, "pacific_ave", MineopolyColor.GREEN, 3, 300, new int[]{26, 130, 390, 900, 110, 1275}));
@@ -92,7 +87,7 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		sections.add(new Property(39, "boardwalk", MineopolyColor.BLUE, 3, 400, new int[]{50, 200, 600, 1400, 1700, 2000}));
 	}
 	
-	private void initCardSets(){
+	public void initCardSets(){
 		chanceCards = new ChanceCardSet();
 		communityChestCards = new CommunityChestCardSet();
 	}
@@ -122,45 +117,27 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		return sections.get(id);
 	}
 	
+	public ArrayList<MineopolySection> getAllSections(){
+		return sections;
+	}
+	
 	public ArrayList<Ownable> getOwnableSections(){
 		ArrayList<Ownable> properties = new ArrayList<Ownable>();
-		properties.add((Ownable) this.sections.get(1));
-		properties.add((Ownable) this.sections.get(3));
-		properties.add((Ownable) this.sections.get(5));
-		properties.add((Ownable) this.sections.get(6));
-		properties.add((Ownable) this.sections.get(8));
-		properties.add((Ownable) this.sections.get(9));
-		properties.add((Ownable) this.sections.get(11));
-		properties.add((Ownable) this.sections.get(12));
-		properties.add((Ownable) this.sections.get(13));
-		properties.add((Ownable) this.sections.get(14));
-		properties.add((Ownable) this.sections.get(15));
-		properties.add((Ownable) this.sections.get(16));
-		properties.add((Ownable) this.sections.get(18));
-		properties.add((Ownable) this.sections.get(19));
-		properties.add((Ownable) this.sections.get(21));
-		properties.add((Ownable) this.sections.get(23));
-		properties.add((Ownable) this.sections.get(24));
-		properties.add((Ownable) this.sections.get(25));
-		properties.add((Ownable) this.sections.get(26));
-		properties.add((Ownable) this.sections.get(27));
-		properties.add((Ownable) this.sections.get(28));
-		properties.add((Ownable) this.sections.get(29));
-		properties.add((Ownable) this.sections.get(31));
-		properties.add((Ownable) this.sections.get(32));
-		properties.add((Ownable) this.sections.get(34));
-		properties.add((Ownable) this.sections.get(35));
-		properties.add((Ownable) this.sections.get(37));
-		properties.add((Ownable) this.sections.get(39));
+		for(MineopolySection section : sections){
+			if(section instanceof Ownable){
+				properties.add((Ownable) section);
+			}
+		}
 		return properties;
 	}
 	
 	public ArrayList<Railroad> getRailroads(){
 		ArrayList<Railroad> railroads = new ArrayList<Railroad>();
-		railroads.add((Railroad) this.sections.get(5));
-		railroads.add((Railroad) this.sections.get(15));
-		railroads.add((Railroad) this.sections.get(25));
-		railroads.add((Railroad) this.sections.get(35));
+		for(MineopolySection section : sections){
+			if(section instanceof Railroad){
+				railroads.add((Railroad) section);
+			}
+		}
 		return railroads;
 	}
 	
