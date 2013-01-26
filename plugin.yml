@@ -1,6 +1,6 @@
 name: Mineopoly
 main: taco.mineopoly.Mineopoly
-version: 1.3.17
+version: 1.3.20
 description: Monopoly port for Bukkit servers
 author: KILL3RTACO
 depend: [TacoAPI, WorldEdit]
