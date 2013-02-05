@@ -78,7 +78,7 @@ public class Property extends MineopolySection implements Ownable, CardinalSecti
 	public void getInfo(Player player){
 		TacoChatUtils cu = Mineopoly.getChatUtils();
 		player.sendMessage(cu.formatMessage("&6---[" + getColorfulName() +"&6]---"));
-		player.sendMessage(cu.formatMessage(mColor + "Owner&7:&b " + (isOwned() ? owner.getName() : "unowned")));
+		player.sendMessage(cu.formatMessage(mColor + "Owner&7:&b " + (isOwned() ? owner.getName() : "none")));
 		player.sendMessage(cu.formatMessage(mColor + (isOwned() ? "Rent&7: &2" + getRent() : "Price&7: &2" + getPrice())));
 		if(getHouses() > 0 && !hasHotel()) player.sendMessage(cu.formatMessage(mColor + "Houses&7:&b " + getHouses()));
 		if(hasHotel) player.sendMessage(cu.formatMessage(mColor + "Hotel&7:&b " + hasHotel()));
