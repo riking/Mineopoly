@@ -20,7 +20,7 @@ public class Railroad extends MineopolySection implements Ownable, CardinalSecti
 
 	
 	public Railroad(String name, int side) {
-		super((side * 10) + 5, Mineopoly.config.getRailroadName(name), '0');
+		super((side * 10) + 5, Mineopoly.config.getRailroadName(name), '8');
 		this.side = side;
 	}
 
