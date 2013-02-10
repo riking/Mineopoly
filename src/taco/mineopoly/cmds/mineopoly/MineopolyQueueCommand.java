@@ -6,11 +6,12 @@ import taco.tacoapi.TacoAPI;
 import taco.tacoapi.api.TacoCommand;
 import taco.tacoapi.api.messages.TooManyArgumentsMessage;
 import taco.mineopoly.Mineopoly;
+import taco.mineopoly.Permissions;
 
 public class MineopolyQueueCommand extends TacoCommand {
 
 	public MineopolyQueueCommand() {
-		super("queue", new String[]{"q"}, "", "View players in the game queue", "");
+		super("queue", new String[]{"q"}, "", "View players in the game queue", Permissions.VIEW_PLAYER_QUEUE);
 	}
 
 	@Override
