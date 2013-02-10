@@ -9,6 +9,5 @@ public class Permissions {
 	public static final String KICK_PLAYER_FROM_GAME = "Mineopoly.admin.kick";
 	public static final String VIEW_PLAYER_QUEUE = "Mineopoly.admin.queue";
 	public static final String VIEW_GAME_STATS = "Mineopoly.general.stats";
-	public static final String VIEW_PROPERTY_STATS = "Mineopoly.general.property-stats";
 	
 }

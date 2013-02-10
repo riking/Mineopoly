@@ -25,7 +25,7 @@ public class PropertyInfoCommand extends TacoCommand {
 	@Override
 	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
-			if(player.hasPermission(Permissions.VIEW_PROPERTY_STATS) || Mineopoly.plugin.getGame().hasPlayer(player)){
+			if(player.hasPermission(Permissions.VIEW_GAME_STATS) || Mineopoly.plugin.getGame().hasPlayer(player)){
 				if(args.length == 0){
 					if(Mineopoly.plugin.getGame().hasPlayer(player)){
 						MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
@@ -49,7 +49,7 @@ public class PropertyInfoCommand extends TacoCommand {
 					}
 					section.getInfo(player);
 				}
-			}else if(!player.hasPermission(Permissions.VIEW_PROPERTY_STATS)){
+			}else if(!player.hasPermission(Permissions.VIEW_GAME_STATS)){
 				Mineopoly.chat.sendInvalidPermissionsMessage(player);
 			}else{
 				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());

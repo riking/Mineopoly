@@ -7,10 +7,10 @@ depend: [TacoAPI, WorldEdit]
 commands:
   mineopoly:
     description: Mineopoly player commands
-    aliases: [mineopoly, m]
+    aliases: [mineopoly, mgame, m]
   property:
     description: Mineopoly property commands
-    aliases: [prop, p]
+    aliases: [mprop, prop, p]
   jail:
     description: Mineopoly jail commands
     aliases: [j, mineopolyjail, mjail]
