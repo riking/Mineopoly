@@ -4,32 +4,26 @@ import org.bukkit.entity.Player;
 
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyColor;
-import taco.mineopoly.MineopolyPlayer;
-import taco.tacoapi.api.TacoChatUtils;
 
 /**
  * Represents a property space on the board. Implements {@link taco.mineopoly.sections.Ownable Ownable}
  * @author Taco
  *
  */
-public class Property extends MineopolySection implements Ownable, CardinalSection{
+public class Property extends OwnableSection implements  CardinalSection{
 
-	private boolean mortgaged = false;
-	protected int price, side;
+	protected int side;
 	private int housePrice = (getSide() + 1) * 50;
-	private int hotelPrice = housePrice;
+	private int hotelPrice = housePrice * 5;
 	private int houses;
 	private int r, h, h2, h3, h4, hotel;
 	protected boolean hasHotel = false;
-	private MineopolyPlayer owner;
 	protected MineopolyColor mColor;
-	private boolean owned = false;
 
 	public Property(int id, String name, MineopolyColor color, int side, int price, int[] rent) {
-		super(id, Mineopoly.config.getPropertyName(name), color.getChar());
+		super(id, Mineopoly.config.getPropertyName(name), color.getChar(), price);
 		this.mColor = color;
 		this.side = side;
-		this.price = price;
 		setRent(rent[0], rent[1], rent[2], rent[3], rent[4], rent[5]);
 	}
 	
@@ -68,6 +62,7 @@ public class Property extends MineopolySection implements Ownable, CardinalSecti
 	}
 	
 	protected void setRent(int r, int h, int h2, int h3, int h4, int hotel){
+		this.r = r;
 		this.h = h;
 		this.h2 = h2;
 		this.h3 = h3;
@@ -76,12 +71,11 @@ public class Property extends MineopolySection implements Ownable, CardinalSecti
 	}
 	
 	public void getInfo(Player player){
-		TacoChatUtils cu = Mineopoly.getChatUtils();
-		player.sendMessage(cu.formatMessage("&6---[" + getColorfulName() +"&6]---"));
-		player.sendMessage(cu.formatMessage(mColor + "Owner&7:&b " + (isOwned() ? owner.getName() : "none")));
-		player.sendMessage(cu.formatMessage(mColor + (isOwned() ? "Rent&7: &2" + getRent() : "Price&7: &2" + getPrice())));
-		if(getHouses() > 0 && !hasHotel()) player.sendMessage(cu.formatMessage(mColor + "Houses&7:&b " + getHouses()));
-		if(hasHotel) player.sendMessage(cu.formatMessage(mColor + "Hotel&7:&b " + hasHotel()));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() +"&6]---");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + "Owner&7:&b " + (isOwned() ? owner.getName() : "none"));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + (isOwned() ? "Rent&7: &2" + getRent() : "Price&7: &2" + getPrice()));
+		if(getHouses() > 0 && !hasHotel()) Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + "Houses&7:&b " + getHouses());
+		if(hasHotel) Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + "Hotel&7:&b " + hasHotel());
 	}
 	
 	public boolean hasHotel(){
@@ -94,14 +88,22 @@ public class Property extends MineopolySection implements Ownable, CardinalSecti
 	
 	public void setMortgaged(boolean mortgaged){
 		this.mortgaged = mortgaged;
-	}
-	
-	public boolean isMortgaged(){
-		return this.mortgaged;
-	}
-	
-	public int getPrice(){
-		return this.price;
+		if(mortgaged){
+			int refund = 0;
+			for(Property p : owner.getPropertiesInMineopoly(mColor)){
+				if(!p.getName().equalsIgnoreCase(getName())){
+					if(p.getHouses() == 0 && !p.hasHotel){
+						break;
+					}else{
+						refund += (p.getHousePrice() * p.getHouses()) / 2;
+						refund += ((p.hasHotel() ? 1 : 0) * p.getHotelPrice()) / 2;
+						p.removeAllHouses();
+						p.removeHotel();
+					}
+				}
+			}
+			owner.addMoney(refund);
+		}
 	}
 	
 	public int getHousePrice(){
@@ -112,26 +114,27 @@ public class Property extends MineopolySection implements Ownable, CardinalSecti
 		return this.hotelPrice;
 	}
 	
-	public boolean isOwned(){
-		return this.owned;
-	}
-	
-	public MineopolyPlayer getOwner(){
-		return this.owner;
-	}
-	
-	public void setOwner(MineopolyPlayer player){
-		this.owner = player;
-		this.owned = true;
-		player.addSection(this);
-	}
-	
 	public void addHotel(){
+		owner.takeMoney(hotelPrice);
 		this.hasHotel = true;
+		this.houses = 0;
 	}
 	
 	public void addHouse(){
+		owner.takeMoney(housePrice);
 		this.houses += 1;
+	}
+	
+	public void removeHouse(){
+		houses--;
+	}
+	
+	public void removeAllHouses(){
+		houses = 0;
+	}
+	
+	public void removeHotel(){
+		hasHotel = false;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
 import taco.mineopoly.sections.SpecialSquare;
-import taco.tacoapi.api.TacoChatUtils;
 
 public class GoSquare extends SpecialSquare {
 	
@@ -22,9 +21,8 @@ public class GoSquare extends SpecialSquare {
 
 	@Override
 	public void getInfo(Player player) {
-		TacoChatUtils cu = Mineopoly.getChatUtils();
-		player.sendMessage(cu.formatMessage("&6---[" + getColorfulName() + "&6]---"));
-		player.sendMessage(cu.formatMessage("&bThe inital starting point. Pass this square and you receive &2200"));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&6]---");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&bThe inital starting point. Pass this square and you receive &2200");
 	}
 
 }

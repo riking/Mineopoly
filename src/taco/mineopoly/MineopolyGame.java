@@ -5,7 +5,7 @@ import java.util.Random;
 import org.bukkit.entity.Player;
 
 import taco.mineopoly.sections.MineopolySection;
-import taco.mineopoly.sections.Ownable;
+import taco.mineopoly.sections.OwnableSection;
 
 public class MineopolyGame {
 
@@ -27,7 +27,8 @@ public class MineopolyGame {
 	}
 	
 	private void addPlayers(){
-		for(int i=0; i<Mineopoly.plugin.getQueue().getSize(); i++){
+		int queueSize = Mineopoly.plugin.getQueue().getSize();
+		for(int i=1; i<=queueSize; i++){
 			if(i < Mineopoly.config.getMaxPlayers() && Mineopoly.plugin.getQueue().getSize() > 0){
 				Random random = new Random();
 				int index = random.nextInt(Mineopoly.plugin.getQueue().getSize());
@@ -43,13 +44,13 @@ public class MineopolyGame {
 	}
 	
 	public void nextPlayer(){
-		if(index >= board.getPlayers().size() - 1) //will never be greater than size unless there is only one player, used for testing
+		if(index > board.getPlayers().size() - 1)
 			index = 0;
 		board.getPlayers().get(index).setTurn(true, false);
-		index++;
 		MineopolyPlayer currPlayer = getPlayerWithCurrentTurn();
 		channel.sendMessage("&3It is &3" + currPlayer.getName() + "&3's turn", currPlayer);
 		currPlayer.sendMessage("&3It is your turn");
+		index++;
 	}
 	
 	public MineopolyPlayer getPlayerWithCurrentTurn(){
@@ -91,18 +92,18 @@ public class MineopolyGame {
 	
 	public void kick(MineopolyPlayer player, String reason){
 		for(MineopolySection section : player.ownedSections()){
-			if(section instanceof Ownable){
-				((Ownable) section).reset();
+			if(section instanceof OwnableSection){
+				((OwnableSection) section).reset();
 			}
 		}
 		
 		if(player.hasMoney(1))
 			getBoard().getPot().addMoney(player.getMoney());
-		Mineopoly.plugin.broadcast("&3" + player.getName() + " &bhas been removed from the game (&3" + reason + "&b)");
+		Mineopoly.chat.sendGlobalMessage("&3" + player.getName() + " &bhas been removed from the game (&3" + reason + "&b)");
 		board.removePlayer(player);
 		if(board.getPlayers().size() == 1){
 			end();
-			Mineopoly.plugin.broadcast("&3" + board.getPlayers().get(0).getName() + " &bis the winner!");
+			Mineopoly.chat.sendGlobalMessage("&3" + board.getPlayers().get(0).getName() + " &bis the winner!");
 		}
 	}
 }

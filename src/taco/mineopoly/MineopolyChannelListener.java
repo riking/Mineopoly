@@ -2,24 +2,32 @@ package taco.mineopoly;
 
 import org.bukkit.entity.Player;
 
-import taco.tacoapi.TacoPlayer;
 import taco.tacoapi.api.TacoMessage;
 
-public class MineopolyChannelListener extends TacoPlayer{
-	private String rawHeader = "&6[&7Mineopoly&6]&f";
+public class MineopolyChannelListener{
+	
+	private Player player;
 	
 	public MineopolyChannelListener(Player player) {
-		super(player);
+		this.player = player;
 	}
 
 	public void sendMessage(String message){
-		Player player = Mineopoly.plugin.getServer().getPlayer(getName());
-		player.sendMessage(Mineopoly.getChatUtils().formatMessage(rawHeader + " " +  message));
+		Player player = Mineopoly.server.getPlayer(getName());
+		Mineopoly.chat.sendPlayerMessage(player, message);
 	}
 	
 	public void sendMessage(TacoMessage message){
-		Player player = Mineopoly.plugin.getServer().getPlayer(getName());
-		player.sendMessage(message.getMessage());
+		Player player = Mineopoly.server.getPlayer(getName());
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, message.getMessage());
+	}
+	
+	public String getName(){
+		return player.getName();
+	}
+	
+	public Player getPlayer(){
+		return player;
 	}
 	
 }

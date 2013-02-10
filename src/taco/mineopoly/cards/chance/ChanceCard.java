@@ -8,7 +8,4 @@ public class ChanceCard extends MineopolyCard {
 	public ChanceCard(String description, String action) {
 		super("&6Chance", description, action);
 	}
-	
-	
-	
 }

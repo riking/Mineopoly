@@ -11,13 +11,13 @@ import taco.mineopoly.messages.NotPlayingGameMessage;
 import taco.mineopoly.messages.SectionNotFoundMessage;
 import taco.mineopoly.sections.MineopolySection;
 import taco.mineopoly.sections.Property;
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.TacoAPI;
+import taco.tacoapi.api.TacoCommand;
 
 public class PropertyAddHotelCommand extends TacoCommand {
 
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"add-hotel"};
+	public PropertyAddHotelCommand() {
+		super("add-hotel", new String[]{}, "[property]", "Add a Hotel to a property", "");
 	}
 
 	@Override
@@ -26,27 +26,31 @@ public class PropertyAddHotelCommand extends TacoCommand {
 	}
 
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
+	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 				if(mp.hasTurn()){
 					if(args.length == 0){
 						if(mp.getCurrentSection() instanceof Property){
-							if(mp.canAddHotel((Property) mp.getCurrentSection())){
+							if(((Property) mp.getCurrentSection()).getHouses() == 4){ //must buy 4 houses first
 								Property prop = (Property) mp.getCurrentSection();
-								prop.addHouse();
-								Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
-								mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
+								if(!prop.hasHotel()){
+									prop.addHotel();
+									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a hotel to " + prop.getColorfulName(), mp);
+									mp.sendMessage("&3You added a &ahotel &3to " + prop.getColorfulName());
+								}else{
+									mp.sendMessage("&cThat already has a hotel");
+								}
 							}else{
-								mp.sendMessage(new CannotPerformActionMessage("add a house to that right now"));
+								mp.sendMessage(new CannotPerformActionMessage("add a hotel until you buy four houses"));
 							}
 						}else{
-							mp.sendMessage(new CannotPerformActionMessage("add a house to that"));
+							mp.sendMessage(new CannotPerformActionMessage("add a hotel to that"));
 						}
 					}else{ 
 						MineopolySection section;
-						if(Mineopoly.getChatUtils().isNum(args[0]))
+						if(TacoAPI.getChatUtils().isNum(args[0]))
 							section = Mineopoly.plugin.getGame().getBoard().getSection(Integer.parseInt(args[0]));
 						else
 							section = Mineopoly.plugin.getGame().getBoard().getSection(args[0]);
@@ -54,13 +58,17 @@ public class PropertyAddHotelCommand extends TacoCommand {
 							mp.sendMessage(new SectionNotFoundMessage());
 						}else{
 							if(section instanceof Property){
-								if(mp.canAddHouse((Property) section)){
+								if(((Property) section).getHouses() == 4){ //must buy 4 houses first
 									Property prop = (Property) section;
-									prop.addHouse();
-									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
-									mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
+									if(!prop.hasHotel()){
+										prop.addHotel();
+										Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a hotel to " + prop.getColorfulName(), mp);
+										mp.sendMessage("&3You added a &ahotel &3to " + prop.getColorfulName());
+									}else{
+										mp.sendMessage("&cThat already has a hotel");
+									}
 								}else{
-									mp.sendMessage(new CannotPerformActionMessage("add a house to that right now"));
+									mp.sendMessage(new CannotPerformActionMessage("add a hotel until you buy four houses"));
 								}
 							}else{
 								mp.sendMessage(new CannotPerformActionMessage("add a house to that"));
@@ -68,15 +76,14 @@ public class PropertyAddHotelCommand extends TacoCommand {
 						}
 					}
 				}else{
-					player.sendMessage(new InvalidTurnMessage() + "");
+					Mineopoly.chat.sendPlayerMessage(player, new InvalidTurnMessage());
 				}
 			}else{
-				player.sendMessage(new NotPlayingGameMessage() + "");
+				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			player.sendMessage(new GameNotInProgressMessage().getMessage());
+			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
-		return true;
 	}
 
 }

@@ -2,7 +2,7 @@ package taco.mineopoly.cmds.mineopoly;
 
 import org.bukkit.entity.Player;
 
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.api.TacoCommand;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyChannelListener;
 import taco.mineopoly.Permissions;
@@ -10,37 +10,29 @@ import taco.mineopoly.messages.GameNotInProgressMessage;
 
 public class MineopolyJoinChannelCommand extends TacoCommand {
 
+	public MineopolyJoinChannelCommand() {
+		super("join-channel", new String[]{"jc"}, "", "Join the", Permissions.CHANNEL_CHAT);
+	}
+
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
+	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
-				player.sendMessage(Mineopoly.getChatUtils().formatMessage("&cYou are already in the channel"));
-				return true;
+				Mineopoly.chat.sendPlayerMessage(player, "&cYou are already in the channel");
 			}else if(Mineopoly.plugin.getGame().getChannel().isListeningToChannel(player.getName())){
-				player.sendMessage(Mineopoly.getChatUtils().formatMessage("&cYou are already in the channel"));
-				return true;
-			}else{
+				Mineopoly.chat.sendPlayerMessage(player, "&cYou are already in the channel");
 				if(player.hasPermission(Permissions.CHANNEL_CHAT.toString())){
 					Mineopoly.plugin.getGame().getChannel().addPlayer(new MineopolyChannelListener(player));
-					return true;
-				}else{
-					return false;
 				}
 			}
 		}else{
-			player.sendMessage(new GameNotInProgressMessage() + "");
-			return true;
+			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
 	}
 
 	@Override
 	public boolean onConsoleCommand(String[] args) {
 		return false;
-	}
-
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"join-channel", "jc"};
 	}
 
 }

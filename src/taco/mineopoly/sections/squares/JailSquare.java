@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
 import taco.mineopoly.sections.SpecialSquare;
-import taco.tacoapi.api.TacoChatUtils;
 
 public class JailSquare extends SpecialSquare {
 
@@ -26,13 +25,12 @@ public class JailSquare extends SpecialSquare {
 
 	@Override
 	public void getInfo(Player player) {
-		TacoChatUtils cu = Mineopoly.getChatUtils();
-		player.sendMessage(cu.formatMessage("&6---[" + getColorfulName() + "&6]---"));
-		player.sendMessage(cu.formatMessage("&3Just Visiting&7:&b You are only visiting, you can watch everyone in jail."));
-		player.sendMessage(cu.formatMessage("&3Jail&7:&b You are in jail and must wait until either one of three things happens:"));
-		player.sendMessage(cu.formatMessage("   &1*&3You roll doubles"));
-		player.sendMessage(cu.formatMessage("   &1*&3You pay bail (&250&b)"));
-		player.sendMessage(cu.formatMessage("   &1*&3You use a &1Get Out of Jail Free &3card"));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&6]---");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, ("&3Just Visiting&7:&b You are only visiting, you can watch everyone in jail."));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&3Jail&7:&b You are in jail and must wait until either one of three things happens:");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "   &1*&3You roll doubles");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "   &1*&3You pay bail (&250&b)");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "   &1*&3You use a &1Get Out of Jail Free &3card");
 	}
 	public Location getJailCellLocation(){
 		Location origin = Mineopoly.config.getBoardOrigin();

@@ -1,12 +1,10 @@
 package taco.mineopoly;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.bukkit.Server;
 
 import taco.tacoapi.api.TacoPlugin;
-import taco.tacoapi.api.metrics.Metrics;
 import taco.mineopoly.cmds.JailCommandHandler;
 import taco.mineopoly.cmds.MineopolyCommandHandler;
 import taco.mineopoly.cmds.PropertyCommandHandler;
@@ -20,11 +18,11 @@ public class Mineopoly extends TacoPlugin{
 	public static Server server;
 	private MineopolyQueue queue;
 	
-	public void onDisable(){
-		print("Disabled");
+	public void onStop(){
+		chat.out("Disabled");
 	}
 	
-	public void onEnable(){
+	public void onStart(){
 		File file = new File(getDataFolder() + "/config.yml");
 		config = new MineopolyConfig(file);
 		plugin = this;
@@ -34,17 +32,10 @@ public class Mineopoly extends TacoPlugin{
 		registerCommand(new MineopolyCommandHandler());
 		registerCommand(new PropertyCommandHandler());
 		registerCommand(new JailCommandHandler());
-		getServer().getPluginManager().registerEvents(new MineopolyListener(), this);
-		if(config.useMetrics()){
-			try {
-				print("Starting Metrics (c) Hidendra...");
-				Metrics metrics = new Metrics(this);
-				metrics.start();
-			} catch (IOException e) {
-				print("Failed to start Metrics");
-			}
-		}
-		print("Enabled");
+		registerEvents(new MineopolyListener());
+		if(config.useMetrics())
+			startMetrics();
+		chat.out("Enabled");
 	}
 	
 	public MineopolyQueue getQueue(){

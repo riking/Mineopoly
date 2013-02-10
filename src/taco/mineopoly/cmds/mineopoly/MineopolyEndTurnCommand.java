@@ -8,13 +8,12 @@ import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.mineopoly.messages.InvalidTurnMessage;
 import taco.mineopoly.messages.MustRollFirstMessage;
 import taco.mineopoly.messages.NotPlayingGameMessage;
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.api.TacoCommand;
 
 public class MineopolyEndTurnCommand extends TacoCommand {
 
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"end-turn", "et"};
+	public MineopolyEndTurnCommand() {
+		super("end-turn", new String[]{"et"}, "", "End your turn", "");
 	}
 
 	@Override
@@ -23,7 +22,7 @@ public class MineopolyEndTurnCommand extends TacoCommand {
 	}
 
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
+	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer p = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
@@ -41,12 +40,11 @@ public class MineopolyEndTurnCommand extends TacoCommand {
 					p.sendMessage(new InvalidTurnMessage());
 				}
 			}else{
-				player.sendMessage(new NotPlayingGameMessage() + "");
+				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			player.sendMessage(new GameNotInProgressMessage() + "");
+			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
-		return true;
 	}
 
 }

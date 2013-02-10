@@ -5,32 +5,36 @@ import org.bukkit.entity.Player;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
 import taco.mineopoly.Permissions;
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.api.TacoCommand;
 import taco.tacoapi.api.messages.PlayerNotOnlineMessage;
 import taco.tacoapi.api.messages.TooFewArgumentsMessage;
 
 public class MineopolyForceAddPlayerCommand extends TacoCommand {
 
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"force-add", "fa"};
+	public MineopolyForceAddPlayerCommand() {
+		super("force-add", new String[]{"fa"}, "[player]", "Forcefully add a player", Permissions.FORCE_ADD_PLAYER);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean onConsoleCommand(String[] args) {
 		if(args.length == 1){
-			Mineopoly.plugin.print(new TooFewArgumentsMessage("mineopoly force-add <player>") + "");
+			Mineopoly.chat.out(new TooFewArgumentsMessage("mineopoly force-add <player>").getMessage());
 		}else{
 			if(Mineopoly.plugin.getGame().isRunning()){
 				Player p = Mineopoly.plugin.getServer().getPlayer(args[0]);
 				if(p == null){
-					Mineopoly.plugin.print(new PlayerNotOnlineMessage(args[0]) + "");
+					Mineopoly.chat.out(new PlayerNotOnlineMessage(args[0]).getMessage());
 				}else{
-					MineopolyPlayer player = new MineopolyPlayer(p);
-					Mineopoly.plugin.getGame().getBoard().addPlayer(player);
-					Mineopoly.plugin.getGame().getChannel().addPlayer(player);
-					player.setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(0), false);
-					Mineopoly.plugin.print(player.getName() + " was added to the game");
+					if(!Mineopoly.plugin.getGame().hasPlayer(p)){
+						MineopolyPlayer mp = new MineopolyPlayer(p);
+						Mineopoly.plugin.getGame().getBoard().addPlayer(mp);
+						Mineopoly.plugin.getGame().getChannel().addPlayer(mp);
+						mp.setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(0), false);
+						Mineopoly.chat.out(mp.getName() + " was added to the game");
+					}else{
+						Mineopoly.chat.out("&cThat player is already playing");
+					}
 				}
 			}
 		}
@@ -38,27 +42,26 @@ public class MineopolyForceAddPlayerCommand extends TacoCommand {
 	}
 
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
-		if(player.hasPermission(Permissions.FORCE_ADD_PLAYER)){
-			if(args.length == 1){
-				Mineopoly.plugin.print(new TooFewArgumentsMessage("mineopoly force-add <player>") + "");
-			}else{
-				if(Mineopoly.plugin.getGame().isRunning()){
-					Player p = Mineopoly.plugin.getServer().getPlayer(args[0]);
-					if(p == null){
-						Mineopoly.plugin.print(new PlayerNotOnlineMessage(args[0]) + "");
-					}else{
+	public void onPlayerCommand(Player player, String[] args) {
+		if(args.length == 1){
+			Mineopoly.chat.sendPlayerMessage(player, new TooFewArgumentsMessage("mineopoly force-add <player>"));
+		}else{
+			if(Mineopoly.plugin.getGame().isRunning()){
+				Player p = Mineopoly.plugin.getServer().getPlayer(args[0]);
+				if(p == null){
+					Mineopoly.chat.sendPlayerMessage(player, new PlayerNotOnlineMessage(args[0]));
+				}else{
+					if(!Mineopoly.plugin.getGame().hasPlayer(p)){
 						MineopolyPlayer mp = new MineopolyPlayer(p);
 						Mineopoly.plugin.getGame().getBoard().addPlayer(mp);
 						Mineopoly.plugin.getGame().getChannel().addPlayer(mp);
 						mp.setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(0), false);
-						Mineopoly.plugin.print(player.getName() + " was added to the game");
+						Mineopoly.plugin.getGame().getChannel().sendMessage("&e" + mp.getName() + " was added to the game");
+					}else{
+						Mineopoly.chat.sendPlayerMessage(player, "&cThat player is already playing");
 					}
 				}
 			}
-			return true;
-		}else{
-			return false;
 		}
 	}
 	

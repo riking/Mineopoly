@@ -14,11 +14,7 @@ public class MineopolyQueue implements Iterable<Player>{
 	}
 	
 	public void addPlayer(Player player){
-		if(playerIsInQueue(player)){
-			player.sendMessage(Mineopoly.getChatUtils().formatMessage("&cYou are already in the game queue"));
-		}else{
 			queue.add(player);
-		}
 	}
 	
 	public boolean playerIsInQueue(Player player){

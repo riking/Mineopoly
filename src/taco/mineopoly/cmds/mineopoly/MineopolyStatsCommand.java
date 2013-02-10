@@ -2,8 +2,7 @@ package taco.mineopoly.cmds.mineopoly;
 
 import org.bukkit.entity.Player;
 
-
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.api.TacoCommand;
 import taco.tacoapi.api.messages.PlayerNotOnlineMessage;
 import taco.tacoapi.api.messages.TooManyArgumentsMessage;
 import taco.mineopoly.Mineopoly;
@@ -11,27 +10,23 @@ import taco.mineopoly.Permissions;
 import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.mineopoly.messages.NotPlayingGameMessage;
 
-public class MineopolyStatsCommand extends TacoCommand{
-
-	/*
-	 * This command only requires the sender to be playing mineopoly
-	 * if they're trying to view their own stats
-	 */
+public class MineopolyStatsCommand extends TacoCommand {
 	
+	public MineopolyStatsCommand() {
+		super("stats", new String[]{"info", "player-info", "pi", "s"}, "[player]", "View player stats", "");
+	}
+
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
+	public void onPlayerCommand(Player player, String[] args) {
 		if(args.length == 0){
 			if(Mineopoly.plugin.getGame().isRunning()){
 				if(Mineopoly.plugin.getGame().hasPlayer(player)){
 					Mineopoly.plugin.getGame().getBoard().getPlayer(player).getInfo(player);
-					return true;
 				}else{
-					player.sendMessage(new NotPlayingGameMessage() + "");
-					return true;
+					Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 				}
 			}else{
-				player.sendMessage(new GameNotInProgressMessage() + "");
-				return true;
+				Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 			}
 		}else if(args.length == 1){
 			if(Mineopoly.plugin.getGame().isRunning()){
@@ -39,42 +34,27 @@ public class MineopolyStatsCommand extends TacoCommand{
 				if(p != null){
 					if(Mineopoly.plugin.getGame().hasPlayer(player)){
 						Mineopoly.plugin.getGame().getBoard().getPlayer(p).getInfo(player);
-						return true;
 					}else{
-						if(player.hasPermission(Permissions.VIEW_PLAYER_STATS.toString())){
+						if(player.hasPermission(Permissions.VIEW_GAME_STATS)){
 							Mineopoly.plugin.getGame().getBoard().getPlayer(p).getInfo(player);
-							return true;
 						}else{
-							return false;
+							Mineopoly.chat.sendInvalidPermissionsMessage(player);
 						}
 					}
 				}else{
-					player.sendMessage(new PlayerNotOnlineMessage(args[0]) + "");
-					return true;
+					Mineopoly.chat.sendPlayerMessage(player, new PlayerNotOnlineMessage(args[0]));
 				}
 			}else{
-				player.sendMessage(new GameNotInProgressMessage() + "");
-				return true;
+				Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 			}
 		}else{
-			player.sendMessage(new TooManyArgumentsMessage("/mineopoly stats [player]") + "");
-			return true;
+			Mineopoly.chat.sendPlayerMessage(player, new TooManyArgumentsMessage("/mineopoly stats [player]") + "");
 		}
 	}
 
 	@Override
 	public boolean onConsoleCommand(String[] args) {
-		if(args.length == 0){
-			Mineopoly.plugin.print("You aren't playing Mineopoly");
-		}else{
-			//if player exists, if playing, get stats
-		}
-		return true;
-	}
-
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"stats", "s"};
+		return false;
 	}
 
 }

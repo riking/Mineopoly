@@ -1,13 +1,18 @@
 package taco.mineopoly.cmds;
 
-import taco.tacoapi.api.command.TacoCommandHandler;
+import org.bukkit.entity.Player;
+
+import taco.tacoapi.api.TacoCommandHandler;
 import taco.mineopoly.cmds.property.PropertyAddHotelCommand;
 import taco.mineopoly.cmds.property.PropertyAddHouseCommand;
 import taco.mineopoly.cmds.property.PropertyBuyCommand;
-import taco.mineopoly.cmds.property.PropertyHelpCommand;
 import taco.mineopoly.cmds.property.PropertyInfoCommand;
 
 public class PropertyCommandHandler extends TacoCommandHandler {
+
+	public PropertyCommandHandler() {
+		super("property", "Mineopoly Property commands", "");
+	}
 
 	@Override
 	protected void registerCommands() {
@@ -15,8 +20,15 @@ public class PropertyCommandHandler extends TacoCommandHandler {
 		registerCommand(new PropertyAddHotelCommand());
 		registerCommand(new PropertyBuyCommand());
 		registerCommand(new PropertyInfoCommand());
-//		registerCommand(new PropertyMortgageCommand());
-		registerCommand(new PropertyHelpCommand());
+	}
+
+	@Override
+	protected boolean onConsoleCommand() {
+		return false;
+	}
+
+	@Override
+	protected void onPlayerCommand(Player arg0) {
 	}
 
 }

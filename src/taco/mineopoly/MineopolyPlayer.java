@@ -8,12 +8,13 @@ import org.bukkit.entity.Player;
 
 import taco.mineopoly.sections.ActionProvoker;
 import taco.mineopoly.sections.MineopolySection;
-import taco.mineopoly.sections.Ownable;
+import taco.mineopoly.sections.OwnableSection;
 import taco.mineopoly.sections.Property;
 import taco.mineopoly.sections.Railroad;
 import taco.mineopoly.sections.SpecialSquare;
 import taco.mineopoly.sections.Utility;
 import taco.mineopoly.sections.squares.JailSquare;
+import taco.tacoapi.TacoAPI;
 
 public class MineopolyPlayer extends MineopolyChannelListener{
 
@@ -23,6 +24,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	private boolean hasTurn = false;
 	private boolean needsGoMoney = false;
 	private boolean payRent = true;
+	private boolean landedOnGo = false;
 	private int money = 1500;
 	private int roll1;
 	private int roll2;
@@ -73,8 +75,8 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	}
 	
 	private void payRent(){
-		if(sectionOn instanceof Ownable){
-			Ownable section = (Ownable)sectionOn;
+		if(sectionOn instanceof OwnableSection){
+			OwnableSection section = (OwnableSection)sectionOn;
 			if(section.isOwned()){
 				if(section.getOwner().isJailed()){
 					Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + section.getOwner() + " &3cannot collect rent from &b" + getName() + 
@@ -86,35 +88,39 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 						takeMoney(section.getRent());
 						section.getOwner().addMoney(section.getRent());
 						Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3paid &b" + section.getOwner().getName() +
-								" &2" + section.getRent() + " &3 for landing on " + sectionOn.getColorfulName(), this);
-						sendMessage("&You paid &b" + section.getOwner() + " &2 " + section.getRent() + " &3for landing on " + sectionOn.getColorfulName());
+								" &2" + section.getRent() + " &3for landing on " + sectionOn.getColorfulName(), this);
+						sendMessage("&3You paid &b" + section.getOwner() + " &2 " + section.getRent() + " &3for landing on " + sectionOn.getColorfulName());
 					}
 				}
 			}
 		}
 	}
 	
-	public boolean canBuy(Ownable section){
+	public boolean canBuy(OwnableSection section){
 		return getMoney() >= section.getPrice();
 	}
 	
 	public boolean canAddHouse(Property section){
-		return hasMonopoly(section.getColor()) && section.getHouses() < 4 && !section.hasHotel();
+		return getMoney() >= section.getHousePrice();
 	}
 	
 	public boolean canAddHotel(Property section){
-		return getMoney() >= (5 - section.getHouses()) * 50;
+		return getMoney() >= section.getHotelPrice();
 	}
 	
 	public void getInfo(Player p){
-		p.sendMessage(Mineopoly.getChatUtils().createHeader("&3Monopoly&7: &b" + getName()));
-		p.sendMessage(Mineopoly.getChatUtils().formatMessage("&3Money&7: &2" + getMoney()));
-		p.sendMessage(Mineopoly.getChatUtils().formatMessage("&3Rolls&7: &2" + getTotalRolls() + " &3On space: " + getCurrentSection().getColorfulName()));
-		p.sendMessage(Mineopoly.getChatUtils().formatMessage("&3Properties&7: &b" + ownedPropertiesSize()));
-		p.sendMessage(Mineopoly.getChatUtils().formatMessage("&3Monopolies&7: &b" + monopolySize()));
-		p.sendMessage(Mineopoly.getChatUtils().formatMessage(""));
-		p.sendMessage(Mineopoly.getChatUtils().formatMessage("&8My properties: &7/mineopoly properties " + getName()));
-		p.sendMessage(Mineopoly.getChatUtils().formatMessage("&8My monopolies: &7/mineopoly monopolies " + getName()));
+		int cards = 0;
+		if(hasChanceJailCard()) cards++;
+		if(hasCommunityChestJailCard()) cards++;
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, TacoAPI.getChatUtils().createHeader("&3Mineopoly&7: &b" + getName()));
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Money&7: &2" + getMoney());
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Rolls&7: &2" + getTotalRolls() + " &3On space: " + getCurrentSection().getColorfulName() + " &3(&b" + getCurrentSection().getId() + "&3)");
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Properties&7: &b" + ownedPropertiesSize());
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Monopolies&7: &b" + monopolySize());
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Get Out of Jail Free cards&7: &2" + (cards > 0 ? cards : "none"));
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "");
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&8My properties: &7/mineopoly properties " + getName());
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&8My monopolies: &7/mineopoly monopolies " + getName());
 	}
 	
 	public boolean hasMonopoly(MineopolyColor color){
@@ -158,14 +164,15 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		this.roll2 = random.nextInt(6) + 1;
 		int sum = roll1 + roll2 + getCurrentSection().getId();
 		if(sum > 39){
-			sum -= 39;
+			sum -= 40;
 		}
 		
 		if(roll1 == roll2){
 			doubleRolls++;
 			if(doubleRolls == 3){
-				setJailed(true);
-				Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + "&3was jailed because they rolled doubles 3 times in a row", this);
+				doubleRolls = 0;
+				setJailed(true, true);
+				Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + "&3 was jailed because they rolled doubles 3 times in a row", this);
 				sendMessage("&3You were jailed because you rolled doubles 3 times in a row");
 			}else{
 				moveForward(sum);
@@ -266,6 +273,11 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 			}else{
 				needsGoMoney = true;
 			}
+		}else if(section.getId() > lastId){
+			if(landedOnGo){
+				needsGoMoney = true;
+				landedOnGo = false;
+			}
 		}
 		
 		if(!goMoney) needsGoMoney = false;
@@ -273,7 +285,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		if(needsGoMoney){
 			addMoney(200);
 			Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3passed &6Go &3and was given &2200", this);
-			Mineopoly.plugin.getGame().getChannel().sendMessage("&3You passed &6Go &3and were given &2200");
+			sendMessage("&3You passed &6Go &3and were given &2200");
 			needsGoMoney = false;
 		}
 		
@@ -293,12 +305,14 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
 			ActionProvoker ss = (ActionProvoker) section;
 			ss.provokeAction(this);
-		}else if(section instanceof Ownable){
+		}else if(section instanceof OwnableSection){
 			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
-			if(this.payRent && !((Ownable) section).isMortgaged())
+			if(this.payRent && !((OwnableSection) section).isMortgaged())
 				this.payRent();
 			this.payRent = true;
 		}
+		
+		if(section.getId() == 0) landedOnGo = true;
 	}
 	
 	public void move(int amount){
@@ -322,8 +336,8 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	}
 	
 	public boolean ownsCurrentSection(){
-		if(getCurrentSection() instanceof Ownable){
-			Ownable section = (Ownable) getCurrentSection();
+		if(getCurrentSection() instanceof OwnableSection){
+			OwnableSection section = (OwnableSection) getCurrentSection();
 			return ownsSection(section);
 		}else{
 			return false;
@@ -333,7 +347,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	public int ownedRailRoads(){
 		int rr = 0;
 		for(Railroad r : Mineopoly.plugin.getGame().getBoard().getRailroads()){
-			if(this.ownsSection((Ownable) r))
+			if(this.ownsSection((OwnableSection) r))
 				rr++;
 		}
 		return rr;
@@ -342,18 +356,18 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	public int ownedUtilities(){
 		int utils = 0;
 		for(Utility u : Mineopoly.plugin.getGame().getBoard().getUtilities()){
-			if(this.ownsSection((Ownable) u))
+			if(this.ownsSection((OwnableSection) u))
 					utils++;
 		}
 		return utils;
 	}
 	
 	
-	public void setJailed(boolean jailed){
+	public void setJailed(boolean jailed, boolean ignoreDoubles){
 		this.jailRolls = 0;
 		this.jailed = jailed;
 		setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(10));
-		setTurn(false, true);
+		setTurn(false, ignoreDoubles);
 	}
 	
 	public boolean isJailed(){
@@ -388,7 +402,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		return this.sectionOn;
 	}
 	
-	public boolean ownsSection(Ownable section){
+	public boolean ownsSection(OwnableSection section){
 		return ownedSections.contains(section);
 	}
 	
@@ -412,6 +426,18 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	
 	public int ownedPropertiesSize(){
 		return ownedSections.size();
+	}
+	
+	public ArrayList<Property> getPropertiesInMineopoly(MineopolyColor color){
+		ArrayList<Property> result = new ArrayList<Property>();
+		for(MineopolySection s : ownedSections()){
+			if(s instanceof Property){
+				Property p = (Property) s;
+				if(p.getColor() == color)
+					result.add(p);
+			}
+		}
+		return result;
 	}
 	
 	public int monopolySize(){

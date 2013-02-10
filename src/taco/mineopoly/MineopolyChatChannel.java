@@ -8,14 +8,14 @@ public class MineopolyChatChannel {
 	
 	public void sendMessage(String message){
 		for(MineopolyChannelListener p : listeners){
-			p.sendMessage(Mineopoly.getChatUtils().formatMessage(message));
+			Mineopoly.chat.sendPlayerMessage(p.getPlayer(), message);
 		}
 	}
 	
 	public void sendMessage(String message, MineopolyPlayer exempt){
 		for(MineopolyChannelListener p : listeners){
 			if(!p.getName().equalsIgnoreCase(exempt.getName()))
-				p.sendMessage(Mineopoly.getChatUtils().formatMessage(message));
+				Mineopoly.chat.sendPlayerMessage(p.getPlayer(), message);
 		}
 	}
 	

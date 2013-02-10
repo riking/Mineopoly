@@ -2,6 +2,7 @@ package taco.mineopoly.cards;
 
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
+import taco.tacoapi.TacoAPI;
 
 public abstract class MineopolyCard {
 
@@ -28,15 +29,14 @@ public abstract class MineopolyCard {
 	private String replaceNames(String message, String color){
 		for(String s : message.split(" ")){
 			if(s.charAt(0) == '%'){
-				if(Mineopoly.config.contains("mineopoly.names.properties." + s.substring(1)))
-					message = message.replaceAll("%" + name, Mineopoly.config.getPropertyName(s.substring(1)) + color);
-				if(Mineopoly.config.contains("mineopoly.names.railroads." + s.substring(1)))
-					message = message.replaceAll("%" + name, Mineopoly.config.getRailroadName(s.substring(1)) + color);
-				if(Mineopoly.config.contains("mineopoly.names.companies." + s.substring(1)))
-					message = message.replaceAll("%" + name, Mineopoly.config.getCompanyName(s.substring(1)) + color);
+				String id = s.substring(1).toLowerCase();
+				if(TacoAPI.getChatUtils().isNum(id)){
+					String name = Mineopoly.plugin.getGame().getBoard().getSection(Integer.parseInt(id)).getColorfulName();
+					message = message.replaceAll(s, name);
+				}
 			}
 		}
-		//message = message.replaceAll("%" + name, section.getColorfulName() + color);
+//		message = message.replaceAll("%" + name, section.getColorfulName() + color);
 		return message;
 	}
 	
@@ -44,11 +44,11 @@ public abstract class MineopolyCard {
 		String[] split = action.split(" ");
 		if(split.length == 1){
 			if(split[0].equalsIgnoreCase("jail")){
-				player.setJailed(true);
+				player.setJailed(true, true);
 			}
 		}else if(split.length == 2){
 			int param = 0;
-			if(Mineopoly.getChatUtils().isNum(split[1]))
+			if(TacoAPI.getChatUtils().isNum(split[1]))
 				param = Integer.parseInt(split[1]);
 			if(split[0].equalsIgnoreCase("give")){
 				player.addMoney(param);
@@ -92,7 +92,7 @@ public abstract class MineopolyCard {
 		}else{
 			if(args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("move") || 	args[0].equalsIgnoreCase("payall") ||
 					args[0].equalsIgnoreCase("payplayer") || args[0].equalsIgnoreCase("paypot") || args[0].equalsIgnoreCase("take") || args[0].equalsIgnoreCase("moveto")){
-				if(Mineopoly.getChatUtils().isNum(args[1])){
+				if(TacoAPI.getChatUtils().isNum(args[1])){
 					valid = true;
 				}
 			}else if(args[0].equalsIgnoreCase("movenearest")){
@@ -100,7 +100,7 @@ public abstract class MineopolyCard {
 					valid = true;
 				}
 			}else if(args[0].equalsIgnoreCase("repairs")){
-				if(Mineopoly.getChatUtils().isNum(args[1]) && Mineopoly.getChatUtils().isNum(args[1])){
+				if(TacoAPI.getChatUtils().isNum(args[1]) && TacoAPI.getChatUtils().isNum(args[1])){
 					valid = true;
 				}
 			}

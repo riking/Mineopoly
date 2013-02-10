@@ -5,7 +5,7 @@ import taco.tacoapi.api.TacoMessage;
 public class SectionNotFoundMessage extends TacoMessage {
 
 	public SectionNotFoundMessage() {
-		this.message = "Space on board not found";
+		this.message = "&cSpace on board not found";
 	}
 
 }

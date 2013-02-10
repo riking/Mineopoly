@@ -3,35 +3,20 @@ package taco.mineopoly.sections;
 import org.bukkit.entity.Player;
 
 import taco.mineopoly.Mineopoly;
-import taco.mineopoly.MineopolyPlayer;
-import taco.tacoapi.api.TacoChatUtils;
 
 /**
  * Represents a railroad space on the board.  Implements {@link taco.mineopoly.sections.Ownable Ownable}
  * @author Taco
  *
  */
-public class Railroad extends MineopolySection implements Ownable, CardinalSection{
+public class Railroad extends OwnableSection implements CardinalSection{
 
-	protected int side, price = 200;
-	protected boolean owned = false;
-	protected MineopolyPlayer owner;
-	private boolean mortgaged;
+	protected int side;
 
 	
 	public Railroad(String name, int side) {
-		super((side * 10) + 5, Mineopoly.config.getRailroadName(name), '8');
+		super((side * 10) + 5, Mineopoly.config.getRailroadName(name), '8', 200);
 		this.side = side;
-	}
-
-	@Override
-	public boolean isOwned() {
-		return owned;
-	}
-
-	@Override
-	public MineopolyPlayer getOwner() {
-		return owner;
 	}
 	
 	public String getName(){
@@ -42,22 +27,10 @@ public class Railroad extends MineopolySection implements Ownable, CardinalSecti
 		return super.getColorfulName() + " Railroad";
 	}
 
-	@Override
-	public void setOwner(MineopolyPlayer player) {
-		this.owner = player;
-		this.owned = true;
-		player.addSection(this);
-	}
-	
-	public void reset(){
-		this.owned = false;
-	}
-
 	public void getInfo(Player player){
-		TacoChatUtils cu = Mineopoly.getChatUtils();
-		player.sendMessage(cu.formatMessage("&6---[" + getColorfulName() +"&6]---"));
-		player.sendMessage(cu.formatMessage(color + "Owned&7: &b" + (isOwned() ? owner.getName() : "none")));
-		player.sendMessage(cu.formatMessage(color + (isOwned() ? "Rent&7: " + getRent() : "Price&7: ")));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() +"&6]---");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&" + color + "Owner&7: &b" + (isOwned() ? owner.getName() : "none"));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&" + color + (isOwned() ? "Rent&7: " + getRent() : "Price&7: &2" + price));
 	}
 	
 	public int getRent(){
@@ -76,23 +49,8 @@ public class Railroad extends MineopolySection implements Ownable, CardinalSecti
 	}
 
 	@Override
-	public int getPrice() {
-		return price;
-	}
-
-	@Override
 	public int getSide() {
 		return side;
-	}
-
-	@Override
-	public boolean isMortgaged() {
-		return mortgaged;
-	}
-
-	@Override
-	public void setMortgaged(boolean mortgage) {
-		mortgaged = mortgage;
 	}
 
 

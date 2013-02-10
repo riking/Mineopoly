@@ -8,13 +8,12 @@ import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.mineopoly.messages.InvalidTurnMessage;
 import taco.mineopoly.messages.NotInJailMessage;
 import taco.mineopoly.messages.NotPlayingGameMessage;
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.api.TacoCommand;
 
 public class JailCardCommand extends TacoCommand{
 
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"card"};
+	public JailCardCommand() {
+		super("card", new String[]{"goojf", "gojf", "out"}, "", "Use a Get Out of Jail Free card", "");
 	}
 
 	@Override
@@ -23,8 +22,7 @@ public class JailCardCommand extends TacoCommand{
 	}
 
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
-		//TODO if game running -> if playing -> if hasTurn-> if jailed -> true
+	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
@@ -38,9 +36,9 @@ public class JailCardCommand extends TacoCommand{
 								mp.takeCommunityChestJailCard();
 								Mineopoly.plugin.getGame().getBoard().getPot().addCommunityChestJailCard();
 							}
-							mp.setJailed(false);
 							Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3has used a &bGet out of Jail Free &3card", mp);
 							mp.sendMessage("&3You are out of jail. You can now use &b/mineopoly roll");
+							mp.setJailed(false, true);
 						}else{
 							mp.sendMessage("&cYou do not have a &6Get out of Jail Free &ccard to use");
 						}
@@ -51,12 +49,11 @@ public class JailCardCommand extends TacoCommand{
 					mp.sendMessage(new InvalidTurnMessage());
 				}
 			}else{
-				player.sendMessage(new NotPlayingGameMessage() + "");
+				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			player.sendMessage(new GameNotInProgressMessage() + "");
+			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
-		return true;
 	}
 
 }

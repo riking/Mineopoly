@@ -2,7 +2,7 @@ package taco.mineopoly.cmds.mineopoly;
 
 import org.bukkit.entity.Player;
 
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.api.TacoCommand;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
 import taco.mineopoly.messages.CannotPerformActionMessage;
@@ -12,8 +12,12 @@ import taco.mineopoly.messages.NotPlayingGameMessage;
 
 public class MineopolyRollCommand extends TacoCommand {
 
+	public MineopolyRollCommand() {
+		super("roll", new String[]{}, "", "Roll the dice", "");
+	}
+
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
+	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer p = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
@@ -24,28 +28,22 @@ public class MineopolyRollCommand extends TacoCommand {
 						if(p.canRoll())
 							p.roll();
 						else
-							p.sendMessage(new CannotPerformActionMessage() + "");
+							p.sendMessage(new CannotPerformActionMessage());
 					}
 				}else{
-					p.sendMessage(new InvalidTurnMessage() + "");
+					p.sendMessage(new InvalidTurnMessage());
 				}
 			}else{
-				player.sendMessage(new NotPlayingGameMessage() + "");
+				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			player.sendMessage(new GameNotInProgressMessage() + "");
+			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
-		return true;
 	}
 
 	@Override
 	public boolean onConsoleCommand(String[] args) {
 		return false;
-	}
-
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"roll", "r"};
 	}
 
 }

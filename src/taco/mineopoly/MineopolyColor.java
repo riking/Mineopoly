@@ -9,7 +9,7 @@ public enum MineopolyColor {
 	RED(new int[]{21, 23, 24}, '4'),
 	YELLOW(new int[]{26, 28, 29}, 'e'),
 	GREEN(new int[]{31, 32, 34}, '2'),
-	BLUE(new int[]{37, 39}, '2');
+	BLUE(new int[]{37, 39}, '1');
 	
 	private int[] ids;
 	private char color;

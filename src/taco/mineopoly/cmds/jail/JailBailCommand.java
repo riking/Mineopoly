@@ -8,13 +8,13 @@ import taco.mineopoly.messages.GameNotInProgressMessage;
 import taco.mineopoly.messages.InsufficientFundsMessage;
 import taco.mineopoly.messages.NotInJailMessage;
 import taco.mineopoly.messages.NotPlayingGameMessage;
-import taco.tacoapi.api.command.TacoCommand;
+import taco.tacoapi.api.TacoCommand;
 
 public class JailBailCommand extends TacoCommand {
 
-	@Override
-	protected String[] getAliases() {
-		return new String[]{"pay-bail", "bail", "b"};
+	public JailBailCommand() {
+		super("bail", new String[]{"pay-bail", "b"}, "", "Pay your bail", "");
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -23,15 +23,17 @@ public class JailBailCommand extends TacoCommand {
 	}
 
 	@Override
-	public boolean onPlayerCommand(Player player, String[] args) {
+	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 				if(mp.isJailed()){
 					if(mp.hasMoney(50)){
 						mp.payPot(50);
-						mp.setJailed(false);
+						Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3paid bail and was let out of jail", mp);
+						mp.sendMessage("&3You paid bail and were let out of jail");
 						mp.sendMessage("&3You can now use &b/mineopoly roll");
+						mp.setJailed(false, true);
 					}else{
 						mp.sendMessage(new InsufficientFundsMessage());
 					}
@@ -39,12 +41,11 @@ public class JailBailCommand extends TacoCommand {
 					mp.sendMessage(new NotInJailMessage());
 				}
 			}else{
-				player.sendMessage(new NotPlayingGameMessage() + "");
+				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			player.sendMessage(new GameNotInProgressMessage() + "");
+			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
-		return true;
 	}
 
 }
