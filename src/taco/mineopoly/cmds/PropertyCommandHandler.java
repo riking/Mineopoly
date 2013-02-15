@@ -2,7 +2,9 @@ package taco.mineopoly.cmds;
 
 import org.bukkit.entity.Player;
 
+import taco.tacoapi.TacoAPI;
 import taco.tacoapi.api.TacoCommandHandler;
+import taco.mineopoly.Mineopoly;
 import taco.mineopoly.cmds.property.PropertyAddHotelCommand;
 import taco.mineopoly.cmds.property.PropertyAddHouseCommand;
 import taco.mineopoly.cmds.property.PropertyBuyCommand;
@@ -28,7 +30,10 @@ public class PropertyCommandHandler extends TacoCommandHandler {
 	}
 
 	@Override
-	protected void onPlayerCommand(Player arg0) {
+	protected void onPlayerCommand(Player player) {
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/property"));
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: &b/property&7, &b/prop&7, &b/mprop&7, &b/p");
+		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/property ? [page]");
 	}
 
 }

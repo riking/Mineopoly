@@ -32,6 +32,7 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		Location origin = Mineopoly.config.getBoardOrigin();
 		if(Mineopoly.config.getBoolean("mineopoly.schematic.needs_paste")){
 			WorldEditObject we = TacoAPI.getWorldEditAPI();
+			Mineopoly.chat.sendGlobalMessage("&ePasting Mineopoly board... There will be some lag");
 			we.pasteSchematic(origin.getWorld().getName(), Mineopoly.plugin.getDataFolder() + "/mineopoly.schematic", origin);
 			Mineopoly.chat.sendGlobalMessage("&ePaste Complete");
 			Mineopoly.config.setBoolean("mineopoly.schematic.needs_paste", false);
@@ -168,6 +169,7 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		for(MineopolyPlayer p : players){
 			if(p.getName().equalsIgnoreCase(player.getName())){
 				players.remove(p);
+				p.getPlayer().setAllowFlight(false);
 				break;
 			}
 		}
@@ -179,6 +181,13 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 			}else{
 				Mineopoly.chat.sendGlobalMessage("&eThe next game will start when there are enough players in the queue");
 			}
+		}
+	}
+	
+	public void removeAllPlayers(){
+		for(MineopolyPlayer p : players){
+			players.remove(p);
+			p.getPlayer().setAllowFlight(false);
 		}
 	}
 	

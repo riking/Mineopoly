@@ -47,6 +47,7 @@ public class PropertyBuyCommand extends TacoCommand {
 										if(mp.hasMonopoly(prop.getColor())){
 											Mineopoly.plugin.getGame().getChannel().sendMessage("&b " + mp.getName() + "now has a monopoly for the color " + prop.getColor().getName(), mp);
 											mp.sendMessage("&3You now have a monopoly for the color " + prop.getColor().getName());
+											mp.sendMessage("&3You can now add houses by typing &b/property add-house [property]");
 										}
 									}else if(oSection instanceof Railroad && mp.ownedRailRoads() == 4){
 										Mineopoly.plugin.getGame().getChannel().sendMessage("&b " + mp.getName() + "now owns all Railroad spaces", mp);

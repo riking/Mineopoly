@@ -32,11 +32,13 @@ public class MineopolyGame {
 			if(i < Mineopoly.config.getMaxPlayers() && Mineopoly.plugin.getQueue().getSize() > 0){
 				Random random = new Random();
 				int index = random.nextInt(Mineopoly.plugin.getQueue().getSize());
-				MineopolyPlayer player = new MineopolyPlayer(Mineopoly.plugin.getQueue().getPlayer(index));
+				Player p = Mineopoly.plugin.getQueue().getPlayer(index);
+				MineopolyPlayer player = new MineopolyPlayer(p);
 				board.addPlayer(player);
 				channel.addPlayer(player);
 				Mineopoly.plugin.getQueue().removePlayer(index);
 				player.setCurrentSection(board.getSection(0), false);
+				p.setAllowFlight(true);
 			}else{
 				break;
 			}
@@ -50,6 +52,7 @@ public class MineopolyGame {
 		MineopolyPlayer currPlayer = getPlayerWithCurrentTurn();
 		channel.sendMessage("&3It is &3" + currPlayer.getName() + "&3's turn", currPlayer);
 		currPlayer.sendMessage("&3It is your turn");
+		currPlayer.sendMessage("&3Use &b/mgame roll&3 to roll the dice!");
 		index++;
 	}
 	
@@ -84,6 +87,7 @@ public class MineopolyGame {
 	
 	public void end(){
 		this.running = false;
+		board.removeAllPlayers();
 	}
 	
 	public boolean canStart(){

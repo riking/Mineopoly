@@ -18,7 +18,7 @@ public class MineopolyDeedsCommand extends TacoCommand {
 	
 
 	public MineopolyDeedsCommand() {
-		super("deeds", new String[]{"props"}, "[player]", "View a players properties", "");
+		super("deeds", new String[]{"props", "properties"}, "[player]", "View a players properties", "");
 		// TODO Auto-generated constructor stub
 	}
 

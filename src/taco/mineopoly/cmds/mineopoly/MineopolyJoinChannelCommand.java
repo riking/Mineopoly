@@ -11,7 +11,7 @@ import taco.mineopoly.messages.GameNotInProgressMessage;
 public class MineopolyJoinChannelCommand extends TacoCommand {
 
 	public MineopolyJoinChannelCommand() {
-		super("join-channel", new String[]{"jc"}, "", "Join the", Permissions.CHANNEL_CHAT);
+		super("join-channel", new String[]{"jc"}, "", "Join the game's output channel", Permissions.CHANNEL_CHAT);
 	}
 
 	@Override

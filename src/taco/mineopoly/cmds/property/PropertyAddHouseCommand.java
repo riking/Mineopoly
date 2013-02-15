@@ -35,6 +35,9 @@ public class PropertyAddHouseCommand extends TacoCommand {
 									prop.addHouse();
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
 									mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
+									if(prop.getHouses() == 4){
+										mp.sendMessage("&3You can now add a hotel to " + prop.getColorfulName() + " &3by typing &b/property add-hotel " + prop.getId());
+									}
 								}else{
 									mp.sendMessage(new InsufficientFundsMessage());
 								}

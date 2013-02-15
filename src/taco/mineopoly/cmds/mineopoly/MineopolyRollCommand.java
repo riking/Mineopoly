@@ -23,7 +23,7 @@ public class MineopolyRollCommand extends TacoCommand {
 				MineopolyPlayer p = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 				if(p.hasTurn()){
 					if(p.isJailed()){
-						p.sendMessage("&cYou cannot use that command because you are jailed. Please use &6/jail roll &cinstead");
+						p.sendMessage("&cYou cannot use that command because you are jailed. Please use &6/mjail roll &cinstead");
 					}else{
 						if(p.canRoll())
 							p.roll();

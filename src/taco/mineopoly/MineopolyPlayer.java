@@ -92,6 +92,8 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 						sendMessage("&3You paid &b" + section.getOwner() + " &2 " + section.getRent() + " &3for landing on " + sectionOn.getColorfulName());
 					}
 				}
+			}else{
+				sendMessage("&3This section is unowned, you can buy it with &b/property buy&3!");
 			}
 		}
 	}
@@ -119,7 +121,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Monopolies&7: &b" + monopolySize());
 		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Get Out of Jail Free cards&7: &2" + (cards > 0 ? cards : "none"));
 		Mineopoly.chat.sendPlayerMessageNoHeader(p, "");
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&8My properties: &7/mineopoly properties " + getName());
+		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&8My properties: &7/mineopoly deeds " + getName());
 		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&8My monopolies: &7/mineopoly monopolies " + getName());
 	}
 	
@@ -308,11 +310,11 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		}else if(section instanceof OwnableSection){
 			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
 			if(this.payRent && !((OwnableSection) section).isMortgaged())
-				this.payRent();
+				payRent();
 			this.payRent = true;
 		}
-		
 		if(section.getId() == 0) landedOnGo = true;
+		sendMessage("&3View information on this space by typing &b/property info");
 	}
 	
 	public void move(int amount){

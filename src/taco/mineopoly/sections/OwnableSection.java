@@ -6,10 +6,11 @@ public abstract class OwnableSection extends MineopolySection {
 
 	protected MineopolyPlayer owner;
 	protected boolean owned, mortgaged;
-	protected int rent, price;
+	protected int price;
 	
 	public OwnableSection(int id, String name, char color, int price) {
 		super(id, name, color);
+		this.price = price;
 	}
 
 	public boolean isOwned(){

@@ -21,10 +21,7 @@ public class MineopolyJoinCommand extends TacoCommand {
 			Mineopoly.chat.sendPlayerMessage(player, "&cYou are already playing Mineopoly");
 		}else{
 			Mineopoly.plugin.getQueue().addPlayer(player);
-			if(!Mineopoly.plugin.getGame().isRunning() && Mineopoly.plugin.getQueue().getSize() >= Mineopoly.config.getMinPlayers())
-				Mineopoly.plugin.restartGame();
-			else
-				Mineopoly.chat.sendPlayerMessage(player, "You've been added to the game queue, please wait until the next game is over or until more players join");
+			Mineopoly.chat.sendPlayerMessage(player, "You've been added to the game queue, please wait until the next game is over or until more players join");
 		}
 		
 	}

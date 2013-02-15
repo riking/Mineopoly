@@ -16,7 +16,7 @@ public class MineopolyConfig extends TacoConfig{
 	@Override
 	public void setDefaults() {
 		addDefaultValue("mineopoly.metrics.send_data", true);
-		addDefaultValue("mineopoly.schematic.world", "mineopoly");
+		addDefaultValue("mineopoly.schematic.world", "world");
 		addDefaultValue("mineopoly.schematic.needs_paste", true);
 		addDefaultValue("mineopoly.schematic.origin-x", 0);
 		addDefaultValue("mineopoly.schematic.origin-y", 64);
