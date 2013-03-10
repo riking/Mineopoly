@@ -21,8 +21,8 @@ public class GoSquare extends SpecialSquare {
 
 	@Override
 	public void getInfo(Player player) {
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&6]---");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&bThe inital starting point. Pass this square and you receive &2200");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)&6]---");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&bThe inital starting point. Pass this square and you receive &2200");
 	}
 
 }

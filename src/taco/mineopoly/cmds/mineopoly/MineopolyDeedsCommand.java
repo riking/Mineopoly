@@ -34,7 +34,7 @@ public class MineopolyDeedsCommand extends TacoCommand {
 				if(Mineopoly.plugin.getGame().hasPlayer(player)){
 					MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 					if(mp.ownedSections().size() == 0){
-						Mineopoly.chat.sendPlayerMessage(player, "&cYou do not own any title deeds");
+						Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou do not own any title deeds");
 					}else{
 						String s = "";
 						ArrayList<MineopolySection> props = mp.ownedSections();
@@ -44,8 +44,8 @@ public class MineopolyDeedsCommand extends TacoCommand {
 								s = s + props.get(i).getColorfulName();
 							else s = s + props.get(i).getColorfulName() + "&8, ";
 						}
-						Mineopoly.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Title Deeds")); //TODO createHeader()
-						Mineopoly.chat.sendPlayerMessageNoHeader(player, s);
+						Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Title Deeds")); //TODO createHeader()
+						Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, s);
 					}
 				}
 			}
@@ -58,7 +58,7 @@ public class MineopolyDeedsCommand extends TacoCommand {
 					if(Mineopoly.plugin.getGame().hasPlayer(p)){
 						MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(p);
 						if(mp.ownedSections().size() == 0){
-							Mineopoly.chat.sendPlayerMessage(player, "&cThis player does not own any title deeds");
+							Mineopoly.plugin.chat.sendPlayerMessage(player, "&cThis player does not own any title deeds");
 						}else{
 							String s = "";
 							ArrayList<MineopolySection> props = mp.ownedSections();
@@ -68,13 +68,13 @@ public class MineopolyDeedsCommand extends TacoCommand {
 									s = s + props.get(i).getColorfulName();
 								else s = s + props.get(i).getColorfulName() + "&8, ";
 							}
-							Mineopoly.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Title Deeds"));
-							Mineopoly.chat.sendPlayerMessageNoHeader(player, s);
+							Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Title Deeds"));
+							Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, s);
 						}
 					}
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 			}
 		}
 	}

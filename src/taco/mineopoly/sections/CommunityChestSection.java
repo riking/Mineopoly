@@ -15,9 +15,8 @@ public class CommunityChestSection extends MineopolySection implements ActionPro
 	}
 
 	public void getInfo(Player player){
-		player.sendMessage(""); //title
-		player.sendMessage(""); //id:
-		player.sendMessage(""); //description
+		player.sendMessage("&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)&6]---");
+		player.sendMessage("&3Landing on this space will draw a card from the &eCommunity Chest &3card pile");
 	}
 	
 	public void provokeAction(MineopolyPlayer player){

@@ -5,7 +5,7 @@ import taco.tacoapi.api.TacoMessage;
 public class OutsideSectionMessage extends TacoMessage {
 
 	public OutsideSectionMessage(){
-		this.message = "&cYou can move or look around, but please stay on your space";
+		this.message = "&cPlease stay on your space";
 	}
 	
 }

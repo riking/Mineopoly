@@ -66,10 +66,10 @@ public class JailRollCommand extends TacoCommand{
 					p.sendMessage(new InvalidTurnMessage());
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 		}
 	}
 

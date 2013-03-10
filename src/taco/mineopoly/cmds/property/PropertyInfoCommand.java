@@ -31,7 +31,7 @@ public class PropertyInfoCommand extends TacoCommand {
 						MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 						mp.getCurrentSection().getInfo(player);
 					}else{
-						Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+						Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 					}
 				}else{
 					MineopolySection section;
@@ -39,23 +39,23 @@ public class PropertyInfoCommand extends TacoCommand {
 						int id = Integer.parseInt(args[0]);
 						section = Mineopoly.plugin.getGame().getBoard().getSection(id);
 						if(section == null){
-							Mineopoly.chat.sendPlayerMessage(player, "&cID cannot be lower than &60");
+							Mineopoly.plugin.chat.sendPlayerMessage(player, "&cID cannot be lower than &60");
 						}
 					}else{
 						section = Mineopoly.plugin.getGame().getBoard().getSection(args[0]);
 						if(section == null){
-							Mineopoly.chat.sendPlayerMessage(player, "&cSpace on board with name of &6" + args[0] + " &cnot found");
+							Mineopoly.plugin.chat.sendPlayerMessage(player, "&cSpace on board with name of &6" + args[0] + " &cnot found");
 						}
 					}
 					section.getInfo(player);
 				}
 			}else if(!player.hasPermission(Permissions.VIEW_GAME_STATS)){
-				Mineopoly.chat.sendInvalidPermissionsMessage(player);
+				Mineopoly.plugin.chat.sendInvalidPermissionsMessage(player);
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
 	}
 

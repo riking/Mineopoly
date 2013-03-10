@@ -19,25 +19,25 @@ public class MineopolyKickPlayerCommand extends TacoCommand {
 	public boolean onConsoleCommand(String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(args.length == 0){
-				Mineopoly.chat.out("Too few arguments");
+				Mineopoly.plugin.chat.out("Too few arguments");
 			}else{
 				boolean success = false;
 				for(String s : args){
 					Player p = Mineopoly.plugin.getServer().getPlayer(s);
 					if(p == null){
-						Mineopoly.chat.out("player '" + s + "' not found");
+						Mineopoly.plugin.chat.out("player '" + s + "' not found");
 					}else{
 						if(Mineopoly.plugin.getGame().hasPlayer(p)){
 							MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(p);
 							Mineopoly.plugin.getGame().kick(mp, "kicked by CONSOLE");
 							success = true;
 						}else{
-							Mineopoly.chat.out(p.getName() + " is not playing Mineopoly");
+							Mineopoly.plugin.chat.out(p.getName() + " is not playing Mineopoly");
 						}
 					}
 				}
 				if(success)
-					Mineopoly.chat.out("Player(s) kicked");
+					Mineopoly.plugin.chat.out("Player(s) kicked");
 			}
 		}
 		return true;
@@ -53,19 +53,19 @@ public class MineopolyKickPlayerCommand extends TacoCommand {
 				for(String s : args){
 					Player p = Mineopoly.plugin.getServer().getPlayer(s);
 					if(p == null){
-						Mineopoly.chat.sendPlayerMessage(player, "player '" + s + "' not found");
+						Mineopoly.plugin.chat.sendPlayerMessage(player, "player '" + s + "' not found");
 					}else{
 						if(Mineopoly.plugin.getGame().hasPlayer(p)){
 							MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(p);
 							Mineopoly.plugin.getGame().kick(mp, "kicked by " + player.getName());
 							success = true;
 						}else{
-							Mineopoly.chat.sendPlayerMessage(player, p.getName() + " is not playing Mineopoly");
+							Mineopoly.plugin.chat.sendPlayerMessage(player, p.getName() + " is not playing Mineopoly");
 						}
 					}
 				}
 				if(success)
-					Mineopoly.chat.sendPlayerMessage(player, "Player(s) kicked");
+					Mineopoly.plugin.chat.sendPlayerMessage(player, "Player(s) kicked");
 			}
 		}else{
 			player.sendMessage(new GameNotInProgressMessage() + "");

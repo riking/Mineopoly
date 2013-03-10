@@ -29,17 +29,22 @@ public class PropertyAddHouseCommand extends TacoCommand {
 				if(mp.hasTurn()){
 					if(args.length == 0){ //add house to current property
 						if(mp.getCurrentSection() instanceof Property){
-							if(((Property) mp.getCurrentSection()).getHouses() < 4){
-								if(mp.canAddHouse((Property) mp.getCurrentSection())){
-									Property prop = (Property) mp.getCurrentSection();
-									prop.addHouse();
-									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
-									mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
-									if(prop.getHouses() == 4){
-										mp.sendMessage("&3You can now add a hotel to " + prop.getColorfulName() + " &3by typing &b/property add-hotel " + prop.getId());
+							Property prop = (Property) mp.getCurrentSection();
+							if(prop.getHouses() < 4){
+								if(mp.hasMonopoly(prop.getColor())){
+									if(mp.canAddHouse(prop)){
+										prop.addHouse();
+										Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
+										mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
+										mp.sendBalanceMessage();
+										if(prop.getHouses() == 4){
+											mp.sendMessage("&3You can now add a hotel to " + prop.getColorfulName() + " &3by typing &b/property add-hotel " + prop.getId());
+										}
+									}else{
+										mp.sendMessage(new InsufficientFundsMessage());
 									}
 								}else{
-									mp.sendMessage(new InsufficientFundsMessage());
+									mp.sendMessage("You do not have a monopoly for the color " + prop.getColor().getName());
 								}
 							}else{
 								mp.sendMessage(new CannotPerformActionMessage("add a house to that. There are already 4 houses"));
@@ -57,14 +62,22 @@ public class PropertyAddHouseCommand extends TacoCommand {
 							mp.sendMessage(new SectionNotFoundMessage());
 						}else{
 							if(section instanceof Property){
-								if(((Property) section).getHouses() < 4){
-									if(mp.canAddHouse((Property) section)){
-										Property prop = (Property) section;
-										prop.addHouse();
-										Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
-										mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
+								Property prop = (Property) section;
+								if(prop.getHouses() < 4){
+									if(mp.hasMonopoly(prop.getColor())){
+										if(mp.canAddHouse(prop)){
+											prop.addHouse();
+											Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3added a house to " + prop.getColorfulName(), mp);
+											mp.sendMessage("&3You added a &ahouse &3to " + prop.getColorfulName());
+											mp.sendBalanceMessage();
+											if(prop.getHouses() == 4){
+												mp.sendMessage("&3You can now add a hotel to " + prop.getColorfulName() + " &3by typing &b/property add-hotel " + prop.getId());
+											}
+										}else{
+											mp.sendMessage(new InsufficientFundsMessage());
+										}
 									}else{
-										mp.sendMessage(new InsufficientFundsMessage());
+										mp.sendMessage("You do not have a monopoly for the color " + prop.getColor().getName());
 									}
 								}else{
 									mp.sendMessage(new CannotPerformActionMessage("add a house to that. There are already 4 houses"));
@@ -75,13 +88,13 @@ public class PropertyAddHouseCommand extends TacoCommand {
 						}
 					}
 				}else{
-					Mineopoly.chat.sendPlayerMessage(player, new InvalidTurnMessage());
+					Mineopoly.plugin.chat.sendPlayerMessage(player, new InvalidTurnMessage());
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
 	}
 

@@ -56,14 +56,23 @@ public abstract class MineopolyCard {
 				player.move(param);
 			}else if(split[0].equalsIgnoreCase("payall")){
 				for(MineopolyPlayer p : Mineopoly.plugin.getGame().getBoard().getPlayers())
-					player.payPlayer(p, param);
+					if(!p.getName().equalsIgnoreCase(player.getName())){
+						player.payPlayer(p, param);
+						p.sendMessage("&3You've been given &2" + param + " &3by &b" + player.getName());
+						p.sendBalanceMessage();
+					}
 			}else if(split[0].equalsIgnoreCase("paypot")){
 				player.payPot(param);
 			}else if(split[0].equalsIgnoreCase("payplayer")){
+				int size = Mineopoly.plugin.getGame().getBoard().getPlayers().size();
 				for(MineopolyPlayer p : Mineopoly.plugin.getGame().getBoard().getPlayers()){
-					p.payPlayer(player, param);
-					p.sendMessage("&3You paid &b" + player.getName() + " &2" + param);
+					if(!p.getName().equalsIgnoreCase(player.getName())){
+						p.payPlayer(player, param);
+						p.sendMessage("&3You paid &b" + player.getName() + " &2" + param);
+					}
 				}
+				player.sendMessage("&3You've been paid a total of &2" + (size * param));
+				player.sendBalanceMessage();
 			}else if(split[0].equalsIgnoreCase("take")){
 				player.takeMoney(param);
 			}else if(split[0].equalsIgnoreCase("moveto")){

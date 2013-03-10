@@ -72,7 +72,7 @@ public class PropertyBuyCommand extends TacoCommand {
 					mp.sendMessage(new InvalidTurnMessage());
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}
 	}

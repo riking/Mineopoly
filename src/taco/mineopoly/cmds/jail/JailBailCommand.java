@@ -41,10 +41,10 @@ public class JailBailCommand extends TacoCommand {
 					mp.sendMessage(new NotInJailMessage());
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
 	}
 

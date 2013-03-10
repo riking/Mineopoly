@@ -16,10 +16,8 @@ public class ChanceSection extends MineopolySection implements CardinalSection, 
 
 	@Override
 	public void getInfo(Player player) {
-		player.sendMessage("");
-		player.sendMessage("");
-		player.sendMessage("");
-		player.sendMessage("");
+		player.sendMessage("&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)&6]---");
+		player.sendMessage("&3Landing on this space will draw a card from the &6Chance &3card pile");
 	}
 
 	@Override

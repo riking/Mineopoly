@@ -5,12 +5,13 @@ import org.bukkit.entity.Player;
 import taco.mineopoly.Mineopoly;
 import taco.mineopoly.MineopolyPlayer;
 
-public class TaxSection extends MineopolySection implements ActionProvoker {
+public class TaxSection extends MineopolySection implements ActionProvoker, CardinalSection {
 
-	private int tax;
+	private int tax, side;
 	
-	public TaxSection(int id, String name, char color, int tax) {
+	public TaxSection(int id, String name, char color, int side, int tax) {
 		super(id, name, color);
+		this.side = side;
 		this.tax = tax;
 	}
 
@@ -23,12 +24,17 @@ public class TaxSection extends MineopolySection implements ActionProvoker {
 
 	@Override
 	public void getInfo(Player player) {
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&6]---");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&bLand on this space and you must pay &2" + tax + " &bto the bank");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)&6]---");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&bLand on this space and you must pay &2" + tax + " &bto the bank");
 	}
 	
 	public int getTax(){
 		return tax;
+	}
+
+	@Override
+	public int getSide() {
+		return side;
 	}
 
 }

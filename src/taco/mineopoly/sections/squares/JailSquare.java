@@ -25,12 +25,12 @@ public class JailSquare extends SpecialSquare {
 
 	@Override
 	public void getInfo(Player player) {
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&6]---");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, ("&3Just Visiting&7:&b You are only visiting, you can watch everyone in jail."));
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&3Jail&7:&b You are in jail and must wait until either one of three things happens:");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "   &1*&3You roll doubles");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "   &1*&3You pay bail (&250&b)");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "   &1*&3You use a &1Get Out of Jail Free &3card");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)&6]---");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, ("&3Just Visiting&7:&b You are only visiting, you can watch everyone in jail."));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Jail&7:&b You are in jail and must wait until either one of three things happens:");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "   &1*&3You roll doubles");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "   &1*&3You pay bail (&250&b)");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "   &1*&3You use a &1Get Out of Jail Free &3card");
 	}
 	public Location getJailCellLocation(){
 		Location origin = Mineopoly.config.getBoardOrigin();

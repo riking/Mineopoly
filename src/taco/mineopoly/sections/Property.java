@@ -71,11 +71,11 @@ public class Property extends OwnableSection implements  CardinalSection{
 	}
 	
 	public void getInfo(Player player){
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() +"&6]---");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + "Owner&7:&b " + (isOwned() ? owner.getName() : "none"));
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + (isOwned() ? "Rent&7: &2" + getRent() : "Price&7: &2" + getPrice()));
-		if(getHouses() > 0 && !hasHotel()) Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + "Houses&7:&b " + getHouses());
-		if(hasHotel) Mineopoly.chat.sendPlayerMessageNoHeader(player, mColor + "Hotel&7:&b " + hasHotel());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)&6]---");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, mColor + "Owner&7:&b " + (isOwned() ? owner.getName() : "none"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, mColor + (isOwned() ? "Rent&7: &2" + getRent() : "Price&7: &2" + getPrice()));
+		if(getHouses() > 0 && !hasHotel()) Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, mColor + "Houses&7:&b " + getHouses());
+		if(hasHotel) Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, mColor + "Hotel&7:&b " + hasHotel());
 	}
 	
 	public boolean hasHotel(){
@@ -127,6 +127,7 @@ public class Property extends OwnableSection implements  CardinalSection{
 	
 	public void removeHouse(){
 		houses--;
+		owner.addMoney(housePrice/2);
 	}
 	
 	public void removeAllHouses(){

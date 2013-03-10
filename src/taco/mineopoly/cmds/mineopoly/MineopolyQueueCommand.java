@@ -18,9 +18,9 @@ public class MineopolyQueueCommand extends TacoCommand {
 	public void onPlayerCommand(Player player, String[] args) {
 		if(args.length == 0){
 			if(Mineopoly.plugin.getQueue().getSize() == 0){
-				Mineopoly.chat.sendPlayerMessage(player, "&cThere is no one in the game queue");
+				Mineopoly.plugin.chat.sendPlayerMessage(player, "&cThere is no one in the game queue");
 			}else{
-				Mineopoly.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&7Mineopoly Queue"));
+				Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&7Mineopoly Queue"));
 				String players = "";
 				for(Player p : Mineopoly.plugin.getQueue()){
 					if(Mineopoly.plugin.getQueue().getIndexFromPlayer(p) == Mineopoly.plugin.getQueue().getSize() - 1){
@@ -29,7 +29,7 @@ public class MineopolyQueueCommand extends TacoCommand {
 						players = players + "&7" + p.getName() + "&8, ";
 					}
 				}
-				Mineopoly.chat.sendPlayerMessageNoHeader(player, players);
+				Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, players);
 			}
 		}else{
 			player.sendMessage(new TooManyArgumentsMessage("/mineopoly queue") + "");

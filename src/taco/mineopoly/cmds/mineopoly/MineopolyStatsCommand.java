@@ -23,10 +23,10 @@ public class MineopolyStatsCommand extends TacoCommand {
 				if(Mineopoly.plugin.getGame().hasPlayer(player)){
 					Mineopoly.plugin.getGame().getBoard().getPlayer(player).getInfo(player);
 				}else{
-					Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+					Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 			}
 		}else if(args.length == 1){
 			if(Mineopoly.plugin.getGame().isRunning()){
@@ -38,17 +38,17 @@ public class MineopolyStatsCommand extends TacoCommand {
 						if(player.hasPermission(Permissions.VIEW_GAME_STATS)){
 							Mineopoly.plugin.getGame().getBoard().getPlayer(p).getInfo(player);
 						}else{
-							Mineopoly.chat.sendInvalidPermissionsMessage(player);
+							Mineopoly.plugin.chat.sendInvalidPermissionsMessage(player);
 						}
 					}
 				}else{
-					Mineopoly.chat.sendPlayerMessage(player, new PlayerNotOnlineMessage(args[0]));
+					Mineopoly.plugin.chat.sendPlayerMessage(player, new PlayerNotOnlineMessage(args[0]));
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new TooManyArgumentsMessage("/mineopoly stats [player]") + "");
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new TooManyArgumentsMessage("/mineopoly stats [player]") + "");
 		}
 	}
 

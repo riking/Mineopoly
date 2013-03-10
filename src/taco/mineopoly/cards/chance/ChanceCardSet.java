@@ -13,7 +13,7 @@ public class ChanceCardSet extends MineopolyCardSet{
 
 	@Override
 	protected void initCards() {
-		Mineopoly.chat.out("Loading Chance cards...");
+		Mineopoly.plugin.chat.out("Loading Chance cards...");
 		cards = new ArrayList<MineopolyCard>();
 		File container = new File(Mineopoly.plugin.getDataFolder() + "/cards/chance/");
 		if(container.isDirectory()){
@@ -26,13 +26,13 @@ public class ChanceCardSet extends MineopolyCardSet{
 							if(card.isValid()){
 								addCard(card);
 							}else{
-								Mineopoly.chat.out("[ChanceCards] Card is invalid: " + f.getName() + ", skipping...");
+								Mineopoly.plugin.chat.out("[ChanceCards] Card is invalid: " + f.getName() + ", skipping...");
 							}
 						}else{
-							Mineopoly.chat.out("[ChanceCards] Card is invalid: " + f.getName() + ", skipping...");
+							Mineopoly.plugin.chat.out("[ChanceCards] Card is invalid: " + f.getName() + ", skipping...");
 						}
 					}else{
-						Mineopoly.chat.out("[ChanceCards] Card is invalid: " + f.getName() + ", skipping...");
+						Mineopoly.plugin.chat.out("[ChanceCards] Card is invalid: " + f.getName() + ", skipping...");
 					}
 				}
 			}

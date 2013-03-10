@@ -16,12 +16,12 @@ public class MineopolyJoinCommand extends TacoCommand {
 	@Override
 	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getQueue().playerIsInQueue(player)){
-			Mineopoly.chat.sendPlayerMessage(player, "&cYou are already queued to join the next Mineopoly game");
+			Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou are already queued to join the next Mineopoly game");
 		}else if(Mineopoly.plugin.getGame().isRunning() && Mineopoly.plugin.getGame().hasPlayer(player)){
-			Mineopoly.chat.sendPlayerMessage(player, "&cYou are already playing Mineopoly");
+			Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou are already playing Mineopoly");
 		}else{
 			Mineopoly.plugin.getQueue().addPlayer(player);
-			Mineopoly.chat.sendPlayerMessage(player, "You've been added to the game queue, please wait until the next game is over or until more players join");
+			Mineopoly.plugin.chat.sendPlayerMessage(player, "You've been added to the game queue, please wait until the next game is over or until more players join");
 		}
 		
 	}

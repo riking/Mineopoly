@@ -5,7 +5,6 @@ import java.util.Random;
 import org.bukkit.entity.Player;
 
 import taco.mineopoly.Mineopoly;
-import taco.mineopoly.MineopolyPlayer;
 
 /**
  * Represents a utility space on the board. Implements {@link taco.mineopoly.sections.Ownable Ownable}
@@ -14,7 +13,6 @@ import taco.mineopoly.MineopolyPlayer;
  */
 public class Utility extends OwnableSection implements CardinalSection{
 
-	private MineopolyPlayer owner;
 	private int side;
 	
 	public Utility(int id, String name, char color, int side) {
@@ -24,9 +22,9 @@ public class Utility extends OwnableSection implements CardinalSection{
 
 	@Override
 	public void getInfo(Player player){
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() +"&6]---");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&" + color + "Owned&7: &b" + (isOwned() ? owner.getName() : "none"));
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&" + color + (isOwned() ? "Rent&7: " + "&bLand on it to find out" : "Price&7: "));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)&6]---");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&" + color + "Owned&7: &b" + (isOwned() ? owner.getName() : "none"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&" + color + (isOwned() ? "Rent&7: " + "&bLand on it to find out" : "Price&7: " + price));
 	}
 	
 	public int getRent(){

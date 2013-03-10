@@ -13,7 +13,7 @@ public class CommunityChestCardSet extends MineopolyCardSet{
 
 	@Override
 	protected void initCards() {
-		Mineopoly.chat.out("Loading Community Chest cards...");
+		Mineopoly.plugin.chat.out("Loading Community Chest cards...");
 		cards = new ArrayList<MineopolyCard>();
 		File container = new File(Mineopoly.plugin.getDataFolder() + "/cards/communitychest/");
 		if(container.isDirectory()){
@@ -26,13 +26,13 @@ public class CommunityChestCardSet extends MineopolyCardSet{
 							if(card.isValid()){
 								addCard(card);
 							}else{
-								Mineopoly.chat.out("[CommunityChestCards] Card is invalid: " + f.getName() + ", skipping...");
+								Mineopoly.plugin.chat.out("[CommunityChestCards] Card is invalid: " + f.getName() + ", skipping...");
 							}
 						}else{
-							Mineopoly.chat.out("[CommunityChestCards] Card is invalid: " + f.getName() + ", skipping...");
+							Mineopoly.plugin.chat.out("[CommunityChestCards] Card is invalid: " + f.getName() + ", skipping...");
 						}
 					}else{
-						Mineopoly.chat.out("[CommunityChestCards] Card is invalid: " + f.getName() + ", skipping...");
+						Mineopoly.plugin.chat.out("[CommunityChestCards] Card is invalid: " + f.getName() + ", skipping...");
 					}
 				}
 			}

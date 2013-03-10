@@ -18,15 +18,15 @@ public class MineopolyJoinChannelCommand extends TacoCommand {
 	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
-				Mineopoly.chat.sendPlayerMessage(player, "&cYou are already in the channel");
+				Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou are already in the channel");
 			}else if(Mineopoly.plugin.getGame().getChannel().isListeningToChannel(player.getName())){
-				Mineopoly.chat.sendPlayerMessage(player, "&cYou are already in the channel");
+				Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou are already in the channel");
 				if(player.hasPermission(Permissions.CHANNEL_CHAT.toString())){
 					Mineopoly.plugin.getGame().getChannel().addPlayer(new MineopolyChannelListener(player));
 				}
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
 	}
 

@@ -62,10 +62,10 @@ public class MineopolyPot {
 		int cards = 0;
 		if(chanceJailCard) cards++;
 		if(ccJailCard) cards++;
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&3Mineopoly Pot"));
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&2Money&7: &2" + getMoney());
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&2Get Out of Jail Free cards&7: &2" + (cards > 0 ? cards : "none"));
-//		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&2");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&3Mineopoly Pot"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&2Money&7: &2" + getMoney());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&2Get Out of Jail Free cards&7: &2" + (cards > 0 ? cards : "none"));
+//		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&2");
 	}
 	
 }

@@ -32,7 +32,7 @@ public class MineopolyMonopoliesCommand extends TacoCommand {
 				if(Mineopoly.plugin.getGame().hasPlayer(player)){
 					MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 					if(mp.ownedSections().size() == 0){
-						Mineopoly.chat.sendPlayerMessage(player, "&cYou do not have any monopolies");
+						Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou do not have any monopolies");
 					}else{
 						String s = "";
 						ArrayList<MineopolyColor> monopolies = mp.getMonopolies();
@@ -41,8 +41,8 @@ public class MineopolyMonopoliesCommand extends TacoCommand {
 								s = s + monopolies.get(i).getName();
 							else s = s + monopolies.get(i).getName() + "&8, ";
 						}
-						Mineopoly.chat.sendPlayerMessage(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Monopolies"));
-						Mineopoly.chat.sendPlayerMessage(player, s);
+						Mineopoly.plugin.chat.sendPlayerMessage(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Monopolies"));
+						Mineopoly.plugin.chat.sendPlayerMessage(player, s);
 					}
 				}
 			}
@@ -56,7 +56,7 @@ public class MineopolyMonopoliesCommand extends TacoCommand {
 						if(Mineopoly.plugin.getGame().hasPlayer(p)){
 							MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(p);
 							if(mp.ownedSections().size() == 0){
-								Mineopoly.chat.sendPlayerMessage(player, "&cThis player does not have any monopolies");
+								Mineopoly.plugin.chat.sendPlayerMessage(player, "&cThis player does not have any monopolies");
 							}else{
 								String s = "";
 								ArrayList<MineopolyColor> monopolies = mp.getMonopolies();
@@ -65,16 +65,16 @@ public class MineopolyMonopoliesCommand extends TacoCommand {
 										s = s + monopolies.get(i).getName();
 									else s = s + monopolies.get(i).getName() + "&8, ";
 								}
-								Mineopoly.chat.sendPlayerMessage(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Monopolies"));
-								Mineopoly.chat.sendPlayerMessage(player, s);
+								Mineopoly.plugin.chat.sendPlayerMessage(player, TacoAPI.getChatUtils().createHeader("&3" + mp.getName() + "&b's Monopolies"));
+								Mineopoly.plugin.chat.sendPlayerMessage(player, s);
 							}
 						}
 					}
 				}else{
-					Mineopoly.chat.sendInvalidPermissionsMessage(player);
+					Mineopoly.plugin.chat.sendInvalidPermissionsMessage(player);
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 			}
 		}
 	}

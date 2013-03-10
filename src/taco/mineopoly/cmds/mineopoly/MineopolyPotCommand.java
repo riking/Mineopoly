@@ -26,7 +26,7 @@ public class MineopolyPotCommand extends TacoCommand {
 				if(player.hasPermission(Permissions.VIEW_GAME_STATS)){
 					Mineopoly.plugin.getGame().getBoard().getPot().getInfo(player);
 				}else{
-					Mineopoly.chat.sendInvalidPermissionsMessage(player);
+					Mineopoly.plugin.chat.sendInvalidPermissionsMessage(player);
 				}
 			}
 		}else{

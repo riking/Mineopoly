@@ -28,9 +28,9 @@ public class Railroad extends OwnableSection implements CardinalSection{
 	}
 
 	public void getInfo(Player player){
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() +"&6]---");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&" + color + "Owner&7: &b" + (isOwned() ? owner.getName() : "none"));
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&" + color + (isOwned() ? "Rent&7: " + getRent() : "Price&7: &2" + price));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6---[" + getColorfulName() + "&b(&3" + getId() + "&b)]---");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&" + color + "Owner&7: &b" + (isOwned() ? owner.getName() : "none"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&" + color + (isOwned() ? "Rent&7: " + getRent() : "Price&7: &2" + price));
 	}
 	
 	public int getRent(){

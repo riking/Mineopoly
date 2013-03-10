@@ -20,11 +20,11 @@ public class MineopolyStartCommand extends TacoCommand {
 			if(queued >= min){
 				Mineopoly.plugin.restartGame();
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, "&e" + queued + " &cplayers in queue with minimum of &e" + min + " &crequired");
-				Mineopoly.chat.sendPlayerMessage(player, "&eView players in the queue by using &a/mineopoly queue");
+				Mineopoly.plugin.chat.sendPlayerMessage(player, "&e" + queued + " &cplayers in queue with minimum of &e" + min + " &crequired");
+				Mineopoly.plugin.chat.sendPlayerMessage(player, "&eView players in the queue by using &a/mineopoly queue");
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, "&cThere is already a game in progress");
+			Mineopoly.plugin.chat.sendPlayerMessage(player, "&cThere is already a game in progress");
 		}
 	}
 
@@ -36,10 +36,10 @@ public class MineopolyStartCommand extends TacoCommand {
 			if(queued >= min){
 				Mineopoly.plugin.restartGame();
 			}else{
-				Mineopoly.chat.out(queued + " players in queue with minimum of " + min + " required");
+				Mineopoly.plugin.chat.out(queued + " players in queue with minimum of " + min + " required");
 			}
 		}else{
-			Mineopoly.chat.out("There is already a game in progress");
+			Mineopoly.plugin.chat.out("There is already a game in progress");
 		}
 		return true;
 	}

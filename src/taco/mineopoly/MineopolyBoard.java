@@ -32,9 +32,9 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		Location origin = Mineopoly.config.getBoardOrigin();
 		if(Mineopoly.config.getBoolean("mineopoly.schematic.needs_paste")){
 			WorldEditObject we = TacoAPI.getWorldEditAPI();
-			Mineopoly.chat.sendGlobalMessage("&ePasting Mineopoly board... There will be some lag");
+			Mineopoly.plugin.chat.sendGlobalMessage("&ePasting Mineopoly board... There will be some lag");
 			we.pasteSchematic(origin.getWorld().getName(), Mineopoly.plugin.getDataFolder() + "/mineopoly.schematic", origin);
-			Mineopoly.chat.sendGlobalMessage("&ePaste Complete");
+			Mineopoly.plugin.chat.sendGlobalMessage("&ePaste Complete");
 			Mineopoly.config.setBoolean("mineopoly.schematic.needs_paste", false);
 		}
 		players = new ArrayList<MineopolyPlayer>();
@@ -49,7 +49,7 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		sections.add(new Property(1, "mediterranean_ave", MineopolyColor.PURPLE, 0, 60, new int[]{2, 10, 30, 90, 160, 250}));
 		sections.add(new CommunityChestSection(2, 0));
 		sections.add(new Property(3, "baltic_ave", MineopolyColor.PURPLE, 0, 60, new  int[]{4, 20, 60, 180, 320, 450}));
-		sections.add(new TaxSection(4, "Income Tax", '7', 200));
+		sections.add(new TaxSection(4, "Income Tax", '7', 0, 200));
 		sections.add(new Railroad("reading", 0));
 		sections.add(new Property(6, "oriental_ave", MineopolyColor.LIGHT_BLUE, 0, 100, new int[]{6, 30, 90, 270, 400, 550}));
 		sections.add(new ChanceSection(7, 0));
@@ -83,7 +83,7 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		sections.add(new Railroad("short_line", 3));
 		sections.add(new ChanceSection(36, 3));
 		sections.add(new Property(37, "park_place", MineopolyColor.BLUE, 3, 350, new int[]{35, 175, 500, 1100, 1300, 1500}));
-		sections.add(new TaxSection(4, "Luxury Tax", '7', 75));
+		sections.add(new TaxSection(4, "Luxury Tax", '7', 3, 75));
 		sections.add(new Property(39, "boardwalk", MineopolyColor.BLUE, 3, 400, new int[]{50, 200, 600, 1400, 1700, 2000}));
 	}
 	
@@ -175,11 +175,11 @@ public class MineopolyBoard implements Iterable<MineopolySection>{
 		}
 		if(Mineopoly.plugin.getGame().getBoard().getPlayers().size() == 0){
 			Mineopoly.plugin.getGame().end();
-			Mineopoly.chat.sendGlobalMessage("&eThe Mineopoly game has ended");
+			Mineopoly.plugin.chat.sendGlobalMessage("&eThe Mineopoly game has ended");
 			if(Mineopoly.plugin.getGame().canStart()){
-				Mineopoly.chat.sendGlobalMessage("&eThe next game will start soon");
+				Mineopoly.plugin.chat.sendGlobalMessage("&eThe next game will start soon");
 			}else{
-				Mineopoly.chat.sendGlobalMessage("&eThe next game will start when there are enough players in the queue");
+				Mineopoly.plugin.chat.sendGlobalMessage("&eThe next game will start when there are enough players in the queue");
 			}
 		}
 	}

@@ -25,19 +25,22 @@ public class MineopolyRollCommand extends TacoCommand {
 					if(p.isJailed()){
 						p.sendMessage("&cYou cannot use that command because you are jailed. Please use &6/mjail roll &cinstead");
 					}else{
-						if(p.canRoll())
+						if(p.canRoll()){
 							p.roll();
-						else
+							p.sendMessage("&3Type &b/property info &3to view information for this space");
+							p.sendMessage("&3End your turn with &b/mgame et");
+						}else{
 							p.sendMessage(new CannotPerformActionMessage());
+						}
 					}
 				}else{
 					p.sendMessage(new InvalidTurnMessage());
 				}
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
 	}
 

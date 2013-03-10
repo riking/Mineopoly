@@ -13,6 +13,7 @@ import taco.mineopoly.sections.Property;
 import taco.mineopoly.sections.Railroad;
 import taco.mineopoly.sections.SpecialSquare;
 import taco.mineopoly.sections.Utility;
+import taco.mineopoly.sections.squares.FreeParkingSquare;
 import taco.mineopoly.sections.squares.JailSquare;
 import taco.tacoapi.TacoAPI;
 
@@ -93,7 +94,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 					}
 				}
 			}else{
-				sendMessage("&3This section is unowned, you can buy it with &b/property buy&3!");
+				sendMessage("&3You can buy this space with &b/property buy&3!");
 			}
 		}
 	}
@@ -114,15 +115,15 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		int cards = 0;
 		if(hasChanceJailCard()) cards++;
 		if(hasCommunityChestJailCard()) cards++;
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, TacoAPI.getChatUtils().createHeader("&3Mineopoly&7: &b" + getName()));
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Money&7: &2" + getMoney());
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Rolls&7: &2" + getTotalRolls() + " &3On space: " + getCurrentSection().getColorfulName() + " &3(&b" + getCurrentSection().getId() + "&3)");
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Properties&7: &b" + ownedPropertiesSize());
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Monopolies&7: &b" + monopolySize());
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&3Get Out of Jail Free cards&7: &2" + (cards > 0 ? cards : "none"));
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "");
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&8My properties: &7/mineopoly deeds " + getName());
-		Mineopoly.chat.sendPlayerMessageNoHeader(p, "&8My monopolies: &7/mineopoly monopolies " + getName());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, TacoAPI.getChatUtils().createHeader("&3Mineopoly&7: &b" + getName()));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "&3Money&7: &2" + getMoney());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "&3Rolls&7: &2" + getTotalRolls() + " &3On space: " + getCurrentSection().getColorfulName() + " &3(&b" + getCurrentSection().getId() + "&3)");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "&3Properties&7: &b" + ownedPropertiesSize());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "&3Monopolies&7: &b" + monopolySize());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "&3Get Out of Jail Free cards&7: &2" + (cards > 0 ? cards : "none"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "&8My properties: &7/mineopoly deeds " + getName());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(p, "&8My monopolies: &7/mineopoly monopolies " + getName());
 	}
 	
 	public boolean hasMonopoly(MineopolyColor color){
@@ -140,6 +141,10 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		this.money -= amount;
 	}
 	
+	public void sendBalanceMessage(){
+		sendMessage("&3Your balance is now &2" + getMoney());
+	}
+	
 	public void payPot(int amount){
 		this.money -= amount;
 		Mineopoly.plugin.getGame().getBoard().getPot().addMoney(amount);
@@ -154,9 +159,6 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 		player.addMoney(amount);
 	}
 	
-	/**
-	 * Invokes the player to roll the dice. If they rolled doubles, the variable {@code canRoll} is set to true.
-	 */
 	public void roll(){
 		this.totalRolls++;
 		this.canRoll = false;
@@ -208,9 +210,11 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	private void moveForward(int forward){
 		MineopolySection next = Mineopoly.plugin.getGame().getBoard().getSection(forward);
 		Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3rolled a &b" + roll1 + "&3 and a &b" + roll2, this);
-		Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3 landed on " + next.getColorfulName(), this);
+		if(!(getCurrentSection() instanceof FreeParkingSquare))
+			Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + getName() + " &3 landed on " + next.getColorfulName(), this);
 		sendMessage("&3You rolled a &b" + roll1 + "&3 and a &b" + roll2);
-		sendMessage("&3You landed on " + next.getColorfulName());
+		if(!(getCurrentSection() instanceof FreeParkingSquare))
+			sendMessage("&3You landed on " + next.getColorfulName());
 		setCurrentSection(next);
 	}
 	
@@ -228,7 +232,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 	
 	public void moveToNearestUtility(){
 		int id = getCurrentSection().getId();
-		if(id < 12 || id > 28)
+		if(id < 12 || id > 24)
 			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(12));
 		else
 			setCurrentSection(Mineopoly.plugin.getGame().getBoard().getSection(24));
@@ -276,7 +280,7 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 				needsGoMoney = true;
 			}
 		}else if(section.getId() > lastId){
-			if(landedOnGo){
+			if(landedOnGo && totalRolls > 1){
 				needsGoMoney = true;
 				landedOnGo = false;
 			}
@@ -295,26 +299,25 @@ public class MineopolyPlayer extends MineopolyChannelListener{
 			if(section instanceof JailSquare){
 				JailSquare js = (JailSquare) section;
 				if(isJailed())
-					Mineopoly.plugin.getServer().getPlayer(getName()).teleport(js.getJailCellLocation());
+					TacoAPI.getPlayerAPI().teleport(getPlayer(), js.getJailCellLocation());
 				else
-					Mineopoly.plugin.getServer().getPlayer(getName()).teleport(js.getJustVisitingLocation());
+					TacoAPI.getPlayerAPI().teleport(getPlayer(), js.getJustVisitingLocation());
 			}else{
-				Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
+				TacoAPI.getPlayerAPI().teleport(getPlayer(), section.getLocation());
 				SpecialSquare square = (SpecialSquare) section;
 				square.provokeAction(this);
 			}
 		}else if(section instanceof ActionProvoker){
-			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
+			TacoAPI.getPlayerAPI().teleport(getPlayer(), section.getLocation());
 			ActionProvoker ss = (ActionProvoker) section;
 			ss.provokeAction(this);
 		}else if(section instanceof OwnableSection){
-			Mineopoly.plugin.getServer().getPlayer(getName()).teleport(section.getLocation());
+			TacoAPI.getPlayerAPI().teleport(getPlayer(), section.getLocation());
 			if(this.payRent && !((OwnableSection) section).isMortgaged())
 				payRent();
 			this.payRent = true;
 		}
 		if(section.getId() == 0) landedOnGo = true;
-		sendMessage("&3View information on this space by typing &b/property info");
 	}
 	
 	public void move(int amount){

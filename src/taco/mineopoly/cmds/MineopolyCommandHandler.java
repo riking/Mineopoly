@@ -45,13 +45,13 @@ public class MineopolyCommandHandler extends TacoCommandHandler{
 
 	@Override
 	protected void onPlayerCommand(Player player) {
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/mineopoly"));
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: &b/mineopoly&7, &b/mgame&7, &b/m");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/mineopoly ? [page]");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("Plugin Information"));
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6Author&7: &cKILL3RTACO");
-		Mineopoly.chat.sendPlayerMessageNoHeader(player, "&6Version&7: &5" + Mineopoly.plugin.getDescription().getVersion());
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/mineopoly"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: &b/mineopoly&7, &b/mgame&7, &b/m");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/mineopoly ? [page]");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("Plugin Information"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6Author&7: &cKILL3RTACO");
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6Version&7: &5" + Mineopoly.plugin.getDescription().getVersion());
 	}
 
 }

@@ -26,10 +26,10 @@ public class MineopolyQuitCommand extends TacoCommand {
 				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 				Mineopoly.plugin.getGame().kick(mp, "quit");
 			}else{
-				Mineopoly.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
 			}
 		}else{
-			Mineopoly.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
 		}
 	}
 

@@ -103,11 +103,11 @@ public class MineopolyGame {
 		
 		if(player.hasMoney(1))
 			getBoard().getPot().addMoney(player.getMoney());
-		Mineopoly.chat.sendGlobalMessage("&3" + player.getName() + " &bhas been removed from the game (&3" + reason + "&b)");
+		Mineopoly.plugin.chat.sendGlobalMessage("&3" + player.getName() + " &bhas been removed from the game (&3" + reason + "&b)");
 		board.removePlayer(player);
 		if(board.getPlayers().size() == 1){
 			end();
-			Mineopoly.chat.sendGlobalMessage("&3" + board.getPlayers().get(0).getName() + " &bis the winner!");
+			Mineopoly.plugin.chat.sendGlobalMessage("&3" + board.getPlayers().get(0).getName() + " &bis the winner!");
 		}
 	}
 }

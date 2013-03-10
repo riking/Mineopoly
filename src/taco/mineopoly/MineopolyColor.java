@@ -24,7 +24,7 @@ public enum MineopolyColor {
 	}
 	
 	public String getName(){
-		return this.color + name();
+		return "&" + this.color + name();
 	}
 	
 	public String toString(){
