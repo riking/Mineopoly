@@ -3,8 +3,8 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyChannelListener;
 import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.game.chat.MineopolyChannelListener;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 
 import com.kill3rtaco.tacoapi.api.TacoCommand;
@@ -22,9 +22,9 @@ public class MineopolyJoinChannelCommand extends TacoCommand {
 				Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou are already in the channel");
 			}else if(Mineopoly.plugin.getGame().getChannel().isListeningToChannel(player.getName())){
 				Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou are already in the channel");
-				if(player.hasPermission(MineopolyPermissions.CHANNEL_CHAT.toString())){
-					Mineopoly.plugin.getGame().getChannel().addPlayer(new MineopolyChannelListener(player));
-				}
+			}else{
+				Mineopoly.plugin.getGame().getChannel().addPlayer(new MineopolyChannelListener(player));
+				Mineopoly.plugin.chat.sendPlayerMessage(player, "&aYou are now listening to the Mineopoly channel");
 			}
 		}else{
 			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());

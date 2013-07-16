@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.mineopoly.messages.NotPlayingGameMessage;
 

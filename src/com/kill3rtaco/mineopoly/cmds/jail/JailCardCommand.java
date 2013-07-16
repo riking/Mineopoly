@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.jail;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.mineopoly.messages.InvalidTurnMessage;
 import com.kill3rtaco.mineopoly.messages.NotInJailMessage;
@@ -38,7 +38,7 @@ public class JailCardCommand extends TacoCommand{
 								Mineopoly.plugin.getGame().getBoard().getPot().addCommunityChestJailCard();
 							}
 							Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3has used a &bGet out of Jail Free &3card", mp);
-							mp.sendMessage("&3You are out of jail. You can now use &b/mineopoly roll");
+							mp.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.M_ALIAS + " roll on your next turn");
 							mp.setJailed(false, true);
 						}else{
 							mp.sendMessage("&cYou do not have a &6Get out of Jail Free &ccard to use");

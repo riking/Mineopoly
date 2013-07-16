@@ -6,9 +6,9 @@ import java.util.Collections;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.sections.OwnableSection;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
-import com.kill3rtaco.mineopoly.sections.MineopolySection;
 
 import com.kill3rtaco.tacoapi.TacoAPI;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
@@ -38,7 +38,7 @@ public class MineopolyDeedsCommand extends TacoCommand {
 						Mineopoly.plugin.chat.sendPlayerMessage(player, "&cYou do not own any title deeds");
 					}else{
 						String s = "";
-						ArrayList<MineopolySection> props = mp.ownedSections();
+						ArrayList<OwnableSection> props = mp.ownedSections();
 						Collections.sort(props);
 						for(int i=0; i<props.size(); i++){
 							if(i == props.size() - 1)
@@ -62,7 +62,7 @@ public class MineopolyDeedsCommand extends TacoCommand {
 							Mineopoly.plugin.chat.sendPlayerMessage(player, "&cThis player does not own any title deeds");
 						}else{
 							String s = "";
-							ArrayList<MineopolySection> props = mp.ownedSections();
+							ArrayList<OwnableSection> props = mp.ownedSections();
 							Collections.sort(props);
 							for(int i=0; i<props.size(); i++){
 								if(i == props.size() - 1)

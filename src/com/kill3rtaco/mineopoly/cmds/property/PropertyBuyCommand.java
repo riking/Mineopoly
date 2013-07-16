@@ -3,18 +3,18 @@ package com.kill3rtaco.mineopoly.cmds.property;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolySection;
+import com.kill3rtaco.mineopoly.game.sections.OwnableSection;
+import com.kill3rtaco.mineopoly.game.sections.Property;
+import com.kill3rtaco.mineopoly.game.sections.Railroad;
+import com.kill3rtaco.mineopoly.game.sections.Utility;
 import com.kill3rtaco.mineopoly.messages.InsufficientFundsMessage;
 import com.kill3rtaco.mineopoly.messages.InvalidTurnMessage;
 import com.kill3rtaco.mineopoly.messages.MustRollFirstMessage;
 import com.kill3rtaco.mineopoly.messages.NotPlayingGameMessage;
 import com.kill3rtaco.mineopoly.messages.SectionAlreadyOwnedMessage;
 import com.kill3rtaco.mineopoly.messages.SectionNotOwnableMessage;
-import com.kill3rtaco.mineopoly.sections.MineopolySection;
-import com.kill3rtaco.mineopoly.sections.OwnableSection;
-import com.kill3rtaco.mineopoly.sections.Property;
-import com.kill3rtaco.mineopoly.sections.Railroad;
-import com.kill3rtaco.mineopoly.sections.Utility;
 
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 import com.kill3rtaco.tacoapi.api.messages.TooManyArgumentsMessage;
@@ -40,23 +40,29 @@ public class PropertyBuyCommand extends TacoCommand {
 							if(!oSection.isOwned()){
 								if(mp.canBuy(oSection)){
 									oSection.setOwner(mp);
-									mp.takeMoney(oSection.getPrice());
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3bought " + section.getColorfulName() +"&3 for &2" + oSection.getPrice(), mp);
 									mp.sendMessage("&3You bought " + section.getColorfulName() + "&3 for &2" + oSection.getPrice());
-									mp.sendBalanceMessage();
+									mp.takeMoney(oSection.getPrice());
 									if(oSection instanceof Property){
 										Property prop = (Property) oSection;
 										if(mp.hasMonopoly(prop.getColor())){
-											Mineopoly.plugin.getGame().getChannel().sendMessage("&b " + mp.getName() + "now has a monopoly for the color " + prop.getColor().getName(), mp);
+											Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3now has a monopoly for the color " + prop.getColor().getName(), mp);
 											mp.sendMessage("&3You now have a monopoly for the color " + prop.getColor().getName());
 											mp.sendMessage("&3You can now add houses by typing &b/property add-house [property]");
 										}
 									}else if(oSection instanceof Railroad && mp.ownedRailRoads() == 4){
-										Mineopoly.plugin.getGame().getChannel().sendMessage("&b " + mp.getName() + "now owns all Railroad spaces", mp);
+										Mineopoly.plugin.getGame().getChannel().sendMessage("&b " + mp.getName() + " &3now owns all Railroad spaces", mp);
 										mp.sendMessage("&3You now now own all Railroad spaces");
 									}else if(oSection instanceof Utility && mp.ownedUtilities() == 2){
-										Mineopoly.plugin.getGame().getChannel().sendMessage("&b " + mp.getName() + "now owns both Utility spaces", mp);
+										Mineopoly.plugin.getGame().getChannel().sendMessage("&b " + mp.getName() + " &3now owns both Utility spaces", mp);
 										mp.sendMessage("&3You now own both Utility spaces");
+									}
+									boolean ate = Mineopoly.config.getAllowAutomaticTurnEnding();
+									if(ate){
+										mp.sendMessage("&aTurn ended automatically");
+										mp.getPlayer().chat("/mineopoly end-turn");
+									}else{
+										mp.sendMessage("&3End your turn with &b/mgame et");
 									}
 								}else{
 									mp.sendMessage(new InsufficientFundsMessage());

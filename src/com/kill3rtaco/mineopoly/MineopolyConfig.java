@@ -5,6 +5,7 @@ import java.io.File;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import com.kill3rtaco.mineopoly.game.WinMethod;
 import com.kill3rtaco.tacoapi.api.TacoConfig;
 
 public class MineopolyConfig extends TacoConfig{
@@ -15,14 +16,19 @@ public class MineopolyConfig extends TacoConfig{
 
 	@Override
 	public void setDefaults() {
-		addDefaultValue("mineopoly.metrics.send_data", true);
+		addDefaultValue("mineopoly.game.automatic-turn-ending", false);
+		addDefaultValue("mineopoly.game.add-even-when-banned", false);
+		addDefaultValue("mineopoly.game.win-method", "MONEY");
+		addDefaultValue("mineopoly.game.min_players", 2);
+		addDefaultValue("mineopoly.game.max_players", 8);
+		addDefaultValue("mineopoly.game.reward", 0);
+		addDefaultValue("mineopoly.sessions.session-timeout-minutes", 2);
 		addDefaultValue("mineopoly.schematic.world", "world");
 		addDefaultValue("mineopoly.schematic.needs_paste", true);
 		addDefaultValue("mineopoly.schematic.origin-x", 0);
 		addDefaultValue("mineopoly.schematic.origin-y", 64);
 		addDefaultValue("mineopoly.schematic.origin-z", 0);
-		addDefaultValue("mineopoly.game.min_players", 2);
-		addDefaultValue("mineopoly.game.max_players", 8);
+		addDefaultValue("mineopoly.metrics.send_data", true);
 		addDefaultValue("mineopoly.names.properties.mediterranean_ave", "Nether Ave"); 			//brown
 		addDefaultValue("mineopoly.names.properties.baltic_ave", "Slimey Street");
 		addDefaultValue("mineopoly.names.properties.oriental_ave", "Temple Road"); 				//light_blue
@@ -94,6 +100,26 @@ public class MineopolyConfig extends TacoConfig{
 		setInt("mineopoly.schematic.origin-z", location.getBlockZ());
 		save();
 		reload();
+	}
+	
+	public double getSessionTimeout(){
+		return getDouble("mineopoly.sessions.session-timeout-minutes");
+	}
+	
+	public boolean getAllowAutomaticTurnEnding(){
+		return getBoolean("mineopoly.game.automatic-turn-ending");
+	}
+	
+	public WinMethod getWinMethod(){
+		return WinMethod.getWinMethod(getString("mineopoly.game.win-method"));
+	}
+	
+	public double getWinReward(){
+		return getDouble("mineopoly.game.reward");
+	}
+	
+	public boolean getAddEvenWhenBanned(){
+		return getBoolean("mineopoly.game.add-even-when-banned");
 	}
 	
 }

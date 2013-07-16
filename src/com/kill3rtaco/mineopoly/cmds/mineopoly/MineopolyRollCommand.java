@@ -3,12 +3,11 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.CannotPerformActionMessage;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.mineopoly.messages.InvalidTurnMessage;
 import com.kill3rtaco.mineopoly.messages.NotPlayingGameMessage;
-
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyRollCommand extends TacoCommand {
@@ -24,12 +23,10 @@ public class MineopolyRollCommand extends TacoCommand {
 				MineopolyPlayer p = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 				if(p.hasTurn()){
 					if(p.isJailed()){
-						p.sendMessage("&cYou cannot use that command because you are jailed. Please use &6/mjail roll &cinstead");
+						p.sendMessage("&cYou cannot use that command because you are jailed. Please use &6/" + Mineopoly.J_ALIAS + " roll &cinstead");
 					}else{
 						if(p.canRoll()){
 							p.roll();
-							p.sendMessage("&3Type &b/property info &3to view information for this space");
-							p.sendMessage("&3End your turn with &b/mgame et");
 						}else{
 							p.sendMessage(new CannotPerformActionMessage());
 						}

@@ -1,16 +1,16 @@
 name: Mineopoly
 main: com.kill3rtaco.mineopoly.Mineopoly
-version: 1.3.25
+version: 1.4
 description: Monopoly port for Bukkit servers
 author: KILL3RTACO
 depend: [TacoAPI, WorldEdit]
 commands:
   mineopoly:
     description: Mineopoly player commands
-    aliases: [mgame, m]
+    aliases: [m, mgame]
   property:
     description: Mineopoly property commands
-    aliases: [mprop, prop, p]
+    aliases: [mproperty, mprop, prop, p]
   jail:
     description: Mineopoly jail commands
-    aliases: [j, mineopolyjail, mjail]
+    aliases: [j, mjail]

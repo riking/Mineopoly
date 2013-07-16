@@ -4,19 +4,35 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolySection;
+import com.kill3rtaco.mineopoly.game.sections.CardinalSection;
+import com.kill3rtaco.mineopoly.game.sections.SpecialSquare;
+import com.kill3rtaco.mineopoly.game.sections.squares.JailSquare;
 import com.kill3rtaco.mineopoly.messages.OutsideSectionMessage;
-import com.kill3rtaco.mineopoly.sections.CardinalSection;
-import com.kill3rtaco.mineopoly.sections.MineopolySection;
-import com.kill3rtaco.mineopoly.sections.SpecialSquare;
-import com.kill3rtaco.mineopoly.sections.squares.JailSquare;
+import com.kill3rtaco.mineopoly.tasks.managers.PlayerSessionManager;
 
 
 public class MineopolyListener implements Listener {
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event){
+		Player player = event.getPlayer();
+		if(PlayerSessionManager.isInList(player.getName())){
+			PlayerSessionManager.remove(player.getName());
+			if(Mineopoly.plugin.getGame().isRunning()){
+				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player.getName());
+				if(mp != null) mp.setPlayer(player);
+			}
+		}
+	}
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event){
@@ -24,7 +40,7 @@ public class MineopolyListener implements Listener {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
-				Mineopoly.plugin.getGame().kick(mp, "disconnected");
+				PlayerSessionManager.addToList(mp.getName());
 			}else{
 				if(Mineopoly.plugin.getQueue().playerIsInQueue(player)){
 					Mineopoly.plugin.getQueue().removePlayer(player);
@@ -39,6 +55,8 @@ public class MineopolyListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
+		if(event.getTo().getBlockX() == event.getFrom().getBlockX()
+				&& event.getTo().getBlockZ() == event.getFrom().getBlockZ()) return;
 		Player player = event.getPlayer();
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
@@ -109,4 +127,24 @@ public class MineopolyListener implements Listener {
 			}
 		}
 	}
+	
+	@EventHandler
+	public void onPlayerDamage(EntityDamageEvent event){
+		if(event.getEntity() instanceof Player){
+			Player player = (Player) event.getEntity();
+			if(Mineopoly.plugin.getGame().isRunning()){
+				if(Mineopoly.plugin.getGame().hasPlayer(player)){
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onHungerChange(FoodLevelChangeEvent event){
+		if(Mineopoly.plugin.getGame().hasPlayer((Player) event.getEntity())){
+			event.setCancelled(true);
+		}
+	}
+	
 }

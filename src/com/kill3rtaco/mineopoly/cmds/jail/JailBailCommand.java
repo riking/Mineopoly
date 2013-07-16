@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.jail;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.mineopoly.messages.InsufficientFundsMessage;
 import com.kill3rtaco.mineopoly.messages.NotInJailMessage;
@@ -33,7 +33,7 @@ public class JailBailCommand extends TacoCommand {
 						mp.payPot(50);
 						Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3paid bail and was let out of jail", mp);
 						mp.sendMessage("&3You paid bail and were let out of jail");
-						mp.sendMessage("&3You can now use &b/mineopoly roll");
+						mp.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.M_ALIAS + " roll on your next turn");
 						mp.setJailed(false, true);
 					}else{
 						mp.sendMessage(new InsufficientFundsMessage());

@@ -3,13 +3,13 @@ package com.kill3rtaco.mineopoly.cmds.property;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolySection;
+import com.kill3rtaco.mineopoly.game.sections.Property;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.mineopoly.messages.InvalidTurnMessage;
 import com.kill3rtaco.mineopoly.messages.NotPlayingGameMessage;
 import com.kill3rtaco.mineopoly.messages.SectionNotFoundMessage;
-import com.kill3rtaco.mineopoly.sections.MineopolySection;
-import com.kill3rtaco.mineopoly.sections.Property;
 
 import com.kill3rtaco.tacoapi.TacoAPI;
 import com.kill3rtaco.tacoapi.api.TacoCommand;

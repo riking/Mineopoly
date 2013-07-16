@@ -5,7 +5,7 @@ import java.util.Random;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPlayer;
+import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.CannotPerformActionMessage;
 import com.kill3rtaco.mineopoly.messages.InvalidTurnMessage;
 import com.kill3rtaco.mineopoly.messages.NotPlayingGameMessage;
@@ -37,17 +37,17 @@ public class JailRollCommand extends TacoCommand{
 							int roll1 = random.nextInt(6) + 1;
 							int roll2 = random.nextInt(6) + 1;
 							if(roll1 == roll2){
-								Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + p.getName() + "&3rolled doubles and was let out of jail", p);
+								Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + p.getName() + " &3rolled doubles and was let out of jail", p);
 								p.sendMessage("&3You rolled doubles and were let out of jail");
-								p.sendMessage("&3You can now use &b/mineopoly roll &3on your next turn");
+								p.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.M_ALIAS + " roll on your next turn");
 								p.setJailed(false, true);
 							}else{
-								if(p.getJailRolls() == 2 && p.getMoney() >= 50){
+								if(p.getJailRolls() == 2 && p.getBalance() >= 50){
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + p.getName() + " &3rolled three times without rolling doubles and was let out of jail", p);
 									p.sendMessage("&3You were let out of jail because you rolled 3 times without rolling doubles");
-									p.sendMessage("&3You can now use &b/mineopoly roll &3on your next turn");
+									p.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.M_ALIAS + " roll on your next turn");
 									p.setJailed(false, true);
-								}else if(!(p.getMoney() >= 50)){
+								}else if(!(p.getBalance() >= 50)){
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + p.getName() + " &3rolled three times, but cannot make bail (&250&3) and was not let out of jail", p);
 									p.sendMessage("&3You were not let out of jail because you cannot make bail (&250&3)");
 									p.sendMessage("&3You must stay until you roll doubles, use a &bGet out of Jail Free &3card, or have &250");

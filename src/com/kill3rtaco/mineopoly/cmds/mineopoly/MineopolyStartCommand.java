@@ -19,7 +19,12 @@ public class MineopolyStartCommand extends TacoCommand {
 			int queued = Mineopoly.plugin.getQueue().getSize();
 			int min = Mineopoly.config.getMinPlayers();
 			if(queued >= min){
-				Mineopoly.plugin.restartGame();
+				if(args.length == 0){
+					Mineopoly.plugin.restartGame();
+				}else{
+					//backdoor for testing/debugging, this is done silently
+					Mineopoly.plugin.restartGame(Boolean.valueOf(args[0]));
+				}
 			}else{
 				Mineopoly.plugin.chat.sendPlayerMessage(player, "&e" + queued + " &cplayers in queue with minimum of &e" + min + " &crequired");
 				Mineopoly.plugin.chat.sendPlayerMessage(player, "&eView players in the queue by using &a/mineopoly queue");

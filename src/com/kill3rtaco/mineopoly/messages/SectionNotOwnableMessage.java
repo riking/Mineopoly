@@ -1,6 +1,6 @@
 package com.kill3rtaco.mineopoly.messages;
 
-import com.kill3rtaco.mineopoly.sections.MineopolySection;
+import com.kill3rtaco.mineopoly.game.MineopolySection;
 
 import com.kill3rtaco.tacoapi.api.TacoMessage;
 

@@ -4,14 +4,21 @@ import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyDeedsCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyEndCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyEndTurnCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyForceAddPlayerCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyGameInfoCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyJoinChannelCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyJoinCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyKickPlayerCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyLeaveChannelCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyMonopoliesCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyQueueCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyQuitCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyReloadCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyResumeCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyRollCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolySaveCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolySetPasteLocationCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyStartCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyStatsCommand;
@@ -28,14 +35,21 @@ public class MineopolyCommandHandler extends TacoCommandHandler{
 	@Override
 	protected void registerCommands() {
 		registerCommand(new MineopolyDeedsCommand());
+		registerCommand(new MineopolyEndCommand());
 		registerCommand(new MineopolyEndTurnCommand());
+		registerCommand(new MineopolyForceAddPlayerCommand());
+		registerCommand(new MineopolyGameInfoCommand());
 		registerCommand(new MineopolyJoinCommand());
 		registerCommand(new MineopolyJoinChannelCommand());
 		registerCommand(new MineopolyKickPlayerCommand());
+		registerCommand(new MineopolyLeaveChannelCommand());
 		registerCommand(new MineopolyMonopoliesCommand());
 		registerCommand(new MineopolyQueueCommand());
 		registerCommand(new MineopolyQuitCommand());
+		registerCommand(new MineopolyResumeCommand());
+		registerCommand(new MineopolyReloadCommand());
 		registerCommand(new MineopolyRollCommand());
+		registerCommand(new MineopolySaveCommand());
 		registerCommand(new MineopolySetPasteLocationCommand());
 		registerCommand(new MineopolyStatsCommand());
 		registerCommand(new MineopolyStartCommand());
@@ -52,7 +66,7 @@ public class MineopolyCommandHandler extends TacoCommandHandler{
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: &b/mineopoly&7, &b/mgame&7, &b/m");
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/mineopoly ? [page]");
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "");
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("Plugin Information"));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&5Plugin Information"));
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6Author&7: &cKILL3RTACO");
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6Version&7: &5" + Mineopoly.plugin.getDescription().getVersion());
 	}
