@@ -6,6 +6,7 @@ import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.mineopoly.messages.InsufficientFundsMessage;
+import com.kill3rtaco.mineopoly.messages.InvalidTurnMessage;
 import com.kill3rtaco.mineopoly.messages.NotInJailMessage;
 import com.kill3rtaco.mineopoly.messages.NotPlayingGameMessage;
 
@@ -15,7 +16,6 @@ public class JailBailCommand extends TacoCommand {
 
 	public JailBailCommand() {
 		super("bail", new String[]{"pay-bail", "b"}, "", "Pay your bail", "");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -28,12 +28,17 @@ public class JailBailCommand extends TacoCommand {
 		if(Mineopoly.plugin.getGame().isRunning()){
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
+				if(!mp.hasTurn()){
+					Mineopoly.plugin.chat.sendPlayerMessage(player, new InvalidTurnMessage());
+					return;
+				}
 				if(mp.isJailed()){
-					if(mp.hasMoney(50)){
-						mp.payPot(50);
-						Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3paid bail and was let out of jail", mp);
-						mp.sendMessage("&3You paid bail and were let out of jail");
-						mp.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.M_ALIAS + " roll on your next turn");
+					int bail = Mineopoly.houseRules.bailPrice();
+					if(mp.hasMoney(bail)){
+						mp.payPot(bail);
+						Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3paid bail &b(&2" + bail + "&b) and was let out of jail", mp);
+						mp.sendMessage("&3You paid bail &b(&2" + bail + "&b) and were let out of jail");
+						mp.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.getMAlias() + " roll on your next turn");
 						mp.setJailed(false, true);
 					}else{
 						mp.sendMessage(new InsufficientFundsMessage());

@@ -12,6 +12,7 @@ import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyJoinChannelCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyJoinCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyKickPlayerCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyLeaveChannelCommand;
+import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyMenuCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyMonopoliesCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyQueueCommand;
 import com.kill3rtaco.mineopoly.cmds.mineopoly.MineopolyQuitCommand;
@@ -43,6 +44,7 @@ public class MineopolyCommandHandler extends TacoCommandHandler{
 		registerCommand(new MineopolyJoinChannelCommand());
 		registerCommand(new MineopolyKickPlayerCommand());
 		registerCommand(new MineopolyLeaveChannelCommand());
+		registerCommand(new MineopolyMenuCommand());
 		registerCommand(new MineopolyMonopoliesCommand());
 		registerCommand(new MineopolyQueueCommand());
 		registerCommand(new MineopolyQuitCommand());
@@ -62,9 +64,10 @@ public class MineopolyCommandHandler extends TacoCommandHandler{
 
 	@Override
 	protected void onPlayerCommand(Player player) {
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/mineopoly"));
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: &b/mineopoly&7, &b/mgame&7, &b/m");
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/mineopoly ? [page]");
+		String cmd = "mineopoly";
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/" + cmd));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: " + Mineopoly.plugin.getAliases(cmd));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/" + cmd +" ? [page]");
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "");
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&5Plugin Information"));
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&6Author&7: &cKILL3RTACO");

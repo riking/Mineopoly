@@ -26,21 +26,20 @@ public class PropertyRemoveHouseCommand extends TacoCommand {
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
 				if(mp.hasTurn()){
-					if(args.length == 0){ //add house to current property
+					if(args.length == 0){ //remove house to current property
 						if(mp.getCurrentSection() instanceof Property){
 							Property prop = (Property) mp.getCurrentSection();
 							if(prop.getHouses() > 0){
 								prop.removeHouse();
 								Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3removed a house from " + prop.getColorfulName(), mp);
 								mp.sendMessage("&3You removed a house from " + prop.getColorfulName());
-								mp.sendBalanceMessage();
 							}else{
 								mp.sendMessage("&cThat property has no houses");
 							}
 						}else{
 							mp.sendMessage("&cThat is not a valid space to remove houses");
 						}
-					}else{ //get specified property and add house to it if not null (id or name, name being the config name)
+					}else{ //get specified property and remove house from it
 						MineopolySection section;
 						if(TacoAPI.getChatUtils().isNum(args[0]))
 							section = Mineopoly.plugin.getGame().getBoard().getSection(Integer.parseInt(args[0]));
@@ -55,7 +54,6 @@ public class PropertyRemoveHouseCommand extends TacoCommand {
 									prop.removeHouse();
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3removed a house from " + prop.getColorfulName(), mp);
 									mp.sendMessage("&3You removed a house from " + prop.getColorfulName());
-									mp.sendBalanceMessage();
 								}else{
 									mp.sendMessage("&cThat property has no houses");
 								}

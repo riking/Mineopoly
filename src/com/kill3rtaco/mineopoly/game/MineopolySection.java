@@ -53,7 +53,7 @@ public abstract class MineopolySection implements Comparable<MineopolySection> {
 	}
 	
 	public Location getLocation(){
-		Location origin = Mineopoly.config.getBoardOrigin();
+		Location origin = Mineopoly.config.boardOrigin();
 		location = origin;
 		setPitchYaw();
 		if(this instanceof CardinalSection){
@@ -82,6 +82,37 @@ public abstract class MineopolySection implements Comparable<MineopolySection> {
 				location.setX(location.getX() - 9.5);
 				location.setZ(location.getZ() - 118.5);
 			}
+		}
+		return location;
+	}
+	
+	//get a location relative to this section
+	public Location getLocationRelative(int x, int y, int z){
+		Location location = getLocation();
+		if(this instanceof CardinalSection){
+			CardinalSection c = (CardinalSection) this;
+			int side = c.getSide();
+			if(side == 0){
+				location.setX(location.getX() + x);
+				location.setY(location.getY() + y);
+				location.setZ(location.getZ() - z);
+			}else if(side == 1){
+				location.setX(location.getX() + z);
+				location.setY(location.getY() + y);
+				location.setZ(location.getZ() + x);
+			}else if(side == 2){
+				location.setX(location.getX() - x);
+				location.setY(location.getY() + y);
+				location.setZ(location.getZ() + z);
+			}else{
+				location.setX(location.getX() - z);
+				location.setY(location.getY() + y);
+				location.setZ(location.getZ() - x);
+			}
+		}else{
+			location.setX(location.getX() + x);
+			location.setY(location.getY() + y);
+			location.setZ(location.getZ() + z);
 		}
 		return location;
 	}

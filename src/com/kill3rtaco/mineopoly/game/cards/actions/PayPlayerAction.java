@@ -14,7 +14,7 @@ public class PayPlayerAction extends MineopolyCardAction {
 	@Override
 	public CardResult doAction(MineopolyPlayer player, Object... params) {
 		if(params.length > 0 && params[0] instanceof Integer){
-			int param = (int) params[0];
+			int param = (Integer) params[0];
 			int size = Mineopoly.plugin.getGame().getBoard().getPlayers().size();
 			for(MineopolyPlayer p : Mineopoly.plugin.getGame().getBoard().getPlayers()){
 				if(!p.getName().equalsIgnoreCase(player.getName())){

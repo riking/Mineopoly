@@ -14,12 +14,12 @@ public class MineopolyChannelListener{
 	}
 
 	public void sendMessage(String message){
-		Player player = Mineopoly.server.getPlayer(getName());
+		Player player = Mineopoly.plugin.getServer().getPlayer(getName());
 		if(player != null) Mineopoly.plugin.chat.sendPlayerMessage(player, message);
 	}
 	
 	public void sendMessage(TacoMessage message){
-		Player player = Mineopoly.server.getPlayer(getName());
+		Player player = Mineopoly.plugin.getServer().getPlayer(getName());
 		if(player != null) Mineopoly.plugin.chat.sendPlayerMessage(player, message.getMessage());
 	}
 	

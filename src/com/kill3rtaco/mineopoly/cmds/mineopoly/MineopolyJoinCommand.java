@@ -3,14 +3,14 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyJoinCommand extends TacoCommand {
 
 	public MineopolyJoinCommand() {
-		super("join", new String[]{"j"}, "", "Join the game queue", MineopolyPermissions.JOIN_GAME);
+		super("join", new String[]{"j"}, "", "Join the game queue", MineopolyConstants.P_JOIN_GAME);
 		// TODO Auto-generated constructor stub
 	}
 

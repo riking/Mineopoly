@@ -16,8 +16,8 @@ public class Utility extends OwnableSection implements CardinalSection{
 
 	private int side;
 	
-	public Utility(int id, String name, char color, int side) {
-		super(id, Mineopoly.config.getCompanyName(name), color, 150, SectionType.UTILITY);
+	public Utility(int id, String pathToName, char color, int side) {
+		super(id, pathToName, color, 150, SectionType.UTILITY);
 		this.side = side;
 	}
 

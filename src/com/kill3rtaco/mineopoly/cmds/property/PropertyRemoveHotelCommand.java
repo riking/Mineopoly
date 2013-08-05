@@ -33,7 +33,6 @@ public class PropertyRemoveHotelCommand extends TacoCommand {
 								prop.removeHotel();
 								Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3removed the hotel from " + prop.getColorfulName(), mp);
 								mp.sendMessage("&3You removed the hotel from " + prop.getColorfulName());
-								mp.sendBalanceMessage();
 							}else{
 								mp.sendMessage("&cThat property doesn't have a hotel");
 							}
@@ -55,7 +54,6 @@ public class PropertyRemoveHotelCommand extends TacoCommand {
 									prop.removeHotel();
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + mp.getName() + " &3removed the hotel from " + prop.getColorfulName(), mp);
 									mp.sendMessage("&3You removed the hotel from " + prop.getColorfulName());
-									mp.sendBalanceMessage();
 								}else{
 									mp.sendMessage("&cThat property doesn't have a hotel");
 								}

@@ -14,7 +14,7 @@ public class PayAllAction extends MineopolyCardAction {
 	@Override
 	public CardResult doAction(MineopolyPlayer player, Object... params) {
 		if(params.length > 0 && params[0] instanceof Integer){
-			int param = (int) params[0];
+			int param = (Integer) params[0];
 			for(MineopolyPlayer p : Mineopoly.plugin.getGame().getBoard().getPlayers()){
 				if(!p.getName().equalsIgnoreCase(player.getName())){
 					p.sendMessage("&3You've been given &2" + param + " &3by &b" + player.getName());

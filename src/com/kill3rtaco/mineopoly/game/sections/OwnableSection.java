@@ -1,5 +1,6 @@
 package com.kill3rtaco.mineopoly.game.sections;
 
+import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.game.MineopolySection;
 
@@ -9,8 +10,8 @@ public abstract class OwnableSection extends MineopolySection {
 	protected boolean owned, mortgaged;
 	protected int price;
 	
-	public OwnableSection(int id, String name, char color, int price, SectionType type) {
-		super(id, name, color, type);
+	public OwnableSection(int id, String pathToName, char color, int price, SectionType type) {
+		super(id, Mineopoly.names.getString(pathToName), color, type);
 		this.price = price;
 	}
 

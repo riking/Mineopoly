@@ -3,13 +3,13 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyUnbanCommand extends TacoCommand {
 
 	public MineopolyUnbanCommand() {
-		super("unban", new String[]{}, "<player>", "Unban a player from playing Mineopoly", MineopolyPermissions.UNBAN_PLAYER_FROM_GAME);
+		super("unban", new String[]{}, "<player>", "Unban a player from playing Mineopoly", MineopolyConstants.P_UNBAN_PLAYER_FROM_GAME);
 	}
 
 	@Override

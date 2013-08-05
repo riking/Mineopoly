@@ -46,6 +46,7 @@ public class MineopolySaveGame extends TacoConfig {
 		
 		String turnOrder = game.getTurnOrder().trim();
 		String currentTurn = game.getPlayerWithCurrentTurn().getName();
+		long timeRunning = game.getTimeRunning();
 		
 		MineopolyPot pot = game.getBoard().getPot();
 		int potAmount = pot.getMoney();
@@ -54,6 +55,7 @@ public class MineopolySaveGame extends TacoConfig {
 		
 		setString("game.turn-order", turnOrder);
 		setString("game.current-turn", currentTurn);
+		set("game.time-running", timeRunning);
 		
 		setInt("pot.amount", potAmount);
 		setBoolean("pot.card_chance", potHasChanceCard);
@@ -81,6 +83,7 @@ public class MineopolySaveGame extends TacoConfig {
 			int sectionId = mp.getCurrentSection().getId();
 			boolean jailed = mp.isJailed();
 			int rolls = mp.getTotalRolls();
+			int passes = mp.getGoPasses();
 			
 			setInt(root + "balance", balance);
 			set(root + "properties.owned", properties);
@@ -105,7 +108,12 @@ public class MineopolySaveGame extends TacoConfig {
 			setInt(root + "section", sectionId);
 			setBoolean(root + "jailed", jailed);
 			setInt(root + "rolls", rolls);
+			setInt(root + "go-passes", passes);
 		}
+	}
+	
+	public long getTimeRunning(){
+		return config.getLong("game.time-running");
 	}
 
 }

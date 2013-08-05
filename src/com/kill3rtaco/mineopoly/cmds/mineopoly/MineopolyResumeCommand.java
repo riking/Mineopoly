@@ -5,14 +5,14 @@ import java.io.File;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.saves.MineopolySaveGame;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyResumeCommand extends TacoCommand {
 
 	public MineopolyResumeCommand() {
-		super("resume", new String[]{"res"}, "<save name>", "", MineopolyPermissions.RESUME_GAME);
+		super("resume", new String[]{"res"}, "<save name>", "", MineopolyConstants.P_RESUME_GAME);
 	}
 
 	@Override

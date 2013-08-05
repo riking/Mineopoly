@@ -1,4 +1,4 @@
-package com.kill3rtaco.mineopoly.tasks.managers;
+package com.kill3rtaco.mineopoly.game.tasks.managers;
 
 import java.util.Set;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class PlayerSessionManager {
 	}
 	
 	public static boolean canReturn(String name){
-		double minutes = Mineopoly.config.getSessionTimeout();
+		double minutes = Mineopoly.config.sessionTimeout();
 		double timeNeeded = 1000 * (60 * minutes);
 		Long time = players.get(name);
 		if(time == null) return true;

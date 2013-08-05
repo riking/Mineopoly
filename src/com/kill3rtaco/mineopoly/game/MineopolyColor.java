@@ -2,21 +2,23 @@ package com.kill3rtaco.mineopoly.game;
 
 public enum MineopolyColor {
 
-	PURPLE(new int[]{1, 3}, '5'),
-	LIGHT_BLUE(new int[]{6, 8, 9}, '3'),
-	MAGENTA(new int[]{11, 13, 14}, 'd'),
-	ORANGE(new int[]{16, 18, 19}, '6'),
-	RED(new int[]{21, 23, 24}, '4'),
-	YELLOW(new int[]{26, 28, 29}, 'e'),
-	GREEN(new int[]{31, 32, 34}, '2'),
-	BLUE(new int[]{37, 39}, '1');
+	PURPLE(new int[]{1, 3}, '5', 10),
+	LIGHT_BLUE(new int[]{6, 8, 9}, '3', 9),
+	MAGENTA(new int[]{11, 13, 14}, 'd', 2),
+	ORANGE(new int[]{16, 18, 19}, '6', 1),
+	RED(new int[]{21, 23, 24}, '4', 14),
+	YELLOW(new int[]{26, 28, 29}, 'e', 4),
+	GREEN(new int[]{31, 32, 34}, '2', 13),
+	BLUE(new int[]{37, 39}, '1', 11);
 	
 	private int[] ids;
 	private char color;
+	private int wool;
 	
-	private MineopolyColor(int[] ids, char color){
+	private MineopolyColor(int[] ids, char color, int wool){
 		this.ids = ids;
 		this.color = color;
+		this.wool = wool;
 	}
 	
 	public int[] getIds(){
@@ -42,6 +44,10 @@ public enum MineopolyColor {
 
 	public char getChar() {
 		return color;
+	}
+	
+	public int getWoolColor(){
+		return wool;
 	}
 	
 }

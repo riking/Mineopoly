@@ -1,24 +1,31 @@
 package com.kill3rtaco.mineopoly.listener;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.InventoryHolder;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
+import com.kill3rtaco.mineopoly.game.MineopolyGame;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.game.MineopolySection;
+import com.kill3rtaco.mineopoly.game.menus.MineopolyMenu;
 import com.kill3rtaco.mineopoly.game.sections.CardinalSection;
 import com.kill3rtaco.mineopoly.game.sections.SpecialSquare;
 import com.kill3rtaco.mineopoly.game.sections.squares.JailSquare;
+import com.kill3rtaco.mineopoly.game.tasks.managers.PlayerSessionManager;
 import com.kill3rtaco.mineopoly.messages.OutsideSectionMessage;
-import com.kill3rtaco.mineopoly.tasks.managers.PlayerSessionManager;
-
 
 public class MineopolyListener implements Listener {
 	
@@ -144,6 +151,41 @@ public class MineopolyListener implements Listener {
 	public void onHungerChange(FoodLevelChangeEvent event){
 		if(Mineopoly.plugin.getGame().hasPlayer((Player) event.getEntity())){
 			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerInteract(PlayerInteractEvent event){
+		MineopolyGame game = Mineopoly.plugin.getGame();
+		if(game.isRunning() && game.hasPlayer(event.getPlayer())){
+			if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
+				Block block = event.getPlayer().getTargetBlock(null, 25);
+				if(block.getType() == Material.WORKBENCH){
+					Location origin = game.getBoard().getOrigin();
+					int boardLength = 129;
+					if(block.getX() <= origin.getBlockX() + boardLength - 1
+							&& block.getZ() <= origin.getBlockZ() + boardLength - 1
+							&& block.getY() <= origin.getY() + 25){
+						event.setCancelled(true);
+						event.getPlayer().chat("/mineopoly menu");
+					}
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event){
+		InventoryHolder holder = event.getInventory().getHolder();
+		if(holder instanceof MineopolyMenu){
+			MineopolyMenu menu = (MineopolyMenu) holder;
+			if(menu.clickIsValid(event.getSlot())){
+				MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer((Player) event.getWhoClicked());
+				if(mp != null){
+					event.setCancelled(true);
+					menu.action(mp, event.getSlot());
+				}
+			}
 		}
 	}
 	

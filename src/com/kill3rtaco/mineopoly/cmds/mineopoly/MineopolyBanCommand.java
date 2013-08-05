@@ -3,14 +3,14 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyBanCommand extends TacoCommand {
 
 	public MineopolyBanCommand() {
-		super("ban", new String[]{}, "<player>", "Ban a player from playing Mineopoly", MineopolyPermissions.BAN_PLAYER_FROM_GAME);
+		super("ban", new String[]{}, "<player>", "Ban a player from playing Mineopoly", MineopolyConstants.P_BAN_PLAYER_FROM_GAME);
 	}
 
 	@Override

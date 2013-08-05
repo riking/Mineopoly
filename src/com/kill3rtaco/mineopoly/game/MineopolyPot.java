@@ -28,13 +28,13 @@ public class MineopolyPot {
 	
 	public void give(MineopolyPlayer player){
 		MineopolyChatChannel channel = Mineopoly.plugin.getGame().getChannel();
-		player.addMoney(money);
 		int cards = 0;
 		if(chanceJailCard) cards++;
 		if(ccJailCard) cards++;
 		String isCards = (cards==0 ? "" : (cards==1 ? "&3 and a Get Out Of Jail Free card" : "&3 and two Get Out Of Jail Free cards"));
 		String message = "&b" +  player + " &3landed on &4Free Parking and was awarded &2" + money + isCards;
 		String message2 = "&3You were awarded &2" + money + isCards + " &3for landing on &4Free Parking";
+		if(money > 0) player.addMoney(money);
 		channel.sendMessage(message, player);
 		player.sendMessage(message2);
 		if(hasChanceJailCard()) player.giveChanceJailCard();

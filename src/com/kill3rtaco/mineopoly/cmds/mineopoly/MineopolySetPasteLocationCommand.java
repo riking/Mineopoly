@@ -3,13 +3,13 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolySetPasteLocationCommand extends TacoCommand {
 
 	public MineopolySetPasteLocationCommand() {
-		super("set-paste-location", new String[]{"spl"}, "[x y z]", "Set the paste location of the board", MineopolyPermissions.SET_PASTE_LOCATION);
+		super("set-paste-location", new String[]{"spl"}, "[x y z]", "Set the paste location of the board", MineopolyConstants.P_SET_PASTE_LOCATION);
 	}
 
 	@Override

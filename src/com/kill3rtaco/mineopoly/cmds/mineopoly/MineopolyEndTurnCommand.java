@@ -36,6 +36,11 @@ public class MineopolyEndTurnCommand extends TacoCommand {
 						if(p.getBalance() < 0){
 							p.sendMessage("&cYou are in debt (negative money) you must gain money before ending your turn. Or you can quit with &3/mgame quit");
 						}else{
+							if(!Mineopoly.houseRules.tradeAnytime() && p.hasSentRequest()){
+								p.sendMessage("&cYou cannot end your turn until players that have sent a trade request" +
+										" to have either accepted or declined your request, or you can cancel it");
+								return;
+							}
 							p.setTurn(false, false);
 						}
 					}else{

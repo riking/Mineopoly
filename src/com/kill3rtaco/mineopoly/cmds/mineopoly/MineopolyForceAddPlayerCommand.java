@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 
@@ -14,7 +14,7 @@ import com.kill3rtaco.tacoapi.api.messages.TooFewArgumentsMessage;
 public class MineopolyForceAddPlayerCommand extends TacoCommand {
 
 	public MineopolyForceAddPlayerCommand() {
-		super("force-add", new String[]{"fa", "add"}, "[player]", "Add a player to the Mineopoly game", MineopolyPermissions.FORCE_ADD_PLAYER);
+		super("force-add", new String[]{"fa", "add"}, "[player]", "Add a player to the Mineopoly game", MineopolyConstants.P_FORCE_ADD_PLAYER);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class MineopolyForceAddPlayerCommand extends TacoCommand {
 					if(!Mineopoly.plugin.getGame().hasPlayer(p)){
 						boolean add = true;
 						if(Mineopoly.plugin.isBanned(p.getName())){
-							add = Mineopoly.config.getAddEvenWhenBanned();
+							add = Mineopoly.config.addEvenWhenBanned();
 						}
 						
 						if(add){
@@ -66,7 +66,7 @@ public class MineopolyForceAddPlayerCommand extends TacoCommand {
 					if(!Mineopoly.plugin.getGame().hasPlayer(p)){
 						boolean add = true;
 						if(Mineopoly.plugin.isBanned(p.getName())){
-							add = Mineopoly.config.getAddEvenWhenBanned();
+							add = Mineopoly.config.addEvenWhenBanned();
 						}
 						
 						if(add){

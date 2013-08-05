@@ -3,21 +3,21 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyStartCommand extends TacoCommand {
 
 	public MineopolyStartCommand() {
-		super("start", new String[]{}, "", "Start the game", MineopolyPermissions.START_GAME);
+		super("start", new String[]{}, "", "Start the game", MineopolyConstants.P_START_GAME);
 	}
 
 	@Override
 	public void onPlayerCommand(Player player, String[] args) {
 		if(!Mineopoly.plugin.getGame().isRunning()){
 			int queued = Mineopoly.plugin.getQueue().getSize();
-			int min = Mineopoly.config.getMinPlayers();
+			int min = Mineopoly.config.minPlayers();
 			if(queued >= min){
 				if(args.length == 0){
 					Mineopoly.plugin.restartGame();
@@ -38,7 +38,7 @@ public class MineopolyStartCommand extends TacoCommand {
 	public boolean onConsoleCommand(String[] args) {
 		if(!Mineopoly.plugin.getGame().isRunning()){
 			int queued = Mineopoly.plugin.getQueue().getSize();
-			int min = Mineopoly.config.getMinPlayers();
+			int min = Mineopoly.config.minPlayers();
 			if(queued >= min){
 				Mineopoly.plugin.restartGame();
 			}else{

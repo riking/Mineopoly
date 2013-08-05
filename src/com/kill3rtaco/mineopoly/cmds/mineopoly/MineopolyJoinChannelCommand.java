@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.game.chat.MineopolyChannelListener;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 
@@ -12,7 +12,7 @@ import com.kill3rtaco.tacoapi.api.TacoCommand;
 public class MineopolyJoinChannelCommand extends TacoCommand {
 
 	public MineopolyJoinChannelCommand() {
-		super("join-channel", new String[]{"jc"}, "", "Join the game's output channel", MineopolyPermissions.CHANNEL_CHAT);
+		super("join-channel", new String[]{"jc"}, "", "Join the game's output channel", MineopolyConstants.P_CHANNEL_CHAT);
 	}
 
 	@Override

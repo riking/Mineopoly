@@ -13,7 +13,7 @@ public class TakeAction extends MineopolyCardAction {
 	@Override
 	public CardResult doAction(MineopolyPlayer player, Object... params) {
 		if(params.length > 0 && params[0] instanceof Integer){
-			player.takeMoney((int) params[0]);
+			player.takeMoney((Integer) params[0]);
 		}
 		return CardResult.MONEY_RELATED;
 	}

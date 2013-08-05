@@ -1,0 +1,16 @@
+package com.kill3rtaco.mineopoly.game.menus;
+
+public enum Action {
+	
+	ACCEPT_TRADE,
+	ADD_HOUSE,
+	ADD_HOTEL,
+	CANCEL_TRADE,
+	DECLINE_TRADE,
+	SELL_PROPERTY,
+	TRADE_PROPERTY,
+	VIEW_INFO,
+	VIEW_MONOPOLIES,
+	VIEW_PROPERTIES;
+	
+}

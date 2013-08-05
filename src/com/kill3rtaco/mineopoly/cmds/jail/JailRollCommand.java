@@ -39,13 +39,13 @@ public class JailRollCommand extends TacoCommand{
 							if(roll1 == roll2){
 								Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + p.getName() + " &3rolled doubles and was let out of jail", p);
 								p.sendMessage("&3You rolled doubles and were let out of jail");
-								p.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.M_ALIAS + " roll on your next turn");
+								p.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.getMAlias()+ " roll on your next turn");
 								p.setJailed(false, true);
 							}else{
 								if(p.getJailRolls() == 2 && p.getBalance() >= 50){
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + p.getName() + " &3rolled three times without rolling doubles and was let out of jail", p);
 									p.sendMessage("&3You were let out of jail because you rolled 3 times without rolling doubles");
-									p.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.M_ALIAS + " roll on your next turn");
+									p.sendMessage("&3You are out of jail. You can now use &b/" + Mineopoly.getMAlias()+ " roll on your next turn");
 									p.setJailed(false, true);
 								}else if(!(p.getBalance() >= 50)){
 									Mineopoly.plugin.getGame().getChannel().sendMessage("&b" + p.getName() + " &3rolled three times, but cannot make bail (&250&3) and was not let out of jail", p);

@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.property;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.game.MineopolySection;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
@@ -26,7 +26,7 @@ public class PropertyInfoCommand extends TacoCommand {
 	@Override
 	public void onPlayerCommand(Player player, String[] args) {
 		if(Mineopoly.plugin.getGame().isRunning()){
-			if(player.hasPermission(MineopolyPermissions.VIEW_GAME_STATS) || Mineopoly.plugin.getGame().hasPlayer(player)){
+			if(player.hasPermission(MineopolyConstants.P_VIEW_GAME_STATS) || Mineopoly.plugin.getGame().hasPlayer(player)){
 				if(args.length == 0){
 					if(Mineopoly.plugin.getGame().hasPlayer(player)){
 						MineopolyPlayer mp = Mineopoly.plugin.getGame().getBoard().getPlayer(player);
@@ -50,7 +50,7 @@ public class PropertyInfoCommand extends TacoCommand {
 					}
 					section.getInfo(player);
 				}
-			}else if(!player.hasPermission(MineopolyPermissions.VIEW_GAME_STATS)){
+			}else if(!player.hasPermission(MineopolyConstants.P_VIEW_GAME_STATS)){
 				Mineopoly.plugin.chat.sendInvalidPermissionsMessage(player);
 			}else{
 				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());

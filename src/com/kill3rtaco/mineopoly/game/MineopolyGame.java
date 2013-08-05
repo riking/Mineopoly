@@ -1,10 +1,11 @@
 package com.kill3rtaco.mineopoly.game;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -12,8 +13,11 @@ import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.game.chat.MineopolyChatChannel;
 import com.kill3rtaco.mineopoly.game.sections.OwnableSection;
 import com.kill3rtaco.mineopoly.game.sections.Property;
+import com.kill3rtaco.mineopoly.game.tasks.MineopolySessionTask;
+import com.kill3rtaco.mineopoly.game.tasks.MineopolyTimeLimitTask;
+import com.kill3rtaco.mineopoly.game.tasks.MineopolyTipTask;
+import com.kill3rtaco.mineopoly.game.tasks.MineopolyVotingTask;
 import com.kill3rtaco.mineopoly.saves.MineopolySaveGame;
-import com.kill3rtaco.mineopoly.tasks.MineopolySessionTask;
 import com.kill3rtaco.tacoapi.TacoAPI;
 
 public class MineopolyGame {
@@ -21,18 +25,32 @@ public class MineopolyGame {
 	private MineopolyBoard board;
 	private MineopolyChatChannel channel;
 	private MineopolySaveGame save;
-	private int index = 0, sessionTaskId;
-	private boolean running, loadedFromSave = false;
+	private int index = 0, sessionTaskId, timeLimitTaskId, tipTaskId, votingTaskId;
+	private int continueVotes = 0, endVotes = 0;
+	private long start = 0, end = 0, voteStart;
+	private boolean running, loadedFromSave = false, pollsOpen = false;
 	public HashMap<String, Location> locations = new HashMap<String, Location>();
+	private ArrayList<String> voted;
 	
 	public MineopolyGame(){
 		if(canStart()){
+			start = System.currentTimeMillis();
 			Mineopoly.plugin.chat.out("[Game] Loading new Mineopoly game...");
 			board = new MineopolyBoard();
 			channel = new MineopolyChatChannel();
 			addPlayers();
 			nextPlayer();
-			this.sessionTaskId = Mineopoly.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolySessionTask(), 0L, 20 * 5);
+			this.sessionTaskId = Mineopoly.plugin.getServer().getScheduler()
+					.scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolySessionTask(), 0L, 20 * 5L);
+			if(Mineopoly.houseRules.timeLimit() > 0){
+				this.timeLimitTaskId = Mineopoly.plugin.getServer().getScheduler()
+						.scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolyTimeLimitTask(), 0L, 20 * 5L);
+			}
+			if(Mineopoly.config.showTips()){
+				int interval = Mineopoly.config.tipInterval();
+				this.tipTaskId = Mineopoly.plugin.getServer().getScheduler()
+						.scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolyTipTask(), interval, 20 * interval);
+			}
 			this.running = true;
 			Mineopoly.plugin.chat.out("[Game] Done loading!");
 		}else{
@@ -42,86 +60,117 @@ public class MineopolyGame {
 	
 	public MineopolyGame(MineopolySaveGame save){
 		if(canStart(save)){
+			start = System.currentTimeMillis();
 			Mineopoly.plugin.chat.out("[Game] Loading game from file " + save.getFilename());
 			this.save = save;
 			board = new MineopolyBoard();
 			channel = new MineopolyChatChannel();
 			this.loadedFromSave = true;
-			this.running = true;
 			Mineopoly.plugin.chat.out("[Game] Done loading!");
 		}
 	}
+
+	public void save(String name){
+		File file = new File(Mineopoly.plugin.getDataFolder() + "/saves/" + name + ".yml");
+		MineopolySaveGame save = new MineopolySaveGame(file);
+		save.setData(Mineopoly.plugin.getGame());
+		this.loadedFromSave = true;
+		this.save = save;
+	}
+	
+	public MineopolySaveGame getSave(){
+		return save;
+	}
 	
 	public void setData(){
-		if(loadedFromSave){
-			addPlayers();
-			channel.sendMessage("&aSetting turn order...");
-			String currentTurn = save.getString("game.current-turn");
-			String turnOrder = save.getString("game.turn-order");
-			String[] names = turnOrder.split(" ");
-			channel.sendMessage("&aSetting up MineopolyPot contents...");
-			MineopolyPot pot = board.getPot();
-			pot.setMoney(save.getInt("board.pot.amount"));
-			if(save.getBoolean("board.pot.card_chance")){
-				pot.addChanceJailCard();
+		if(!loadedFromSave) return;
+		addPlayers();
+		channel.sendMessage("&aSetting turn order...");
+		String currentTurn = save.getString("game.current-turn");
+		String turnOrder = save.getString("game.turn-order");
+		if(save.contains("game.time-running")){
+			setTimeRunning(save.getTimeRunning());
+		}
+		String[] names = turnOrder.split(" ");
+		channel.sendMessage("&aSetting up MineopolyPot contents...");
+		MineopolyPot pot = board.getPot();
+		pot.setMoney(save.getInt("board.pot.amount"));
+		if(save.getBoolean("board.pot.card_chance")){
+			pot.addChanceJailCard();
+		}
+		if(save.getBoolean("board.path.card_community-chest")){
+			pot.addCommunityChestJailCard();
+		}
+		for(int i=0; i<names.length; i++){
+			if(names[i].equalsIgnoreCase(currentTurn)){
+				index = i;
 			}
-			if(save.getBoolean("board.path.card_community-chest")){
-				pot.addCommunityChestJailCard();
-			}
-			for(int i=0; i<names.length; i++){
-				if(names[i].equalsIgnoreCase(currentTurn)){
-					index = i;
-				}
-			}
-			
-			channel.sendMessage("&aGiving properties and money to players...");
-			for(MineopolyPlayer mp : board.getPlayers()){
-				String playerRoot = "players." + mp.getName();
-				List<Integer> properties = save.getIntList(playerRoot + ".properties.owned");
-				//assign properties
-				for(int i : properties){
-					String propertyRoot = playerRoot + "properties." + i;
-					MineopolySection section = board.getSection(i);
-					if(section instanceof OwnableSection){
-						OwnableSection ownable = (OwnableSection) section;
-						if(ownable instanceof Property){
-							Property property = (Property) ownable;
-							if(save.getBoolean(propertyRoot + ".hotel")){
-								property.addHotel();
-							}else{
-								property.setHouses(save.getInt(propertyRoot + ".houses"));
-							}
-							mp.addSection(property);
+		}
+		
+		channel.sendMessage("&aGiving properties and money to players...");
+		for(MineopolyPlayer mp : board.getPlayers()){
+			String playerRoot = "players." + mp.getName();
+			List<Integer> properties = save.getIntList(playerRoot + ".properties.owned");
+			//assign properties
+			for(int i : properties){
+				String propertyRoot = playerRoot + "properties." + i;
+				MineopolySection section = board.getSection(i);
+				if(section instanceof OwnableSection){
+					OwnableSection ownable = (OwnableSection) section;
+					if(ownable instanceof Property){
+						Property property = (Property) ownable;
+						if(save.getBoolean(propertyRoot + ".hotel")){
+							property.addHotel();
 						}else{
-							mp.addSection(ownable);
+							property.setHouses(save.getInt(propertyRoot + ".houses"));
 						}
+						mp.addSection(property);
+					}else{
+						mp.addSection(ownable);
 					}
 				}
-				boolean jailed = save.getBoolean(playerRoot + ".jailed");
-				if(!jailed){
-					MineopolySection dest = board.getSection(save.getInt(playerRoot + ".section"));
-					mp.setCurrentSection(dest, false, false);
-				}
-				
-				mp.setBalance(save.getInt(playerRoot + ".balance"));
-				if(save.getBoolean(playerRoot + ".card_chance")){
-					mp.giveChanceJailCard();
-				}
-				
-				if(save.getBoolean(playerRoot + ".card_community-chest")){
-					mp.giveCommunityChestJailCard();
-				}
-				
-				if(jailed){
-					mp.setJailed(true, true);
-				}
-				
-				mp.setTotalRolls(save.getInt(playerRoot + ".rolls"));
 			}
-			channel.sendMessage("&aGame setup finished! Starting game...");
-			nextPlayer();
-			this.sessionTaskId = Mineopoly.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolySessionTask(), 0L, 20 * 5);
+			boolean jailed = save.getBoolean(playerRoot + ".jailed");
+			if(!jailed){
+				MineopolySection dest = board.getSection(save.getInt(playerRoot + ".section"));
+				mp.setCurrentSection(dest, false, false);
+			}
+			
+			mp.setBalance(save.getInt(playerRoot + ".balance"));
+			if(save.getBoolean(playerRoot + ".card_chance")){
+				mp.giveChanceJailCard();
+			}
+			
+			if(save.getBoolean(playerRoot + ".card_community-chest")){
+				mp.giveCommunityChestJailCard();
+			}
+			
+			if(jailed){
+				mp.setJailed(true, true);
+			}
+			
+			mp.setTotalRolls(save.getInt(playerRoot + ".rolls"));
+			if(save.contains(playerRoot + ".go-passes")){
+				mp.setGoPasses(save.getInt(playerRoot + ".go-passes"));
+			}else{
+				mp.setGoPasses(Mineopoly.houseRules.purchaseAfterGoPasses());
+			}
 		}
+		channel.sendMessage("&aGame setup finished! Starting game...");
+		nextPlayer();
+		this.sessionTaskId = Mineopoly.plugin.getServer().getScheduler()
+				.scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolySessionTask(), 0L, 20 * 5L);
+		if(Mineopoly.houseRules.timeLimit() > 0){
+			this.timeLimitTaskId = Mineopoly.plugin.getServer().getScheduler()
+					.scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolyTimeLimitTask(), 0L, 20 * 5L);
+		}
+		if(Mineopoly.config.showTips()){
+			int interval = Mineopoly.config.tipInterval() * 20;
+			this.tipTaskId = Mineopoly.plugin.getServer().getScheduler()
+					.scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolyTipTask(), interval, interval);
+		}
+		this.running = true;
+	
 	}
 	
 	private void addPlayers(){
@@ -135,13 +184,10 @@ public class MineopolyGame {
 				board.addPlayer(mp);
 				channel.addPlayer(mp);
 				Mineopoly.plugin.chat.out("[Game] [Players] Player added: " + mp.getName());
-				player.setGameMode(GameMode.ADVENTURE);
-				player.setAllowFlight(true);
-				locations.put(player.getName(), TacoAPI.getPlayerAPI().getLastLocation(player.getName()));
 			}
 		}else{
 			int queueSize = Mineopoly.plugin.getQueue().getSize();
-			int maxPlayers = Mineopoly.config.getMaxPlayers();
+			int maxPlayers = Mineopoly.config.maxPlayers();
 			for(int i=1; i<=queueSize; i++){
 				if(i < maxPlayers && queueSize > 0){
 					Random random = new Random();
@@ -153,9 +199,6 @@ public class MineopolyGame {
 					Mineopoly.plugin.chat.out("[Game] [Players] Player added: " + player.getName());
 					Mineopoly.plugin.getQueue().removePlayer(index);
 					player.setCurrentSection(board.getSection(0), false);
-					p.setGameMode(GameMode.ADVENTURE);
-					p.setAllowFlight(true);
-					locations.put(p.getName(), TacoAPI.getPlayerAPI().getLastLocation(p.getName()));
 				}else{
 					break;
 				}
@@ -173,9 +216,9 @@ public class MineopolyGame {
 		if(currPlayer != null){
 			currPlayer.sendMessage("&3It is your turn");
 			if(currPlayer.isJailed())
-				currPlayer.sendMessage("&3Use &b/" + Mineopoly.J_ALIAS + " roll&3 to roll the dice!");
+				currPlayer.sendMessage("&3Use &b/" + Mineopoly.getJAlias() + " roll&3 to roll the dice!");
 			else
-				currPlayer.sendMessage("&3Use &b/" + Mineopoly.M_ALIAS + " roll&3 to roll the dice!");
+				currPlayer.sendMessage("&3Use &b/" + Mineopoly.getMAlias() + " roll&3 to roll the dice!");
 		}
 		index++;
 	}
@@ -218,15 +261,22 @@ public class MineopolyGame {
 		return sessionTaskId;
 	}
 	
-	public void end(){
+	public void end(MineopolyPlayer winner){
 		this.running = false;
+		for(Property p : board.getProperties()){
+			if(p.hasHotel() || p.getHouses() > 0){
+				p.clearImprovements();
+			}
+		}
 		Mineopoly.plugin.getServer().getScheduler().cancelTask(sessionTaskId);
-		MineopolyPlayer winner = determineWinner();
+		Mineopoly.plugin.getServer().getScheduler().cancelTask(timeLimitTaskId);
+		if(tipTaskId > -1) Mineopoly.plugin.getServer().getScheduler().cancelTask(tipTaskId);
+		if(winner == null) winner = determineWinner();
 		board.removeAllPlayers();
 		Mineopoly.plugin.chat.sendGlobalMessage("&eThe Mineopoly game has ended");
 		Mineopoly.plugin.chat.sendGlobalMessage("&3" + winner.getName() + " &bis the winner!");
 		if(TacoAPI.isEconAPIOnline()){
-			double reward = Mineopoly.config.getWinReward();
+			double reward = Mineopoly.config.winReward();
 			if(reward > 0){
 				String singular = TacoAPI.getEconAPI().currencyName();
 				String plural = TacoAPI.getEconAPI().currencyNamePlural();
@@ -239,10 +289,73 @@ public class MineopolyGame {
 		}else{
 			Mineopoly.plugin.chat.sendGlobalMessage("&eThe next game will start when there are enough players in the queue");
 		}
+		end = System.currentTimeMillis();
+	}
+	
+	public void end(){
+		end(null);
+	}
+	
+	public long getStartTime(){
+		return start;
+	}
+	
+	public long getEndTime(){
+		return end;
+	}
+	
+	public void setTimeRunning(long time){
+		start = System.currentTimeMillis() - time;
+	}
+	
+	public String getTimeRunningString() {
+		return getTimeString(getTimeRunning());
+	}
+	
+	public long getTimeRunning(){
+		if(end > 0){
+			return end - start;
+		}
+		return System.currentTimeMillis() - start;
+	}
+	
+	public String getTimeLeftString(){
+		return getTimeString(getTimeLeft());
+	}
+	
+	public long getTimeLeft(){
+		double timeLimit = Mineopoly.houseRules.timeLimit();
+		if(!running) return 0;
+		if(timeLimit > 0){
+			return ((long) timeLimit * 1000L * 60) - (System.currentTimeMillis() - start);
+		}
+		return 0;
+	}
+	
+	private String getTimeString(long time){
+		long second = 1000L;
+		long minute = second * 60;
+		long hour = minute * 60;
+		long day = hour * 24;
+		long year = day * 365;
+		
+		long years = time / year;
+		long days = time % year / day;
+		long hours = time % year % day / hour;
+		long minutes = time % year % day % hour / minute;
+		long seconds = time % year % day % hour % minute / second;
+		
+		String timeString = "";
+		if(years > 0) timeString += years + "y ";
+		if(days > 0) timeString += days + "d ";
+		if(hours > 0) timeString += hours + "h ";
+		if(minutes > 0) timeString += minutes + "m ";
+		if(seconds > 0) timeString += seconds + "s ";
+		return timeString;
 	}
 	
 	public MineopolyPlayer determineWinner(){
-		WinMethod wm = Mineopoly.config.getWinMethod();
+		WinMethod wm = Mineopoly.config.winMethod();
 		if(wm == WinMethod.MONEY){
 			MineopolyPlayer max = null;
 			for(MineopolyPlayer mp : board.getPlayers()){
@@ -277,7 +390,7 @@ public class MineopolyGame {
 	}
 	
 	public boolean canStart(){
-		return Mineopoly.plugin.getQueue().getSize() >= Mineopoly.config.getMinPlayers();
+		return Mineopoly.plugin.getQueue().getSize() >= Mineopoly.config.minPlayers();
 	}
 	
 	public boolean canStart(MineopolySaveGame save){
@@ -320,5 +433,69 @@ public class MineopolyGame {
 			turnOrder += board.getPlayers().get(i).getName() + " ";
 		}
 		return turnOrder;
+	}
+	
+	public boolean pollsAreOpen(){
+		return pollsOpen;
+	}
+	
+	public void openPolls(){
+		voted = new ArrayList<String>();
+		continueVotes = 0;
+		endVotes = 0;
+		pollsOpen = true;
+		channel.sendPlayersMessage("&3Someone wants to end the game! The voting polls are now open!");
+		voteStart = System.currentTimeMillis();
+		votingTaskId = Mineopoly.plugin.getServer().getScheduler()
+				.scheduleSyncRepeatingTask(Mineopoly.plugin, new MineopolyVotingTask(), 0L, 20L);
+	}
+	
+	public void closePolls(){
+		pollsOpen = false;
+		channel.sendPlayersMessage("&3The voting polls are closed!");
+		channel.sendPlayersMessage("&3Results&7: &9Continue &7- &b" + continueVotes + " &9End &7- &b" + endVotes);
+		if(testVotes()){
+			end();
+		}else{
+			continueVotes = 0;
+			endVotes = 0;
+			channel.sendPlayersMessage("&3The game will continue");
+		}
+		Mineopoly.plugin.getServer().getScheduler().cancelTask(votingTaskId);
+	}
+	
+	public void addVote(boolean end){
+		if(end) endVotes++;
+		else continueVotes++;
+		if(testVotes()){
+			closePolls();
+		}
+	}
+	
+	public int getVote(boolean end){
+		if(end) return endVotes;
+		else return continueVotes;
+	}
+	
+	public long getVoteStart(){
+		return voteStart;
+	}
+	
+	public boolean testVotes(){
+		int players = board.getPlayers().size();
+		if(endVotes >= (players / 2) + 1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean hasVoted(String name){
+		for(String s : voted){
+			if(s.equalsIgnoreCase(name)){
+				return true;
+			}
+		}
+		return false;
 	}
 }

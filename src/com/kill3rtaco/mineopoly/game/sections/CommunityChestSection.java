@@ -5,13 +5,13 @@ import org.bukkit.entity.Player;
 import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.game.MineopolySection;
-import com.kill3rtaco.mineopoly.game.cards.CardResult;
 import com.kill3rtaco.mineopoly.game.cards.communitychest.CommunityChestCard;
 
 
-public class CommunityChestSection extends MineopolySection implements ActionProvoker, CardinalSection{
+public class CommunityChestSection extends MineopolySection implements ActionProvoker, CardinalSection, CardSetSection {
 
 	private int side;
+	private CommunityChestCard lastCard;
 	
 	public CommunityChestSection(int id, int side) {
 		super(id, "Community Chest", 'e', SectionType.COMMUNITY_CHEST);
@@ -25,14 +25,19 @@ public class CommunityChestSection extends MineopolySection implements ActionPro
 	
 	public void provokeAction(MineopolyPlayer player){
 		CommunityChestCard card = (CommunityChestCard) Mineopoly.plugin.getGame().getBoard().getCommunityChestCards().drawCard(player);
-		if(card.getResult() == CardResult.MONEY_RELATED){
-			player.setCanEndTurnAutomatically(true);
-		}
+		lastCard = card;
+//		if(card.getResult() == CardResult.MONEY_RELATED){
+//			player.setCanEndTurnAutomatically(true);
+//		}
 	}
 
 	@Override
 	public int getSide() {
 		return side;
+	}
+	
+	public CommunityChestCard getLastCard(){
+		return lastCard;
 	}
 
 }

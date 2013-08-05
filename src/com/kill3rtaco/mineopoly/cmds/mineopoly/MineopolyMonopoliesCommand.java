@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.game.MineopolyColor;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
@@ -49,7 +49,7 @@ public class MineopolyMonopoliesCommand extends TacoCommand {
 			}
 		}else{
 			if(Mineopoly.plugin.getGame().isRunning()){
-				if(Mineopoly.plugin.getGame().hasPlayer(player) || player.hasPermission(MineopolyPermissions.VIEW_GAME_STATS)){
+				if(Mineopoly.plugin.getGame().hasPlayer(player) || player.hasPermission(MineopolyConstants.P_VIEW_GAME_STATS)){
 					Player p = Mineopoly.plugin.getServer().getPlayer(args[0]);
 					if(p ==  null){
 						player.sendMessage(new PlayerNotOnlineMessage(args[0]) + "");

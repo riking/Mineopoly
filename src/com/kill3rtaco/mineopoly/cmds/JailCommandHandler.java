@@ -30,9 +30,10 @@ public class JailCommandHandler extends TacoCommandHandler {
 
 	@Override
 	protected void onPlayerCommand(Player player) {
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/jail"));
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: &b/jail&7, &b/mineopolyjail&7, &b/mjail&7, &b/j");
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/jail ? [page]");
+		String cmd = "jail";
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/" + cmd));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: " + Mineopoly.plugin.getAliases(cmd));
+		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/" + cmd +" ? [page]");
 	}
 
 }

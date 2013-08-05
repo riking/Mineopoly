@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
@@ -24,7 +24,7 @@ public class MineopolyPotCommand extends TacoCommand {
 			if(Mineopoly.plugin.getGame().hasPlayer(player)){
 				Mineopoly.plugin.getGame().getBoard().getPot().getInfo(player);
 			}else{
-				if(player.hasPermission(MineopolyPermissions.VIEW_GAME_STATS)){
+				if(player.hasPermission(MineopolyConstants.P_VIEW_GAME_STATS)){
 					Mineopoly.plugin.getGame().getBoard().getPot().getInfo(player);
 				}else{
 					Mineopoly.plugin.chat.sendInvalidPermissionsMessage(player);

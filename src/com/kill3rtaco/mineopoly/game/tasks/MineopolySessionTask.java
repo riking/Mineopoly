@@ -1,10 +1,10 @@
-package com.kill3rtaco.mineopoly.tasks;
+package com.kill3rtaco.mineopoly.game.tasks;
 
 import java.util.Set;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
-import com.kill3rtaco.mineopoly.tasks.managers.PlayerSessionManager;
+import com.kill3rtaco.mineopoly.game.tasks.managers.PlayerSessionManager;
 
 public class MineopolySessionTask implements Runnable {
 

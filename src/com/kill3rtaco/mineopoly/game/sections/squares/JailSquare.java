@@ -34,7 +34,7 @@ public class JailSquare extends SpecialSquare {
 		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "   &1*&3You use a &1Get Out of Jail Free &3card");
 	}
 	public Location getJailCellLocation(){
-		Location origin = Mineopoly.config.getBoardOrigin();
+		Location origin = Mineopoly.config.boardOrigin();
 		origin.setX(origin.getX() - cellX);
 		origin.setZ(origin.getZ() - cellZ);
 		origin.setPitch(0);
@@ -43,7 +43,7 @@ public class JailSquare extends SpecialSquare {
 	}
 	
 	public Location getJustVisitingLocation(){
-		Location origin = Mineopoly.config.getBoardOrigin();
+		Location origin = Mineopoly.config.boardOrigin();
 		origin.setX(origin.getX() - visitX);
 		origin.setZ(origin.getZ() - visitZ);
 		origin.setPitch(0);

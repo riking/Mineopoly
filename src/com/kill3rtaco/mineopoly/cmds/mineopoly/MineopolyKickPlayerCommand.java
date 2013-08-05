@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 
@@ -13,7 +13,7 @@ import com.kill3rtaco.tacoapi.api.messages.TooFewArgumentsMessage;
 public class MineopolyKickPlayerCommand extends TacoCommand {
 
 	public MineopolyKickPlayerCommand() {
-		super("kick", new String[]{}, "<player>", "Kick a player from the game", MineopolyPermissions.KICK_PLAYER_FROM_GAME);
+		super("kick", new String[]{}, "<player>", "Kick a player from the game", MineopolyConstants.P_KICK_PLAYER_FROM_GAME);
 	}
 
 	@Override

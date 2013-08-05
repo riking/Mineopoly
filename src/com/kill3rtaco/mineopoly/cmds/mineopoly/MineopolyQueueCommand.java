@@ -3,7 +3,7 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 
 import com.kill3rtaco.tacoapi.TacoAPI;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
@@ -12,7 +12,7 @@ import com.kill3rtaco.tacoapi.api.messages.TooManyArgumentsMessage;
 public class MineopolyQueueCommand extends TacoCommand {
 
 	public MineopolyQueueCommand() {
-		super("queue", new String[]{"q"}, "", "View players in the game queue", MineopolyPermissions.VIEW_PLAYER_QUEUE);
+		super("queue", new String[]{"q"}, "", "View players in the game queue", MineopolyConstants.P_VIEW_PLAYER_QUEUE);
 	}
 
 	@Override

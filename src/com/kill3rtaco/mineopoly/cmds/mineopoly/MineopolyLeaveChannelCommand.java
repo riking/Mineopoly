@@ -3,14 +3,14 @@ package com.kill3rtaco.mineopoly.cmds.mineopoly;
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
 import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyLeaveChannelCommand extends TacoCommand {
 
 	public MineopolyLeaveChannelCommand() {
-		super("leave-channel", new String[]{"lc"}, "", "Leave the Mineopoly Channel", MineopolyPermissions.CHANNEL_CHAT);
+		super("leave-channel", new String[]{"lc"}, "", "Leave the Mineopoly Channel", MineopolyConstants.P_CHANNEL_CHAT);
 	}
 
 	@Override

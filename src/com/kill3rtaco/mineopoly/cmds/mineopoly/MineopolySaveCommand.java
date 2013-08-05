@@ -1,51 +1,60 @@
 package com.kill3rtaco.mineopoly.cmds.mineopoly;
 
-import java.io.File;
-
 import org.bukkit.entity.Player;
 
 import com.kill3rtaco.mineopoly.Mineopoly;
-import com.kill3rtaco.mineopoly.MineopolyPermissions;
-import com.kill3rtaco.mineopoly.saves.MineopolySaveGame;
+import com.kill3rtaco.mineopoly.MineopolyConstants;
+import com.kill3rtaco.mineopoly.game.MineopolyGame;
+import com.kill3rtaco.mineopoly.messages.GameNotInProgressMessage;
 import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolySaveCommand extends TacoCommand {
 
 	public MineopolySaveCommand() {
-		super("save", new String[]{}, "<name>", "Save the current game", MineopolyPermissions.SAVE_GAME);
+		super("save", new String[]{}, "<name>", "Save the current game", MineopolyConstants.P_SAVE_GAME);
 	}
 
 	@Override
 	public void onPlayerCommand(Player player, String[] args) {
+		MineopolyGame game = Mineopoly.plugin.getGame();
 		if(args.length == 0){
-			Mineopoly.plugin.chat.sendPlayerMessage(player, "&cSpecify a name for the save");
-			return;
-		}else{
-			String name = args[0];
-			Mineopoly.plugin.chat.sendPlayerMessage(player, "&aSaving game as &e" + name + "&a...");
-			save(name);			
-			Mineopoly.plugin.chat.sendPlayerMessage(player, "&aDone!");
+			if(!game.isRunning()){
+				Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+				return;
+			}else if(!game.isLoadedFromSave()){
+				Mineopoly.plugin.chat.sendPlayerMessage(player, "&cThis game was not loaded from a save," +
+						" please speicify a name to save this game");
+				return;
+			}
 		}
+		String name;
+		if(args.length > 0) name = args[0];
+		else name = game.getSave().getName();
+		Mineopoly.plugin.chat.sendPlayerMessage(player, "&aSaving game as &e" + name + "&a...");
+		game.save(name);		
+		Mineopoly.plugin.chat.sendPlayerMessage(player, "&aDone!");
 	}
 
 	@Override
 	public boolean onConsoleCommand(String[] args) {
+		MineopolyGame game = Mineopoly.plugin.getGame();
 		if(args.length == 0){
-			Mineopoly.plugin.chat.out("Specify a name for the save");
-			return true;
-		}else{
-			String name = args[0];
-			Mineopoly.plugin.chat.out("Saving game as '" + name + "'...");
-			save(name);			
-			Mineopoly.plugin.chat.out("Done!");
+			if(!game.isRunning()){
+				Mineopoly.plugin.chat.out(new GameNotInProgressMessage());
+				return true;
+			}else if(!game.isLoadedFromSave()){
+				Mineopoly.plugin.chat.out("&cThis game was not loaded from a save," +
+						" please speicify a name to save this game");
+				return true;
+			}
 		}
+		String name;
+		if(args.length > 0) name = args[0];
+		else name = game.getSave().getName();
+		Mineopoly.plugin.chat.out("&aSaving game as &e" + name + "&a...");
+		game.save(name);		
+		Mineopoly.plugin.chat.out("&aDone!");
 		return true;
-	}
-	
-	private void save(String name){
-		File file = new File(Mineopoly.plugin.getDataFolder() + "/saves/" + name + ".yml");
-		MineopolySaveGame save = new MineopolySaveGame(file);
-		save.setData(Mineopoly.plugin.getGame());
 	}
 
 }
