@@ -10,29 +10,29 @@ import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 
 public class MineopolyMonopoliesMenu extends MineopolyMenu {
 
-	public MineopolyMonopoliesMenu(MineopolyPlayer player){
-		super(player);
-	}
-	
-	@Override
-	protected Inventory createInventory() {
-		Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 9, player.getName() + "'s monopolies");
-		
-		int count = 0;
-		for(MineopolyColor c : MineopolyColor.values()){
-			ItemStack color = makeItem(Material.WOOL, c.getWoolColor(), c.name());
-			if(player.hasMonopoly(c)){
-				inv.setItem(count, color);
-			}
-			count++;
-		}
-		
-		return inv;
-	}
+    public MineopolyMonopoliesMenu(MineopolyPlayer player) {
+        super(player);
+    }
 
-	@Override
-	public void action(MineopolyPlayer player, int cell) {
-		//nothing to do
-	}
+    @Override
+    protected Inventory createInventory() {
+        Inventory inv = Mineopoly.plugin.getServer().createInventory(this, 9, player.getName() + "'s monopolies");
+
+        int count = 0;
+        for (MineopolyColor c : MineopolyColor.values()) {
+            ItemStack color = makeItem(Material.WOOL, c.getWoolColor(), c.name());
+            if (player.hasMonopoly(c)) {
+                inv.setItem(count, color);
+            }
+            count++;
+        }
+
+        return inv;
+    }
+
+    @Override
+    public void action(MineopolyPlayer player, int cell) {
+        //nothing to do
+    }
 
 }

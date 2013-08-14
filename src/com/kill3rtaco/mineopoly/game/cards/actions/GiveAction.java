@@ -6,16 +6,16 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 
 public class GiveAction extends MineopolyCardAction {
 
-	public GiveAction() {
-		super("give", "i");
-	}
+    public GiveAction() {
+        super("give", "i");
+    }
 
-	@Override
-	public CardResult doAction(MineopolyPlayer player, Object... params) {
-		if(params.length > 0 && params[0] instanceof Integer){
-			player.addMoney((Integer) params[0]);
-		}
-		return CardResult.MONEY_RELATED;
-	}
+    @Override
+    public CardResult doAction(MineopolyPlayer player, Object... params) {
+        if (params.length > 0 && params[0] instanceof Integer) {
+            player.addMoney((Integer) params[0]);
+        }
+        return CardResult.MONEY_RELATED;
+    }
 
 }

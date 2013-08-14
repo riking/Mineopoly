@@ -12,28 +12,28 @@ import com.kill3rtaco.tacoapi.api.TacoCommandHandler;
 
 public class JailCommandHandler extends TacoCommandHandler {
 
-	public JailCommandHandler() {
-		super("jail", "Mineopoly Jail commands", "");
-	}
+    public JailCommandHandler() {
+        super("jail", "Mineopoly Jail commands", "");
+    }
 
-	@Override
-	protected void registerCommands() {
-		registerCommand(new JailRollCommand());
-		registerCommand(new JailCardCommand());
-		registerCommand(new JailBailCommand());
-	}
+    @Override
+    protected void registerCommands() {
+        registerCommand(new JailRollCommand());
+        registerCommand(new JailCardCommand());
+        registerCommand(new JailBailCommand());
+    }
 
-	@Override
-	protected boolean onConsoleCommand() {
-		return false;
-	}
+    @Override
+    protected boolean onConsoleCommand() {
+        return false;
+    }
 
-	@Override
-	protected void onPlayerCommand(Player player) {
-		String cmd = "jail";
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/" + cmd));
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: " + Mineopoly.plugin.getAliases(cmd));
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/" + cmd +" ? [page]");
-	}
+    @Override
+    protected void onPlayerCommand(Player player) {
+        String cmd = "jail";
+        Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/" + cmd));
+        Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: " + Mineopoly.plugin.getAliases(cmd));
+        Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/" + cmd + " ? [page]");
+    }
 
 }

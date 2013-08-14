@@ -10,24 +10,24 @@ import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyEndCommand extends TacoCommand {
 
-	public MineopolyEndCommand() {
-		super("end", new String[]{"end-game"}, "", "End the current game", MineopolyConstants.P_END_GAME);
-	}
+    public MineopolyEndCommand() {
+        super("end", new String[] {"end-game"}, "", "End the current game", MineopolyConstants.P_END_GAME);
+    }
 
-	@Override
-	public void onPlayerCommand(Player player, String[] args) {
-		MineopolyGame game = Mineopoly.plugin.getGame();
-		if(game.isRunning()){
-			game.getChannel().sendMessage("&e" + player.getName() + " ended the game.");
-			game.end();
-		}else{
-			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
-		}
-	}
+    @Override
+    public void onPlayerCommand(Player player, String[] args) {
+        MineopolyGame game = Mineopoly.plugin.getGame();
+        if (game.isRunning()) {
+            game.getChannel().sendMessage("&e" + player.getName() + " ended the game.");
+            game.end();
+        } else {
+            Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+        }
+    }
 
-	@Override
-	public boolean onConsoleCommand(String[] args) {
-		return false;
-	}
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return false;
+    }
 
 }

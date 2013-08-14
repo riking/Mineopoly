@@ -15,36 +15,36 @@ import com.kill3rtaco.mineopoly.game.cards.actions.TakeAction;
 
 public class MineopolyCardActionManager {
 
-	private static ArrayList<MineopolyCardAction> actions;
-	
-	private static void registerActions(){
-		actions = new ArrayList<MineopolyCardAction>();
-		actions.add(new GiveAction());
-		actions.add(new JailAction());
-		actions.add(new MoveAction());
-		actions.add(new MoveNearestAction());
-		actions.add(new MoveToAction());
-		actions.add(new PayAllAction());
-		actions.add(new PayPlayerAction());
-		actions.add(new PayPotAction());
-		actions.add(new RepairsAction());
-		actions.add(new TakeAction());
-	}
-	
-	public static ArrayList<MineopolyCardAction> getActions(){
-		if(actions == null){
-			registerActions();
-		}
-		return actions;
-	}
-	
-	public static MineopolyCardAction getAction(String name){
-		for(MineopolyCardAction a : getActions()){
-			if(a.getName().equalsIgnoreCase(name)){
-				return a;
-			}
-		}
-		return null;
-	}
+    private static ArrayList<MineopolyCardAction> actions;
+
+    private static void registerActions() {
+        actions = new ArrayList<MineopolyCardAction>();
+        actions.add(new GiveAction());
+        actions.add(new JailAction());
+        actions.add(new MoveAction());
+        actions.add(new MoveNearestAction());
+        actions.add(new MoveToAction());
+        actions.add(new PayAllAction());
+        actions.add(new PayPlayerAction());
+        actions.add(new PayPotAction());
+        actions.add(new RepairsAction());
+        actions.add(new TakeAction());
+    }
+
+    public static ArrayList<MineopolyCardAction> getActions() {
+        if (actions == null) {
+            registerActions();
+        }
+        return actions;
+    }
+
+    public static MineopolyCardAction getAction(String name) {
+        for (MineopolyCardAction a : getActions()) {
+            if (a.getName().equalsIgnoreCase(name)) {
+                return a;
+            }
+        }
+        return null;
+    }
 
 }

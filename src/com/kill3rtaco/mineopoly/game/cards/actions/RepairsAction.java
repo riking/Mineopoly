@@ -6,18 +6,18 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 
 public class RepairsAction extends MineopolyCardAction {
 
-	public RepairsAction() {
-		super("repairs", "ii");
-	}
+    public RepairsAction() {
+        super("repairs", "ii");
+    }
 
-	@Override
-	public CardResult doAction(MineopolyPlayer player, Object... params) {
-		if(params.length > 1 && params[0] instanceof Integer && params[1] instanceof Integer){
-			int houses = (Integer) params[0];
-			int hotels = (Integer) params[1];
-			player.payPot((houses * player.getHouses()) + (hotels * player.getHotels()));
-		}
-		return CardResult.MONEY_RELATED;
-	}
+    @Override
+    public CardResult doAction(MineopolyPlayer player, Object... params) {
+        if (params.length > 1 && params[0] instanceof Integer && params[1] instanceof Integer) {
+            int houses = (Integer) params[0];
+            int hotels = (Integer) params[1];
+            player.payPot((houses * player.getHouses()) + (hotels * player.getHotels()));
+        }
+        return CardResult.MONEY_RELATED;
+    }
 
 }

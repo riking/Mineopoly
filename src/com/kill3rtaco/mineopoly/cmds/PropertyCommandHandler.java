@@ -17,33 +17,33 @@ import com.kill3rtaco.tacoapi.api.TacoCommandHandler;
 
 public class PropertyCommandHandler extends TacoCommandHandler {
 
-	public PropertyCommandHandler() {
-		super("property", "Mineopoly Property commands", "");
-	}
+    public PropertyCommandHandler() {
+        super("property", "Mineopoly Property commands", "");
+    }
 
-	@Override
-	protected void registerCommands() {
-		registerCommand(new PropertyAddHouseCommand());
-		registerCommand(new PropertyAddHotelCommand());
-		registerCommand(new PropertyBuyCommand());
-		registerCommand(new PropertyInfoCommand());
-		registerCommand(new PropertyRemoveHouseCommand());
-		registerCommand(new PropertyRemoveHotelCommand());
-		registerCommand(new PropertySellCommand());
-		registerCommand(new PropertyTradeCommand());
-	}
+    @Override
+    protected void registerCommands() {
+        registerCommand(new PropertyAddHouseCommand());
+        registerCommand(new PropertyAddHotelCommand());
+        registerCommand(new PropertyBuyCommand());
+        registerCommand(new PropertyInfoCommand());
+        registerCommand(new PropertyRemoveHouseCommand());
+        registerCommand(new PropertyRemoveHotelCommand());
+        registerCommand(new PropertySellCommand());
+        registerCommand(new PropertyTradeCommand());
+    }
 
-	@Override
-	protected boolean onConsoleCommand() {
-		return false;
-	}
+    @Override
+    protected boolean onConsoleCommand() {
+        return false;
+    }
 
-	@Override
-	protected void onPlayerCommand(Player player) {
-		String cmd = "property";
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/" + cmd));
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: " + Mineopoly.plugin.getAliases(cmd));
-		Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/" + cmd +" ? [page]");
-	}
+    @Override
+    protected void onPlayerCommand(Player player) {
+        String cmd = "property";
+        Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, TacoAPI.getChatUtils().createHeader("&c/" + cmd));
+        Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Aliases&7: " + Mineopoly.plugin.getAliases(cmd));
+        Mineopoly.plugin.chat.sendPlayerMessageNoHeader(player, "&3Commands&7: &b/" + cmd + " ? [page]");
+    }
 
 }

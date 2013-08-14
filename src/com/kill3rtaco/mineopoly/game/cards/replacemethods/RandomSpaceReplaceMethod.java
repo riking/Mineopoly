@@ -6,10 +6,10 @@ import com.kill3rtaco.mineopoly.game.cards.VariableReplaceMethod;
 
 public class RandomSpaceReplaceMethod implements VariableReplaceMethod {
 
-	@Override
-	public String replace(String s) {
-		MineopolySection random = Mineopoly.plugin.getGame().getBoard().getRandomSectionNotCurrent();
-		return s.replaceAll("%randomSpace", random.getColorfulName());
-	}
+    @Override
+    public String replace(String s) {
+        MineopolySection random = Mineopoly.plugin.getGame().getBoard().getRandomSectionNotCurrent();
+        return s.replaceAll("%randomSpace", random.getColorfulName());
+    }
 
 }

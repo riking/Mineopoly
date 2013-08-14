@@ -12,28 +12,28 @@ import com.kill3rtaco.tacoapi.api.TacoCommand;
 
 public class MineopolyMenuCommand extends TacoCommand {
 
-	public MineopolyMenuCommand() {
-		super("menu", new String[]{"m"}, "", "Open the in-game menu", "");
-	}
+    public MineopolyMenuCommand() {
+        super("menu", new String[] {"m"}, "", "Open the in-game menu", "");
+    }
 
-	@Override
-	public void onPlayerCommand(Player player, String[] args) {
-		MineopolyGame game = Mineopoly.plugin.getGame();
-		if(game.isRunning()){
-			if(game.hasPlayer(player)){
-				MineopolyPlayer mp = game.getBoard().getPlayer(player);
-				mp.showMenu(new MineopolyGameMenu(mp));
-			}else{
-				Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
-			}
-		}else{
-			Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
-		}
-	}
+    @Override
+    public void onPlayerCommand(Player player, String[] args) {
+        MineopolyGame game = Mineopoly.plugin.getGame();
+        if (game.isRunning()) {
+            if (game.hasPlayer(player)) {
+                MineopolyPlayer mp = game.getBoard().getPlayer(player);
+                mp.showMenu(new MineopolyGameMenu(mp));
+            } else {
+                Mineopoly.plugin.chat.sendPlayerMessage(player, new NotPlayingGameMessage());
+            }
+        } else {
+            Mineopoly.plugin.chat.sendPlayerMessage(player, new GameNotInProgressMessage());
+        }
+    }
 
-	@Override
-	public boolean onConsoleCommand(String[] args) {
-		return false;
-	}
+    @Override
+    public boolean onConsoleCommand(String[] args) {
+        return false;
+    }
 
 }

@@ -4,8 +4,8 @@ import com.kill3rtaco.tacoapi.api.TacoMessage;
 
 public class PlayerJailedMessage extends TacoMessage {
 
-	public PlayerJailedMessage(){
-		
-	}
-	
+    public PlayerJailedMessage() {
+
+    }
+
 }
