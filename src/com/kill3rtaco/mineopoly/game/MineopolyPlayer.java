@@ -80,7 +80,7 @@ public class MineopolyPlayer extends MineopolyChannelListener {
      * Gets the amount of money that this player has. Note that this money is
      * separate from any money earned in the server economy, as the game uses
      * a separate economy to play the game.
-     * 
+     *
      * @return The amount of money this player has
      */
     public int getBalance() {

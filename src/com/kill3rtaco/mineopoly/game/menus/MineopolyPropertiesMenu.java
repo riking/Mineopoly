@@ -141,7 +141,7 @@ public class MineopolyPropertiesMenu extends MineopolyMenu {
             if (trading == null) { //the property the player is offering was just selected
                 player.showMenu(new MineopolyPlayersMenu(player, section, action, "Select who to trade with"));
             } else {
-                //with = who 'player' wants to trade with 
+                //with = who 'player' wants to trade with
                 //player = player iniating trade
                 player.showMenu(null);
                 player.getPlayer().chat("/" + Mineopoly.getPAlias() + " trade " + trading.getId() + " " + this.player.getName() + " " + section.getId());
