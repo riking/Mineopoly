@@ -7,7 +7,7 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 public class PayPotAction extends MineopolyCardAction {
 
     public PayPotAction() {
-        super("paypot", "i");
+        super("paypot", 'i');
     }
 
     @Override

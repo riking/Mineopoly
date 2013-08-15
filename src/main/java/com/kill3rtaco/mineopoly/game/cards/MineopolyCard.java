@@ -66,18 +66,19 @@ public abstract class MineopolyCard {
             if (a.getName().equalsIgnoreCase(name) && a.getRequiredParamLength() == params.length) {
                 found = true;
                 this.params = new Object[a.getRequiredParamLength()];
-                String types = a.getParamTypes();
-                for (int i = 0; i < types.length(); i++) {
-                    if (types.charAt(i) == 'b') {
+                char[] types = a.getParamTypes();
+                for (int i = 0; i < types.length; i++) {
+                    char type = types[i];
+                    if (type == 'b') {
                         this.params[i] = Boolean.valueOf(params[i]);
-                    } else if (types.charAt(i) == 'i') {
+                    } else if (type == 'i') {
                         if (TacoAPI.getChatUtils().isNum(params[i])) {
                             this.params[i] = Integer.parseInt(params[i]);
                         } else {
                             valid = false;
                             break;
                         }
-                    } else if (types.charAt(i) == 's') {
+                    } else if (type == 's') {
                         this.params[i] = params[i];
                     }
                 }

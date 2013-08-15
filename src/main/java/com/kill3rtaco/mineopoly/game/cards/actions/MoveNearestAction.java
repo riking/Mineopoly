@@ -7,7 +7,7 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 public class MoveNearestAction extends MineopolyCardAction {
 
     public MoveNearestAction() {
-        super("movenearest", "s");
+        super("movenearest", 's');
     }
 
     @Override

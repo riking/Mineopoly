@@ -4,13 +4,20 @@ import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 
 public abstract class MineopolyCardAction {
 
-    protected String name, paramTypes;
+    protected String name;
+    protected char[] paramTypes;
 
     public MineopolyCardAction(String name) {
-        this(name, "");
+        this.name = name;
+        this.paramTypes = new char[0];
     }
 
     public MineopolyCardAction(String name, String paramTypes) {
+        this.name = name;
+        this.paramTypes = paramTypes.toCharArray();
+    }
+
+    public MineopolyCardAction(String name, char... paramTypes) {
         this.name = name;
         this.paramTypes = paramTypes;
     }
@@ -22,10 +29,10 @@ public abstract class MineopolyCardAction {
     }
 
     public int getRequiredParamLength() {
-        return paramTypes.length();
+        return paramTypes.length;
     }
 
-    public String getParamTypes() {
+    public char[] getParamTypes() {
         return paramTypes;
     }
 

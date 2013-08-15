@@ -7,7 +7,7 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 public class GiveAction extends MineopolyCardAction {
 
     public GiveAction() {
-        super("give", "i");
+        super("give", 'i');
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 public class MoveAction extends MineopolyCardAction {
 
     public MoveAction() {
-        super("move", "i");
+        super("move", 'i');
     }
 
     @Override

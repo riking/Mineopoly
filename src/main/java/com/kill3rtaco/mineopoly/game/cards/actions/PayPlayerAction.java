@@ -8,7 +8,7 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 public class PayPlayerAction extends MineopolyCardAction {
 
     public PayPlayerAction() {
-        super("payplayer", "i");
+        super("payplayer", 'i');
     }
 
     @Override

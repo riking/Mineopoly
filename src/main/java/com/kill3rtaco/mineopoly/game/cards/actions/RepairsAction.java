@@ -7,7 +7,7 @@ import com.kill3rtaco.mineopoly.game.cards.MineopolyCardAction;
 public class RepairsAction extends MineopolyCardAction {
 
     public RepairsAction() {
-        super("repairs", "ii");
+        super("repairs", 'i', 'i');
     }
 
     @Override
