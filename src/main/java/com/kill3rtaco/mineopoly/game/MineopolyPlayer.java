@@ -375,9 +375,7 @@ public class MineopolyPlayer extends MineopolyChannelListener {
                 ss.provokeAction(this);
                 if (section instanceof CardSetSection) {
                     CardSetSection css = (CardSetSection) section;
-                    cardDrawn = css.getLastCard();
-                    if (cardDrawn.getResult() == CardResult.MONEY_RELATED)
-                        endTurnAuto = true;
+                    endTurnAuto = css.wasLastCardMoneyRelated();
                 }
             } else if (section instanceof OwnableSection) {
                 TacoAPI.getPlayerAPI().teleport(getPlayer(), section.getLocation());
