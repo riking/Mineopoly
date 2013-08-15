@@ -1,12 +1,11 @@
 package com.kill3rtaco.mineopoly.game.cards;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import com.kill3rtaco.mineopoly.Mineopoly;
 import com.kill3rtaco.mineopoly.game.MineopolyPlayer;
 
-import com.kill3rtaco.tacoapi.TacoAPI;
-
 public abstract class MineopolyCard {
-
     private String description, name, action;
     protected MineopolyCardAction cardAction;
     protected CardResult result = null;
@@ -52,41 +51,36 @@ public abstract class MineopolyCard {
     }
 
     private void validate() {
-        String name = "";
-        String[] params = action.split("\\s+");
-        if (params.length == 0) {
-            valid = false;
+        String[] split = action.split("\\s+");
+        String[] rawParams = (String[]) ArrayUtils.subarray(split, 1, split.length);
+        String name = split[0];
+        cardAction = MineopolyCardActionManager.getAction(name);
+        char[] requiredArgs = cardAction.getParamTypes();
+        final int argsLength = requiredArgs.length;
+        if (argsLength != rawParams.length) {
+            System.err.println("Bad card: wrong parameter length");
             return;
-        } else {
-            name = params[0];
-            params = TacoAPI.getChatUtils().removeFirstArg(params);
         }
-        boolean found = false;
-        for (MineopolyCardAction a : MineopolyCardActionManager.getActions()) {
-            if (a.getName().equalsIgnoreCase(name) && a.getRequiredParamLength() == params.length) {
-                found = true;
-                this.params = new Object[a.getRequiredParamLength()];
-                char[] types = a.getParamTypes();
-                for (int i = 0; i < types.length; i++) {
-                    char type = types[i];
-                    if (type == 'b') {
-                        this.params[i] = Boolean.valueOf(params[i]);
-                    } else if (type == 'i') {
-                        if (TacoAPI.getChatUtils().isNum(params[i])) {
-                            this.params[i] = Integer.parseInt(params[i]);
-                        } else {
-                            valid = false;
-                            break;
-                        }
-                    } else if (type == 's') {
-                        this.params[i] = params[i];
-                    }
+        params = new Object[argsLength];
+        for (int i = 0; i < argsLength; i++) {
+            char type = requiredArgs[i];
+            if (type == 'b') {
+                params[i] = Boolean.valueOf(rawParams[i]);
+            } else if (type == 's') {
+                params[i] = rawParams[i];
+            } else if (type == 'i') {
+                try {
+                    params[i] = Integer.valueOf(rawParams[i]);
+                } catch (NumberFormatException e) {
+                    System.err.println("Bad card: parameter not a number");
+                    return;
                 }
+            } else {
+                System.err.println("Unrecognized CardAction parameter type");
+                params[i] = rawParams[i];
             }
         }
-        if (found && valid) {
-            cardAction = MineopolyCardActionManager.getAction(name);
-        }
+        valid = true;
     }
 
     public boolean isValid() {
